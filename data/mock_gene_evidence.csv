@@ -1,0 +1,21 @@
+gene,cancer_type,tumor_expression,survival_association,geo_validation,depmap_dependency,normal_tissue_safety,mutation_cna_support,novelty_score,notes
+OIP5,GBM,positive,negative,partial,strong,moderate,weak,moderate,Candidate from prior GBM/OIP5 work; useful for testing proliferation/dependency-style hypothesis.
+EGFR,GBM,positive,mixed,strong,moderate,moderate,strong,low,Canonical GBM alteration; good positive control but weak novelty.
+MGMT,GBM,mixed,strong,strong,weak,moderate,strong,low,Known GBM biomarker/control case; useful for validating survival/biomarker logic.
+IDH1,GBM,mixed,strong,strong,weak,low,strong,low,Known glioma molecular marker; useful as a control for favorable prognosis logic.
+ATRX,GBM,mixed,moderate,strong,weak,low,strong,low,Known glioma-associated gene; useful control but not novel.
+PDGFRA,GBM,positive,mixed,partial,moderate,moderate,strong,moderate,GBM-relevant receptor tyrosine kinase; hypothesis requires careful subtype framing.
+CDK4,GBM,positive,negative,partial,moderate,moderate,strong,moderate,Cell-cycle candidate; may support proliferation-associated framing.
+MDM2,GBM,positive,mixed,partial,moderate,moderate,strong,moderate,p53-pathway related candidate; requires mutation/CNA context.
+MKI67,GBM,positive,negative,partial,strong,moderate,weak,low,Proliferation marker; strong biological signal but low novelty.
+TOP2A,GBM,positive,negative,partial,strong,moderate,weak,moderate,Proliferation/cell-cycle associated candidate; useful for dependency testing.
+TP53,Gastric cancer,mixed,mixed,strong,weak,high,strong,low,Highly studied tumor suppressor; useful control but poor novelty.
+ERBB2,Gastric cancer,positive,moderate,strong,moderate,moderate,strong,low,Known gastric cancer target/control case.
+MET,Gastric cancer,positive,negative,partial,moderate,moderate,moderate,moderate,Potential gastric cancer candidate; needs careful validation.
+KRAS,Gastric cancer,mixed,mixed,partial,moderate,moderate,strong,low,Canonical oncogene; useful control but low novelty.
+MYC,Gastric cancer,positive,negative,partial,strong,high,strong,low,Strong cancer biology relevance but major normal-tissue/common-essential caution.
+CDK1,Gastric cancer,positive,negative,partial,strong,moderate,weak,moderate,Cell-cycle dependency candidate; may be biologically plausible but needs specificity checks.
+AURKA,Gastric cancer,positive,negative,partial,strong,moderate,moderate,moderate,Mitotic kinase candidate; plausible but requires validation.
+MMP9,Gastric cancer,positive,mixed,partial,weak,moderate,weak,moderate,Invasion/stromal-associated candidate; may have conflicting tumor-cell versus microenvironment interpretation.
+VEGFA,Gastric cancer,positive,mixed,partial,moderate,moderate,moderate,low,Angiogenesis-associated control; known biology but less novel.
+CLDN18,Gastric cancer,positive,moderate,partial,weak,low,moderate,moderate,Gastric lineage/targeting relevance; useful for testing target-safety logic.
