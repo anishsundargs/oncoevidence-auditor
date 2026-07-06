@@ -6,6 +6,7 @@ from src.evidence_scoring import calculate_score, classify_tier, generate_flags,
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 from src.depmap_dependency import get_dependency_result, get_depmap_data_source_label
 from src.common_essential import get_common_essential_result
+from src.auditor_verdict import build_auditor_verdict
 
 
 st.set_page_config(
@@ -52,6 +53,19 @@ score, breakdown = calculate_score(row)
 flags = generate_flags(row)
 tier = classify_tier(score, flags)
 safe_claim = generate_safe_claim(row, score, tier)
+
+# Preload PubMed values early so the Auditor Verdict can use them.
+pubmed_count = None
+pubmed_query = None
+saturation_label = None
+inferred_novelty = None
+saturation_note = None
+
+try:
+    pubmed_count, pubmed_query = cached_pubmed_count(gene, cancer_type)
+    saturation_label, inferred_novelty, saturation_note = classify_literature_saturation(pubmed_count)
+except Exception:
+    pass
 
 col1, col2, col3 = st.columns([1, 1, 1])
 
@@ -156,6 +170,43 @@ if common_result["available"]:
 else:
     st.info(common_result["common_essential_note"])
 
+st.subheader("Auditor Verdict")
+
+if pubmed_count is not None and saturation_label is not None:
+    verdict = build_auditor_verdict(
+        gene=gene,
+        cancer_type=cancer_type,
+        pubmed_count=pubmed_count,
+        saturation_label=saturation_label,
+        depmap_result=depmap_result,
+        common_result=common_result,
+    )
+
+    st.metric("Final hypothesis tier", verdict["verdict_tier"])
+
+    st.markdown("### Evidence strengths")
+    if verdict["strengths"]:
+        for item in verdict["strengths"]:
+            st.success(item)
+    else:
+        st.info("No major strengths detected by the current auditor logic.")
+
+    st.markdown("### Evidence warnings")
+    if verdict["warnings"]:
+        for item in verdict["warnings"]:
+            st.warning(item)
+    else:
+        st.success("No major warnings detected by the current auditor logic.")
+
+    st.markdown("### Conservative claim")
+    st.info(verdict["safe_claim"])
+
+    with st.expander("Auditor methods note"):
+        st.write(verdict["methods_note"])
+
+else:
+    st.info("Auditor verdict will appear after PubMed and dependency modules finish loading.")
+
 st.divider()
 
 st.divider()
@@ -212,6 +263,8 @@ summary = {
     "depmap_percent_dependent": depmap_result.get("percent_dependent") if "depmap_result" in locals() else None,
     "common_essential_label": common_result.get("common_essential_label") if "common_result" in locals() else None,
     "pan_cancer_percent_dependent": common_result.get("pan_cancer_percent_dependent") if "common_result" in locals() else None,
+    "auditor_verdict_tier": verdict.get("verdict_tier") if "verdict" in locals() else None,
+    "auditor_safe_claim": verdict.get("safe_claim") if "verdict" in locals() else None,
     "literature_saturation": saturation_label if "saturation_label" in locals() else None,
     "inferred_novelty": inferred_novelty if "inferred_novelty" in locals() else None,
     "flags": flags,
