@@ -1,0 +1,3 @@
+cancer_type,cbio_study_candidates,depmap_oncotree_codes,pubmed_query_terms
+GBM,gbm_tcga_pan_can_atlas_2018;gbm_tcga,GB,"glioblastoma[Title/Abstract] OR GBM[Title/Abstract] OR glioma[Title/Abstract]"
+Gastric cancer,stad_tcga_pan_can_atlas_2018;stad_tcga,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,"gastric cancer[Title/Abstract] OR stomach cancer[Title/Abstract] OR gastric adenocarcinoma[Title/Abstract]"
