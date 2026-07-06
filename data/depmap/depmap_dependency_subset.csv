@@ -1,41 +1,21 @@
-gene,cancer_type,median_dependency_score,dependent_cell_lines,total_cell_lines,dependency_note
-OIP5,GBM,-0.8872,42,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-EGFR,GBM,0.0168,2,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-MGMT,GBM,0.1289,0,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-IDH1,GBM,-0.0747,0,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-ATRX,GBM,-0.17,1,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-PDGFRA,GBM,-0.2687,11,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-CDK4,GBM,-0.6189,33,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-MDM2,GBM,-0.4414,19,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-MKI67,GBM,-0.0866,1,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-TOP2A,GBM,-2.5966,50,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-TP53,GBM,0.2361,0,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-ERBB2,GBM,-0.2073,2,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-MET,GBM,-0.0661,6,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-KRAS,GBM,-0.4516,19,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-MYC,GBM,-1.6427,49,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-CDK1,GBM,-2.5131,50,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-AURKA,GBM,-1.2058,50,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-MMP9,GBM,-0.0179,0,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-VEGFA,GBM,-0.0141,0,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-CLDN18,GBM,-0.0283,0,50,Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. GBM codes included: GB. Dependent cell lines counted using score <= -0.5.
-OIP5,Gastric cancer,-0.9155,32,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-EGFR,Gastric cancer,-0.1864,8,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-MGMT,Gastric cancer,0.1151,0,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-IDH1,Gastric cancer,-0.0905,0,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-ATRX,Gastric cancer,-0.1247,3,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-PDGFRA,Gastric cancer,-0.1906,4,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-CDK4,Gastric cancer,-0.4867,16,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-MDM2,Gastric cancer,-0.4161,13,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-MKI67,Gastric cancer,-0.1964,5,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-TOP2A,Gastric cancer,-2.7674,35,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-TP53,Gastric cancer,0.1767,0,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-ERBB2,Gastric cancer,-0.2748,6,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-MET,Gastric cancer,-0.0122,2,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-KRAS,Gastric cancer,-0.6113,19,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-MYC,Gastric cancer,-2.0828,35,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-CDK1,Gastric cancer,-2.6135,35,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-AURKA,Gastric cancer,-1.176,35,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-MMP9,Gastric cancer,-0.0187,0,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-VEGFA,Gastric cancer,0.0077,0,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
-CLDN18,Gastric cancer,-0.0242,0,35,"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. Gastric cancer codes included: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS. Dependent cell lines counted using score <= -0.5."
+gene,cancer_type,oncotree_codes,median_dependency_score,dependent_cell_lines,total_cell_lines,percent_dependent,dependency_label,note
+OIP5,GBM,GB,-0.8872,42,50,84.0,Strong dependency,Filtered by registry OncotreeCode values: GB.
+EGFR,GBM,GB,0.0168,2,50,4.0,Little or no dependency,Filtered by registry OncotreeCode values: GB.
+MGMT,GBM,GB,0.1289,0,50,0.0,Little or no dependency,Filtered by registry OncotreeCode values: GB.
+IDH1,GBM,GB,-0.0747,0,50,0.0,Little or no dependency,Filtered by registry OncotreeCode values: GB.
+ATRX,GBM,GB,-0.17,1,50,2.0,Little or no dependency,Filtered by registry OncotreeCode values: GB.
+PDGFRA,GBM,GB,-0.2687,11,50,22.0,Moderate dependency,Filtered by registry OncotreeCode values: GB.
+CDK4,GBM,GB,-0.6189,33,50,66.0,Strong dependency,Filtered by registry OncotreeCode values: GB.
+MDM2,GBM,GB,-0.4414,19,50,38.0,Moderate dependency,Filtered by registry OncotreeCode values: GB.
+MKI67,GBM,GB,-0.0866,1,50,2.0,Little or no dependency,Filtered by registry OncotreeCode values: GB.
+TOP2A,GBM,GB,-2.5966,50,50,100.0,Strong dependency,Filtered by registry OncotreeCode values: GB.
+TP53,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,0.1767,0,35,0.0,Little or no dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+ERBB2,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-0.2748,6,35,17.1,Little or no dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+MET,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-0.0122,2,35,5.7,Little or no dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+KRAS,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-0.6113,19,35,54.3,Strong dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+MYC,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-2.0828,35,35,100.0,Strong dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+CDK1,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-2.6135,35,35,100.0,Strong dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+AURKA,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-1.176,35,35,100.0,Strong dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+MMP9,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-0.0187,0,35,0.0,Little or no dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+VEGFA,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,0.0077,0,35,0.0,Little or no dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."
+CLDN18,Gastric cancer,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,-0.0242,0,35,0.0,Little or no dependency,"Filtered by registry OncotreeCode values: STAD, DSTAD, TSTAD, MSTAD, SSRCC, STSC, STAS."

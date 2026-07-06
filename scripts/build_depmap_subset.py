@@ -1,179 +1,273 @@
 """
-Build a small OncoEvidence-compatible DepMap dependency table from real DepMap files.
+Build the processed DepMap dependency subset for OncoEvidence Auditor.
 
-Expected inputs:
-1. CRISPRGeneEffect.csv
-   - Rows: DepMap model IDs / cell lines
-   - Columns: genes, usually formatted like "EGFR (1956)"
-
-2. Model.csv
-   - Must contain ModelID and OncotreeCode / Oncotree metadata
+Inputs:
+- data/depmap/raw/CRISPRGeneEffect.csv
+- data/depmap/raw/Model.csv
+- data/mock_gene_evidence.csv
+- data/config/cancer_registry.csv
 
 Output:
 - data/depmap/depmap_dependency_subset.csv
 
-This version uses exact OncotreeCode filters rather than broad keyword matching.
+The cancer-specific OncotreeCode filters now come from the central cancer registry.
 """
 
 from pathlib import Path
-import argparse
-import re
+import sys
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
-GENE_PATTERN = re.compile(r"^(.+?)\s*\(\d+\)$")
-
-
-DEFAULT_GENES = [
-    "OIP5", "EGFR", "MGMT", "IDH1", "ATRX", "PDGFRA", "CDK4", "MDM2", "MKI67", "TOP2A",
-    "TP53", "ERBB2", "MET", "KRAS", "MYC", "CDK1", "AURKA", "MMP9", "VEGFA", "CLDN18"
-]
-
-
-# Exact disease/model groups for app labels.
-# GB = Glioblastoma, IDH-Wildtype in DepMap Oncotree metadata.
-# Gastric cancer group excludes esophageal and GEJ categories.
-CANCER_ONCOTREE_CODE_FILTERS = {
-    "GBM": ["GB"],
-    "Gastric cancer": ["STAD", "DSTAD", "TSTAD", "MSTAD", "SSRCC", "STSC", "STAS"],
-}
+from src.cancer_registry import (
+    get_depmap_oncotree_codes,
+    list_supported_cancers,
+)
 
 
-def clean_gene_name(col: str) -> str:
-    """Convert 'EGFR (1956)' to 'EGFR' when needed."""
-    col = str(col)
-    match = GENE_PATTERN.match(col)
-    if match:
-        return match.group(1).strip()
-    return col.strip()
+RAW_DIR = Path("data/depmap/raw")
+GENE_EFFECT_PATH = RAW_DIR / "CRISPRGeneEffect.csv"
+MODEL_PATH = RAW_DIR / "Model.csv"
+MOCK_EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
+OUTPUT_PATH = Path("data/depmap/depmap_dependency_subset.csv")
+
+DEPENDENCY_THRESHOLD = -0.5
 
 
-def find_model_id_column(df: pd.DataFrame) -> str:
-    candidates = ["ModelID", "DepMap_ID", "DepMapID", "model_id", "depmap_id", "Unnamed: 0"]
-    for c in candidates:
-        if c in df.columns:
-            return c
-    return df.columns[0]
+def classify_dependency(median_dependency_score, percent_dependent):
+    """
+    Classify dependency strength from DepMap gene-effect values.
+
+    More negative gene-effect scores indicate stronger dependency.
+    """
+    if pd.isna(median_dependency_score):
+        return "Data not available"
+
+    if percent_dependent >= 50:
+        return "Strong dependency"
+
+    if percent_dependent >= 20:
+        return "Moderate dependency"
+
+    return "Little or no dependency"
 
 
-def load_gene_effect(path: Path) -> pd.DataFrame:
-    df = pd.read_csv(path)
+def find_gene_column(gene_effect_df, gene_symbol):
+    """
+    Find a DepMap gene-effect column for a gene symbol.
 
-    first_col = df.columns[0]
-    if first_col not in {"ModelID", "DepMap_ID", "DepMapID"}:
-        df = df.rename(columns={first_col: "ModelID"})
+    DepMap columns are commonly formatted like:
+    OIP5 (11339)
+    EGFR (1956)
+    """
+    gene_symbol = gene_symbol.strip().upper()
 
-    rename = {}
-    for col in df.columns:
-        if col != "ModelID":
-            rename[col] = clean_gene_name(col)
+    for col in gene_effect_df.columns:
+        col_upper = str(col).upper()
 
-    df = df.rename(columns=rename)
-    return df
+        if col_upper == gene_symbol:
+            return col
+
+        if col_upper.startswith(f"{gene_symbol} ("):
+            return col
+
+    return None
 
 
-def build_subset(gene_effect_path: Path, model_metadata_path: Path, output_path: Path, genes):
-    gene_effect = load_gene_effect(gene_effect_path)
-    metadata = pd.read_csv(model_metadata_path)
+def load_gene_cancer_pairs():
+    """
+    Load gene/cancer pairs from the app's evidence table.
 
-    metadata_model_col = find_model_id_column(metadata)
-    metadata = metadata.rename(columns={metadata_model_col: "ModelID"})
+    This keeps the processed DepMap subset aligned with the app's current
+    supported gene/cancer examples.
+    """
+    if not MOCK_EVIDENCE_PATH.exists():
+        raise FileNotFoundError(
+            f"Could not find {MOCK_EVIDENCE_PATH}. "
+            "The builder needs gene/cancer pairs to process."
+        )
 
-    if "OncotreeCode" not in metadata.columns:
-        raise ValueError("Model metadata must contain an OncotreeCode column.")
+    df = pd.read_csv(MOCK_EVIDENCE_PATH)
 
-    merged = metadata[
-        [
-            "ModelID",
-            "CellLineName",
-            "OncotreeLineage",
-            "OncotreePrimaryDisease",
-            "OncotreeSubtype",
-            "OncotreeCode",
-        ]
-    ].merge(
-        gene_effect,
-        on="ModelID",
-        how="inner"
+    required = {"gene", "cancer_type"}
+    missing = required - set(df.columns)
+
+    if missing:
+        raise ValueError(
+            f"{MOCK_EVIDENCE_PATH} is missing required columns: {sorted(missing)}"
+        )
+
+    supported_cancers = set(list_supported_cancers())
+
+    pairs = (
+        df[["gene", "cancer_type"]]
+        .dropna()
+        .drop_duplicates()
+        .query("cancer_type in @supported_cancers")
+        .to_dict("records")
     )
 
-    records = []
+    if not pairs:
+        raise ValueError("No gene/cancer pairs found for supported registry cancers.")
 
-    for cancer_type, allowed_codes in CANCER_ONCOTREE_CODE_FILTERS.items():
-        cancer_df = merged[merged["OncotreeCode"].isin(allowed_codes)].copy()
+    return pairs
 
-        for gene in genes:
-            if gene not in cancer_df.columns:
-                records.append({
-                    "gene": gene,
-                    "cancer_type": cancer_type,
-                    "median_dependency_score": None,
-                    "dependent_cell_lines": 0,
-                    "total_cell_lines": len(cancer_df),
-                    "dependency_note": f"{gene} not found in CRISPRGeneEffect columns."
-                })
-                continue
 
-            values = pd.to_numeric(cancer_df[gene], errors="coerce").dropna()
-            total = len(values)
+def summarize_gene_dependency(gene_effect_df, model_df, gene, cancer_type):
+    """
+    Summarize one gene/cancer DepMap dependency signal.
+    """
+    oncotree_codes = get_depmap_oncotree_codes(cancer_type)
 
-            if total == 0:
-                median_score = None
-                dependent = 0
-            else:
-                median_score = round(float(values.median()), 4)
-                dependent = int((values <= -0.5).sum())
+    if not oncotree_codes:
+        return {
+            "gene": gene,
+            "cancer_type": cancer_type,
+            "oncotree_codes": "",
+            "median_dependency_score": None,
+            "dependent_cell_lines": 0,
+            "total_cell_lines": 0,
+            "percent_dependent": None,
+            "dependency_label": "Data not available",
+            "note": "No DepMap OncotreeCode mapping found in cancer registry.",
+        }
 
-            records.append({
-                "gene": gene,
-                "cancer_type": cancer_type,
-                "median_dependency_score": median_score,
-                "dependent_cell_lines": dependent,
-                "total_cell_lines": total,
-                "dependency_note": (
-                    f"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. "
-                    f"{cancer_type} codes included: {', '.join(allowed_codes)}. "
-                    f"Dependent cell lines counted using score <= -0.5."
-                )
-            })
+    gene_col = find_gene_column(gene_effect_df, gene)
 
-    out = pd.DataFrame(records)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    out.to_csv(output_path, index=False)
+    if not gene_col:
+        return {
+            "gene": gene,
+            "cancer_type": cancer_type,
+            "oncotree_codes": ";".join(oncotree_codes),
+            "median_dependency_score": None,
+            "dependent_cell_lines": 0,
+            "total_cell_lines": 0,
+            "percent_dependent": None,
+            "dependency_label": "Data not available",
+            "note": f"Gene column not found in CRISPRGeneEffect.csv for {gene}.",
+        }
 
-    print(f"Wrote {len(out)} rows to {output_path}")
-    print(out.head(20).to_string(index=False))
+    cancer_models = model_df[model_df["OncotreeCode"].isin(oncotree_codes)].copy()
 
-    print("\nModel counts by cancer group:")
-    for cancer_type, allowed_codes in CANCER_ONCOTREE_CODE_FILTERS.items():
-        count = merged[merged["OncotreeCode"].isin(allowed_codes)].shape[0]
-        print(f"- {cancer_type}: {count} models; codes={allowed_codes}")
+    merged = cancer_models[["ModelID", "OncotreeCode"]].merge(
+        gene_effect_df[["ModelID", gene_col]],
+        on="ModelID",
+        how="inner",
+    )
+
+    values = pd.to_numeric(merged[gene_col], errors="coerce").dropna()
+
+    total = int(values.shape[0])
+
+    if total == 0:
+        return {
+            "gene": gene,
+            "cancer_type": cancer_type,
+            "oncotree_codes": ";".join(oncotree_codes),
+            "median_dependency_score": None,
+            "dependent_cell_lines": 0,
+            "total_cell_lines": 0,
+            "percent_dependent": None,
+            "dependency_label": "Data not available",
+            "note": "No matching DepMap cell-line values after OncotreeCode filtering.",
+        }
+
+    median_score = round(float(values.median()), 4)
+    dependent_count = int((values <= DEPENDENCY_THRESHOLD).sum())
+    percent_dependent = round((dependent_count / total) * 100, 1)
+
+    label = classify_dependency(median_score, percent_dependent)
+
+    return {
+        "gene": gene,
+        "cancer_type": cancer_type,
+        "oncotree_codes": ";".join(oncotree_codes),
+        "median_dependency_score": median_score,
+        "dependent_cell_lines": dependent_count,
+        "total_cell_lines": total,
+        "percent_dependent": percent_dependent,
+        "dependency_label": label,
+        "note": f"Filtered by registry OncotreeCode values: {', '.join(oncotree_codes)}.",
+    }
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--gene-effect", required=True, help="Path to CRISPRGeneEffect.csv")
-    parser.add_argument("--model", required=True, help="Path to Model.csv or DepMap model metadata")
-    parser.add_argument(
-        "--output",
-        default="data/depmap/depmap_dependency_subset.csv",
-        help="Output path"
-    )
-    parser.add_argument(
-        "--genes",
-        nargs="*",
-        default=DEFAULT_GENES,
-        help="Gene symbols to include"
-    )
+    if not GENE_EFFECT_PATH.exists():
+        raise FileNotFoundError(f"Missing raw DepMap file: {GENE_EFFECT_PATH}")
 
-    args = parser.parse_args()
+    if not MODEL_PATH.exists():
+        raise FileNotFoundError(f"Missing raw DepMap file: {MODEL_PATH}")
 
-    build_subset(
-        gene_effect_path=Path(args.gene_effect),
-        model_metadata_path=Path(args.model),
-        output_path=Path(args.output),
-        genes=args.genes
-    )
+    print("Loading DepMap raw files...")
+    gene_effect_df = pd.read_csv(GENE_EFFECT_PATH)
+    model_df = pd.read_csv(MODEL_PATH)
+
+    # Different DepMap releases name the model identifier column differently.
+    # Normalize it to ModelID so the rest of the script is stable.
+    gene_effect_id_candidates = [
+        "ModelID",
+        "DepMap_ID",
+        "DepMapID",
+        "Unnamed: 0",
+    ]
+
+    gene_effect_id_col = None
+
+    for candidate in gene_effect_id_candidates:
+        if candidate in gene_effect_df.columns:
+            gene_effect_id_col = candidate
+            break
+
+    # Fallback: if the first column contains ACH-style DepMap model IDs, use it.
+    if gene_effect_id_col is None:
+        first_col = gene_effect_df.columns[0]
+        first_values = gene_effect_df[first_col].astype(str).head(10).tolist()
+        if any(value.startswith("ACH-") for value in first_values):
+            gene_effect_id_col = first_col
+
+    if gene_effect_id_col is None:
+        raise ValueError(
+            "Could not identify model ID column in CRISPRGeneEffect.csv. "
+            f"Available columns start with: {list(gene_effect_df.columns[:10])}"
+        )
+
+    if gene_effect_id_col != "ModelID":
+        gene_effect_df = gene_effect_df.rename(columns={gene_effect_id_col: "ModelID"})
+
+    required_model_cols = {"ModelID", "OncotreeCode"}
+    missing_model_cols = required_model_cols - set(model_df.columns)
+
+    if missing_model_cols:
+        raise ValueError(
+            f"Model.csv is missing required columns: {sorted(missing_model_cols)}"
+        )
+
+    pairs = load_gene_cancer_pairs()
+
+    print(f"Processing {len(pairs)} gene/cancer pairs...")
+    rows = []
+
+    for pair in pairs:
+        gene = str(pair["gene"]).strip()
+        cancer_type = str(pair["cancer_type"]).strip()
+
+        print(f"- {gene} / {cancer_type}")
+        rows.append(
+            summarize_gene_dependency(
+                gene_effect_df=gene_effect_df,
+                model_df=model_df,
+                gene=gene,
+                cancer_type=cancer_type,
+            )
+        )
+
+    output_df = pd.DataFrame(rows)
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    output_df.to_csv(OUTPUT_PATH, index=False)
+
+    print(f"\nWrote {OUTPUT_PATH}")
+    print(output_df)
 
 
 if __name__ == "__main__":
