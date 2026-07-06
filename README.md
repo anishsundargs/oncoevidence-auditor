@@ -47,3 +47,46 @@ streamlit run app.py
 ## Disclaimer
 
 This tool is for research and educational hypothesis triage only. It is not a clinical diagnostic, prognostic, or treatment recommendation system.
+
+## Current MVP status
+
+OncoEvidence Auditor is a Python/Streamlit cancer bioinformatics web application that audits gene/cancer hypotheses across multiple public evidence layers.
+
+### Current validated case studies
+
+- GBM
+- Gastric cancer
+
+### Current evidence layers
+
+1. PubMed literature saturation
+2. DepMap CRISPR dependency
+3. Pan-cancer common-essential caution
+4. Lineage specificity index
+5. cBioPortal patient-tumor alteration evidence
+6. cBioPortal patient-tumor expression evidence
+7. Auditor Verdict synthesis
+
+### Central registry
+
+Cancer-specific mappings are stored in:
+
+`data/config/cancer_registry.csv`
+
+The registry currently controls:
+
+- cBioPortal study candidates
+- DepMap OncotreeCode filters
+- PubMed cancer query terms
+- Supported cancer dropdown options
+
+### Research-use disclaimer
+
+This project is for research and educational use only. It does not provide clinical recommendations, diagnoses, or treatment guidance.
+
+### Strong project framing
+
+OncoEvidence Auditor is designed to detect contradiction across evidence layers. For example, a gene may show strong cell-line dependency but weak patient-tumor alteration support, weak expression support, or high common-essential risk.
+
+That contradiction-aware synthesis is the main purpose of the tool.
+
