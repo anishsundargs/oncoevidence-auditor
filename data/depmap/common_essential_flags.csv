@@ -1,0 +1,21 @@
+gene,pan_cancer_median_dependency_score,pan_cancer_dependent_cell_lines,pan_cancer_total_cell_lines,pan_cancer_percent_dependent,common_essential_label,common_essential_note
+OIP5,-0.9458,1077,1208,89.2,High common-essential caution,OIP5 is broadly dependency-associated across many cancer models. A strong lineage-specific signal may reflect general essentiality rather than selective vulnerability.
+EGFR,-0.1303,212,1208,17.5,Low common-essential caution,EGFR does not appear broadly essential by this simple pan-cancer dependency threshold.
+MGMT,0.1171,0,1208,0.0,Low common-essential caution,MGMT does not appear broadly essential by this simple pan-cancer dependency threshold.
+IDH1,-0.089,9,1208,0.7,Low common-essential caution,IDH1 does not appear broadly essential by this simple pan-cancer dependency threshold.
+ATRX,-0.171,127,1208,10.5,Low common-essential caution,ATRX does not appear broadly essential by this simple pan-cancer dependency threshold.
+PDGFRA,-0.1707,75,1208,6.2,Low common-essential caution,PDGFRA does not appear broadly essential by this simple pan-cancer dependency threshold.
+CDK4,-0.5605,701,1208,58.0,Moderate common-essential caution,CDK4 shows moderate broad dependency across cancer models. Interpret lineage-specific dependency with specificity caution.
+MDM2,-0.4264,464,1208,38.4,Low-moderate common-essential caution,MDM2 shows some broad dependency across cancer models. Specificity should still be checked against the selected cancer lineage.
+MKI67,-0.1084,48,1208,4.0,Low common-essential caution,MKI67 does not appear broadly essential by this simple pan-cancer dependency threshold.
+TOP2A,-2.5767,1203,1208,99.6,High common-essential caution,TOP2A is broadly dependency-associated across many cancer models. A strong lineage-specific signal may reflect general essentiality rather than selective vulnerability.
+TP53,0.2384,5,1208,0.4,Low common-essential caution,TP53 does not appear broadly essential by this simple pan-cancer dependency threshold.
+ERBB2,-0.2755,214,1208,17.7,Low common-essential caution,ERBB2 does not appear broadly essential by this simple pan-cancer dependency threshold.
+MET,-0.0125,29,1208,2.4,Low common-essential caution,MET does not appear broadly essential by this simple pan-cancer dependency threshold.
+KRAS,-0.5169,633,1208,52.4,Moderate common-essential caution,KRAS shows moderate broad dependency across cancer models. Interpret lineage-specific dependency with specificity caution.
+MYC,-2.0682,1150,1208,95.2,High common-essential caution,MYC is broadly dependency-associated across many cancer models. A strong lineage-specific signal may reflect general essentiality rather than selective vulnerability.
+CDK1,-2.6281,1208,1208,100.0,High common-essential caution,CDK1 is broadly dependency-associated across many cancer models. A strong lineage-specific signal may reflect general essentiality rather than selective vulnerability.
+AURKA,-1.1849,1201,1208,99.4,High common-essential caution,AURKA is broadly dependency-associated across many cancer models. A strong lineage-specific signal may reflect general essentiality rather than selective vulnerability.
+MMP9,-0.0097,1,1208,0.1,Low common-essential caution,MMP9 does not appear broadly essential by this simple pan-cancer dependency threshold.
+VEGFA,-0.0136,0,1208,0.0,Low common-essential caution,VEGFA does not appear broadly essential by this simple pan-cancer dependency threshold.
+CLDN18,-0.035,4,1208,0.3,Low common-essential caution,CLDN18 does not appear broadly essential by this simple pan-cancer dependency threshold.

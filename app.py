@@ -5,6 +5,7 @@ import streamlit as st
 from src.evidence_scoring import calculate_score, classify_tier, generate_flags, generate_safe_claim
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 from src.depmap_dependency import get_dependency_result, get_depmap_data_source_label
+from src.common_essential import get_common_essential_result
 
 
 st.set_page_config(
@@ -125,6 +126,38 @@ if depmap_result["available"]:
 else:
     st.warning(depmap_result["dependency_note"])
 
+st.subheader("Common-Essential / Specificity Caution")
+
+common_result = get_common_essential_result(gene)
+
+if common_result["available"]:
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        st.metric(
+            "Pan-cancer median dependency",
+            common_result["pan_cancer_median_dependency_score"]
+        )
+
+    with c2:
+        st.metric(
+            "Pan-cancer dependent models",
+            f'{common_result["pan_cancer_dependent_cell_lines"]}/{common_result["pan_cancer_total_cell_lines"]}'
+        )
+
+    with c3:
+        st.metric(
+            "Common-essential label",
+            common_result["common_essential_label"]
+        )
+
+    st.write(f'Pan-cancer percent dependent: **{common_result["pan_cancer_percent_dependent"]}%**')
+    st.warning(common_result["common_essential_note"])
+else:
+    st.info(common_result["common_essential_note"])
+
+st.divider()
+
 st.divider()
 
 st.subheader("Live PubMed Literature Saturation")
@@ -177,6 +210,8 @@ summary = {
     "depmap_dependency_label": depmap_result.get("dependency_label") if "depmap_result" in locals() else None,
     "depmap_median_dependency_score": depmap_result.get("median_dependency_score") if "depmap_result" in locals() else None,
     "depmap_percent_dependent": depmap_result.get("percent_dependent") if "depmap_result" in locals() else None,
+    "common_essential_label": common_result.get("common_essential_label") if "common_result" in locals() else None,
+    "pan_cancer_percent_dependent": common_result.get("pan_cancer_percent_dependent") if "common_result" in locals() else None,
     "literature_saturation": saturation_label if "saturation_label" in locals() else None,
     "inferred_novelty": inferred_novelty if "inferred_novelty" in locals() else None,
     "flags": flags,
