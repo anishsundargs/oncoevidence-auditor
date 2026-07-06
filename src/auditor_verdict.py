@@ -15,6 +15,7 @@ def build_auditor_verdict(
     common_result,
     specificity_result=None,
     cbio_result=None,
+    expression_result=None,
 ):
     """
     Return a final evidence-auditor verdict.
@@ -47,6 +48,16 @@ def build_auditor_verdict(
         mutation_frequency = cbio_result.get("mutation_frequency")
         amplification_frequency = cbio_result.get("amplification_frequency")
         deep_deletion_frequency = cbio_result.get("deep_deletion_frequency")
+
+    expression_support = None
+    median_expression_zscore = None
+    percent_high_expression = None
+    expression_reference = None
+    if expression_result and expression_result.get("available"):
+        expression_support = expression_result.get("expression_support")
+        median_expression_zscore = expression_result.get("median_expression_zscore")
+        percent_high_expression = expression_result.get("percent_high_expression")
+        expression_reference = expression_result.get("expression_reference")
 
     # Strengths
     if dependency_label == "Strong dependency":
@@ -122,19 +133,43 @@ def build_auditor_verdict(
             f"{gene} has little or no patient-tumor alteration support in {cancer_type} by mutation, high-level amplification, or deep-deletion criteria."
         )
 
+    # Patient-tumor expression support
+    if expression_support == "High broad expression support":
+        strengths.append(
+            f"{gene} has high broad patient-tumor expression support in {cancer_type}."
+        )
+    elif expression_support == "Moderate expression support":
+        strengths.append(
+            f"{gene} has moderate patient-tumor expression support in {cancer_type}."
+        )
+    elif expression_support == "Subgroup high-expression support":
+        strengths.append(
+            f"{gene} has subgroup-level high-expression support in {cancer_type}; this supports a subgroup hypothesis more than a broad cohort-wide expression claim."
+        )
+    elif expression_support == "Low-expression signal":
+        warnings.append(
+            f"{gene} shows a low-expression signal in {cancer_type}; this weakens a high-expression biomarker framing."
+        )
+    elif expression_support == "Little or no expression support":
+        warnings.append(
+            f"{gene} has little or no patient-tumor expression support in {cancer_type} by the current z-score criteria."
+        )
+
     # Tier logic
     if (
         dependency_label == "Strong dependency"
         and common_label == "Low common-essential caution"
         and specificity_label in {"High lineage specificity", "Moderate lineage specificity"}
         and patient_support in {"High patient alteration support", "Moderate patient alteration support"}
+        and expression_support in {"High broad expression support", "Moderate expression support", "Subgroup high-expression support"}
     ):
         verdict_tier = "Potentially selective dependency hypothesis"
-        claim_style = "candidate selective vulnerability with patient-tumor support"
+        claim_style = "candidate selective vulnerability with patient-tumor alteration/expression support"
     elif dependency_label in {"Strong dependency", "Moderate dependency"} and (
         common_label in {"High common-essential caution", "Moderate common-essential caution"}
         or specificity_label in {"Low lineage specificity", "Lower-than-background dependency"}
         or patient_support == "Little or no patient alteration support"
+        or expression_support in {"Little or no expression support", "Low-expression signal"}
     ):
         verdict_tier = "Strong dependency but specificity/patient-support risk hypothesis"
         claim_style = "broad dependency-associated candidate, not a selective patient-supported target"
@@ -159,7 +194,9 @@ def build_auditor_verdict(
         f"pan-cancer percent dependent={pan_percent}, common-essential label='{common_label}', "
         f"specificity delta={specificity_delta}, specificity label='{specificity_label}', "
         f"patient alteration support='{patient_support}', mutation frequency={mutation_frequency}, "
-        f"amplification frequency={amplification_frequency}, and deep deletion frequency={deep_deletion_frequency}."
+        f"amplification frequency={amplification_frequency}, deep deletion frequency={deep_deletion_frequency}, "
+        f"expression support='{expression_support}', median expression z-score={median_expression_zscore}, "
+        f"percent high expression={percent_high_expression}, and expression reference='{expression_reference}'."
     )
 
     return {
