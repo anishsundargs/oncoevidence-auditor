@@ -13,6 +13,7 @@ def build_auditor_verdict(
     saturation_label,
     depmap_result,
     common_result,
+    specificity_result=None,
 ):
     """
     Return a final evidence-auditor verdict.
@@ -29,6 +30,12 @@ def build_auditor_verdict(
 
     warnings = []
     strengths = []
+
+    specificity_label = None
+    specificity_delta = None
+    if specificity_result:
+        specificity_label = specificity_result.get('specificity_label')
+        specificity_delta = specificity_result.get('specificity_delta')
 
     # Strengths
     if dependency_label == "Strong dependency":
@@ -68,14 +75,36 @@ def build_auditor_verdict(
             f"The {gene}/{cancer_type} literature appears relatively underexplored by PubMed title/abstract count."
         )
 
+    # Lineage specificity
+    if specificity_label == "High lineage specificity":
+        strengths.append(
+            f"{gene} shows higher dependency in the selected {cancer_type} group than in the pan-cancer background, supporting a lineage-enriched hypothesis."
+        )
+    elif specificity_label == "Moderate lineage specificity":
+        strengths.append(
+            f"{gene} shows moderately higher dependency in the selected {cancer_type} group than in the pan-cancer background."
+        )
+    elif specificity_label == "Low lineage specificity":
+        warnings.append(
+            f"{gene} has low lineage specificity by dependency-rate comparison, so the signal may reflect broad cancer dependency rather than {cancer_type}-specific vulnerability."
+        )
+    elif specificity_label == "Lower-than-background dependency":
+        warnings.append(
+            f"{gene} has lower dependency in the selected {cancer_type} group than in the pan-cancer background, weakening a lineage-specific dependency claim."
+        )
+
     # Tier logic
-    if dependency_label == "Strong dependency" and common_label == "Low common-essential caution":
+    if (
+        dependency_label == "Strong dependency"
+        and common_label == "Low common-essential caution"
+        and specificity_label in {"High lineage specificity", "Moderate lineage specificity"}
+    ):
         verdict_tier = "Potentially selective dependency hypothesis"
         claim_style = "candidate selective vulnerability"
-    elif dependency_label in {"Strong dependency", "Moderate dependency"} and common_label in {
-        "High common-essential caution",
-        "Moderate common-essential caution",
-    }:
+    elif dependency_label in {"Strong dependency", "Moderate dependency"} and (
+        common_label in {"High common-essential caution", "Moderate common-essential caution"}
+        or specificity_label in {"Low lineage specificity", "Lower-than-background dependency"}
+    ):
         verdict_tier = "Strong dependency but specificity-risk hypothesis"
         claim_style = "broad dependency-associated candidate, not a selective target"
     elif dependency_label in {"Strong dependency", "Moderate dependency"}:
@@ -96,7 +125,8 @@ def build_auditor_verdict(
     methods_note = (
         f"Auditor synthesis used PubMed count={pubmed_count}, "
         f"selected-group dependency={dep_score}, selected-group percent dependent={dep_percent}, "
-        f"pan-cancer percent dependent={pan_percent}, and common-essential label='{common_label}'."
+        f"pan-cancer percent dependent={pan_percent}, common-essential label='{common_label}', "
+        f"specificity delta={specificity_delta}, and specificity label='{specificity_label}'."
     )
 
     return {

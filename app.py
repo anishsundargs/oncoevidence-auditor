@@ -7,6 +7,7 @@ from src.pubmed_saturation import get_pubmed_count, classify_literature_saturati
 from src.depmap_dependency import get_dependency_result, get_depmap_data_source_label
 from src.common_essential import get_common_essential_result
 from src.auditor_verdict import build_auditor_verdict
+from src.specificity_index import calculate_specificity_index
 
 
 st.set_page_config(
@@ -170,6 +171,27 @@ if common_result["available"]:
 else:
     st.info(common_result["common_essential_note"])
 
+st.subheader("Lineage Specificity Index")
+
+specificity_result = calculate_specificity_index(depmap_result, common_result)
+
+if specificity_result["available"]:
+    s1, s2, s3 = st.columns(3)
+
+    with s1:
+        st.metric("Selected-cancer % dependent", depmap_result["percent_dependent"])
+
+    with s2:
+        st.metric("Pan-cancer % dependent", common_result["pan_cancer_percent_dependent"])
+
+    with s3:
+        st.metric("Specificity delta", specificity_result["specificity_delta"])
+
+    st.metric("Specificity label", specificity_result["specificity_label"])
+    st.info(specificity_result["specificity_note"])
+else:
+    st.info(specificity_result["specificity_note"])
+
 st.subheader("Auditor Verdict")
 
 if pubmed_count is not None and saturation_label is not None:
@@ -180,6 +202,7 @@ if pubmed_count is not None and saturation_label is not None:
         saturation_label=saturation_label,
         depmap_result=depmap_result,
         common_result=common_result,
+        specificity_result=specificity_result,
     )
 
     st.metric("Final hypothesis tier", verdict["verdict_tier"])
@@ -263,6 +286,8 @@ summary = {
     "depmap_percent_dependent": depmap_result.get("percent_dependent") if "depmap_result" in locals() else None,
     "common_essential_label": common_result.get("common_essential_label") if "common_result" in locals() else None,
     "pan_cancer_percent_dependent": common_result.get("pan_cancer_percent_dependent") if "common_result" in locals() else None,
+    "specificity_delta": specificity_result.get("specificity_delta") if "specificity_result" in locals() else None,
+    "specificity_label": specificity_result.get("specificity_label") if "specificity_result" in locals() else None,
     "auditor_verdict_tier": verdict.get("verdict_tier") if "verdict" in locals() else None,
     "auditor_safe_claim": verdict.get("safe_claim") if "verdict" in locals() else None,
     "literature_saturation": saturation_label if "saturation_label" in locals() else None,
