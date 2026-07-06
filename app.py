@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from src.cancer_registry import list_supported_cancers
+
 from src.evidence_scoring import calculate_score, classify_tier, generate_flags, generate_safe_claim
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 from src.depmap_dependency import get_dependency_result, get_depmap_data_source_label
@@ -41,7 +43,7 @@ df = load_mock_data()
 
 with st.sidebar:
     st.header("Input")
-    cancer_type = st.selectbox("Cancer type", sorted(df["cancer_type"].unique()))
+    cancer_type = st.selectbox("Cancer type", list_supported_cancers())
     genes = sorted(df.loc[df["cancer_type"] == cancer_type, "gene"].unique())
     gene = st.selectbox("Gene", genes)
 
