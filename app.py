@@ -4,7 +4,7 @@ import streamlit as st
 
 from src.evidence_scoring import calculate_score, classify_tier, generate_flags, generate_safe_claim
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
-from src.depmap_dependency import get_dependency_result
+from src.depmap_dependency import get_dependency_result, get_depmap_data_source_label
 
 
 st.set_page_config(
@@ -121,9 +121,7 @@ if depmap_result["available"]:
     st.write(f'Percent dependent: **{depmap_result["percent_dependent"]}%**')
     st.write(depmap_result["dependency_note"])
 
-    st.caption(
-        "Current module uses a local DepMap-style mock table. Next upgrade: real DepMap public release data."
-    )
+    st.caption(f"Active dependency data source: {depmap_result['data_source']}")
 else:
     st.warning(depmap_result["dependency_note"])
 
