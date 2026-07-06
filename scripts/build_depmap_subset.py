@@ -6,13 +6,13 @@ Expected inputs:
    - Rows: DepMap model IDs / cell lines
    - Columns: genes, usually formatted like "EGFR (1956)"
 
-2. Model.csv or sample metadata file
-   - Should contain model IDs and disease/lineage metadata
+2. Model.csv
+   - Must contain ModelID and OncotreeCode / Oncotree metadata
 
 Output:
 - data/depmap/depmap_dependency_subset.csv
 
-This script is intentionally flexible because DepMap column names can shift across releases.
+This version uses exact OncotreeCode filters rather than broad keyword matching.
 """
 
 from pathlib import Path
@@ -30,9 +30,12 @@ DEFAULT_GENES = [
 ]
 
 
-CANCER_KEYWORDS = {
-    "GBM": ["glioma", "glioblastoma", "central nervous system", "brain"],
-    "Gastric cancer": ["gastric", "stomach"],
+# Exact disease/model groups for app labels.
+# GB = Glioblastoma, IDH-Wildtype in DepMap Oncotree metadata.
+# Gastric cancer group excludes esophageal and GEJ categories.
+CANCER_ONCOTREE_CODE_FILTERS = {
+    "GBM": ["GB"],
+    "Gastric cancer": ["STAD", "DSTAD", "TSTAD", "MSTAD", "SSRCC", "STSC", "STAS"],
 }
 
 
@@ -51,26 +54,6 @@ def find_model_id_column(df: pd.DataFrame) -> str:
         if c in df.columns:
             return c
     return df.columns[0]
-
-
-def find_metadata_text_columns(df: pd.DataFrame):
-    likely = []
-    keywords = ["lineage", "disease", "cancer", "primary", "subtype", "oncotree", "tissue"]
-    for c in df.columns:
-        lower = c.lower()
-        if any(k in lower for k in keywords):
-            likely.append(c)
-    return likely
-
-
-def assign_cancer_type(row, text_cols):
-    combined = " ".join(str(row[c]).lower() for c in text_cols if c in row and pd.notna(row[c]))
-
-    for cancer_type, keywords in CANCER_KEYWORDS.items():
-        if any(k in combined for k in keywords):
-            return cancer_type
-
-    return None
 
 
 def load_gene_effect(path: Path) -> pd.DataFrame:
@@ -96,19 +79,19 @@ def build_subset(gene_effect_path: Path, model_metadata_path: Path, output_path:
     metadata_model_col = find_model_id_column(metadata)
     metadata = metadata.rename(columns={metadata_model_col: "ModelID"})
 
-    text_cols = find_metadata_text_columns(metadata)
-    if not text_cols:
-        raise ValueError(
-            "Could not find lineage/disease/tissue metadata columns. "
-            "Open your Model.csv and inspect the column names."
-        )
+    if "OncotreeCode" not in metadata.columns:
+        raise ValueError("Model metadata must contain an OncotreeCode column.")
 
-    metadata["oncoevidence_cancer_type"] = metadata.apply(
-        lambda row: assign_cancer_type(row, text_cols),
-        axis=1
-    )
-
-    merged = metadata[["ModelID", "oncoevidence_cancer_type"]].merge(
+    merged = metadata[
+        [
+            "ModelID",
+            "CellLineName",
+            "OncotreeLineage",
+            "OncotreePrimaryDisease",
+            "OncotreeSubtype",
+            "OncotreeCode",
+        ]
+    ].merge(
         gene_effect,
         on="ModelID",
         how="inner"
@@ -116,8 +99,8 @@ def build_subset(gene_effect_path: Path, model_metadata_path: Path, output_path:
 
     records = []
 
-    for cancer_type in CANCER_KEYWORDS:
-        cancer_df = merged[merged["oncoevidence_cancer_type"] == cancer_type].copy()
+    for cancer_type, allowed_codes in CANCER_ONCOTREE_CODE_FILTERS.items():
+        cancer_df = merged[merged["OncotreeCode"].isin(allowed_codes)].copy()
 
         for gene in genes:
             if gene not in cancer_df.columns:
@@ -148,7 +131,8 @@ def build_subset(gene_effect_path: Path, model_metadata_path: Path, output_path:
                 "dependent_cell_lines": dependent,
                 "total_cell_lines": total,
                 "dependency_note": (
-                    f"Derived from DepMap CRISPRGeneEffect. "
+                    f"Derived from DepMap CRISPRGeneEffect using exact OncotreeCode filters. "
+                    f"{cancer_type} codes included: {', '.join(allowed_codes)}. "
                     f"Dependent cell lines counted using score <= -0.5."
                 )
             })
@@ -158,7 +142,12 @@ def build_subset(gene_effect_path: Path, model_metadata_path: Path, output_path:
     out.to_csv(output_path, index=False)
 
     print(f"Wrote {len(out)} rows to {output_path}")
-    print(out.head(10).to_string(index=False))
+    print(out.head(20).to_string(index=False))
+
+    print("\nModel counts by cancer group:")
+    for cancer_type, allowed_codes in CANCER_ONCOTREE_CODE_FILTERS.items():
+        count = merged[merged["OncotreeCode"].isin(allowed_codes)].shape[0]
+        print(f"- {cancer_type}: {count} models; codes={allowed_codes}")
 
 
 def main():
