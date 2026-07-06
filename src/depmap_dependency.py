@@ -90,7 +90,8 @@ def get_dependency_result(gene: str, cancer_type: str) -> Dict:
         "total_cell_lines": total,
         "percent_dependent": percent,
         "dependency_label": label,
-        "dependency_note": row["dependency_note"],
+        "dependency_note": row.get("dependency_note", row.get("note", "")),
+        "note": row.get("note", row.get("dependency_note", "")),
         "data_source": get_depmap_data_source_label(),
     }
 

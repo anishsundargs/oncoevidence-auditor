@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from src.report_builder import build_markdown_report
+
 from src.cancer_registry import list_supported_cancers
 
 from src.evidence_scoring import calculate_score, classify_tier, generate_flags, generate_safe_claim
@@ -432,3 +434,34 @@ st.download_button(
     file_name=f"{gene}_{cancer_type}_evidence_summary.json",
     mime="application/json"
 )
+
+
+st.subheader("Download Evidence Report")
+
+try:
+    markdown_report = build_markdown_report(
+        gene=gene,
+        cancer_type=cancer_type,
+        pubmed_count=pubmed_count if "pubmed_count" in locals() else None,
+        saturation_label=saturation_label if "saturation_label" in locals() else None,
+        novelty_label=novelty_label if "novelty_label" in locals() else (inferred_novelty if "inferred_novelty" in locals() else None),
+        pubmed_query=pubmed_query if "pubmed_query" in locals() else None,
+        depmap_result=depmap_result if "depmap_result" in locals() else None,
+        common_result=common_result if "common_result" in locals() else None,
+        specificity_result=specificity_result if "specificity_result" in locals() else None,
+        cbio_result=cbio_result if "cbio_result" in locals() else None,
+        expression_result=expr_result if "expr_result" in locals() else None,
+        verdict=verdict if "verdict" in locals() else None,
+    )
+
+    st.download_button(
+        label="Download Markdown evidence report",
+        data=markdown_report,
+        file_name=f"{gene}_{cancer_type}_oncoevidence_report.md".replace(" ", "_"),
+        mime="text/markdown",
+    )
+
+except Exception as e:
+    st.info("Report download is unavailable for this run.")
+    st.code(str(e))
+

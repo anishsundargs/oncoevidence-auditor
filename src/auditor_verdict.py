@@ -201,6 +201,7 @@ def build_auditor_verdict(
 
     return {
         "verdict_tier": verdict_tier,
+        "claim_style": claim_style,
         "safe_claim": safe_claim,
         "strengths": strengths,
         "warnings": warnings,
