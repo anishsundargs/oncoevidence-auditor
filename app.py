@@ -9,6 +9,7 @@ from src.common_essential import get_common_essential_result
 from src.auditor_verdict import build_auditor_verdict
 from src.specificity_index import calculate_specificity_index
 from src.cbioportal_alterations import get_cbioportal_alteration_summary
+from src.cbioportal_expression import get_cbioportal_expression_summary
 
 
 st.set_page_config(
@@ -255,6 +256,62 @@ except Exception as e:
 
 st.divider()
 
+st.subheader("cBioPortal Patient-Tumor Expression Evidence")
+
+@st.cache_data(show_spinner=False)
+def cached_cbioportal_expression(gene, cancer_type):
+    return get_cbioportal_expression_summary(gene, cancer_type)
+
+try:
+    with st.spinner("Querying cBioPortal patient-tumor expression data..."):
+        expr_result = cached_cbioportal_expression(gene, cancer_type)
+
+    if expr_result["available"]:
+        e1, e2, e3 = st.columns(3)
+
+        with e1:
+            st.metric("Median expression z-score", expr_result["median_expression_zscore"])
+
+        with e2:
+            st.metric("High-expression tumors", f'{expr_result["percent_high_expression"]}%')
+
+        with e3:
+            st.metric("Expression support", expr_result["expression_support"])
+
+        e4, e5, e6 = st.columns(3)
+
+        with e4:
+            st.metric("Mean expression z-score", expr_result["mean_expression_zscore"])
+
+        with e5:
+            st.metric("Low-expression tumors", f'{expr_result["percent_low_expression"]}%')
+
+        with e6:
+            st.metric("Expression samples", expr_result["expression_sample_count"])
+
+        st.write(f'Expression profile: `{expr_result["expression_profile_id"]}`')
+        st.write(f'Reference type: **{expr_result["expression_reference"]}**')
+        st.caption(expr_result["note"])
+
+        if expr_result["expression_support"] in {"High broad expression support", "Moderate expression support"}:
+            st.success("Patient expression evidence supports a tumor-expression hypothesis.")
+        elif expr_result["expression_support"] == "Subgroup high-expression support":
+            st.info("Expression evidence supports a subgroup-level expression hypothesis, not a broad pan-cohort expression claim.")
+        elif expr_result["expression_support"] == "Low-expression signal":
+            st.warning("Expression evidence suggests low expression in a meaningful subset or cohort-level downshift.")
+        else:
+            st.warning("Patient expression evidence is weak by the current z-score criteria.")
+
+    else:
+        st.info(expr_result["note"])
+
+except Exception as e:
+    expr_result = {"available": False, "note": str(e)}
+    st.error("cBioPortal expression module failed. Check internet connection or cBioPortal API availability.")
+    st.code(str(e))
+
+st.divider()
+
 st.subheader("Auditor Verdict")
 
 if pubmed_count is not None and saturation_label is not None:
@@ -357,6 +414,9 @@ summary = {
     "cbioportal_patient_alteration_support": cbio_result.get("patient_alteration_support") if "cbio_result" in locals() else None,
     "cbioportal_mutation_frequency": cbio_result.get("mutation_frequency") if "cbio_result" in locals() else None,
     "cbioportal_amplification_frequency": cbio_result.get("amplification_frequency") if "cbio_result" in locals() else None,
+    "cbioportal_expression_support": expr_result.get("expression_support") if "expr_result" in locals() else None,
+    "cbioportal_median_expression_zscore": expr_result.get("median_expression_zscore") if "expr_result" in locals() else None,
+    "cbioportal_percent_high_expression": expr_result.get("percent_high_expression") if "expr_result" in locals() else None,
     "literature_saturation": saturation_label if "saturation_label" in locals() else None,
     "inferred_novelty": inferred_novelty if "inferred_novelty" in locals() else None,
     "flags": flags,
