@@ -3,36 +3,38 @@ PubMed literature saturation module for OncoEvidence Auditor.
 
 This module counts how many PubMed records match a gene/cancer query.
 It is used as a novelty/saturation signal, not as proof of biological importance.
+
+Cancer-specific PubMed query terms are loaded from the central cancer registry:
+data/config/cancer_registry.csv
 """
 
 import os
 from typing import Tuple
 import requests
 
+from src.cancer_registry import get_pubmed_query_terms
+
 
 ESEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
-
-
-CANCER_QUERY_TERMS = {
-    "GBM": '("glioblastoma"[Title/Abstract] OR "GBM"[Title/Abstract] OR "glioma"[Title/Abstract])',
-    "Gastric cancer": '("gastric cancer"[Title/Abstract] OR "stomach cancer"[Title/Abstract] OR "gastric adenocarcinoma"[Title/Abstract])',
-}
 
 
 def build_pubmed_query(gene: str, cancer_type: str) -> str:
     """
     Build a PubMed query for a gene/cancer pair.
 
-    Restricting to Title/Abstract keeps the result count more relevant.
+    Gene is restricted to Title/Abstract.
+    Cancer terms come from the central cancer registry.
     """
     gene = gene.strip()
-    cancer_terms = CANCER_QUERY_TERMS.get(
-        cancer_type,
-        f'("{cancer_type}"[Title/Abstract] OR "cancer"[Title/Abstract])'
-    )
 
-    gene_terms = f'("{gene}"[Title/Abstract])'
-    return f"{gene_terms} AND {cancer_terms}"
+    cancer_terms = get_pubmed_query_terms(cancer_type)
+
+    if not cancer_terms:
+        cancer_terms = f'"{cancer_type}"[Title/Abstract] OR cancer[Title/Abstract]'
+
+    gene_terms = f'"{gene}"[Title/Abstract]'
+
+    return f"({gene_terms}) AND ({cancer_terms})"
 
 
 def get_pubmed_count(gene: str, cancer_type: str) -> Tuple[int, str]:
