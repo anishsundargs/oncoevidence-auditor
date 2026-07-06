@@ -1,0 +1,21 @@
+gene,cancer_type,median_dependency_score,dependent_cell_lines,total_cell_lines,dependency_note
+OIP5,GBM,-0.72,8,12,Mock dependency signal suggesting OIP5 may be viability-relevant in glioma-like models.
+EGFR,GBM,-0.28,3,12,Moderate/variable dependency; EGFR relevance may depend on alteration context.
+MGMT,GBM,-0.05,0,12,Weak dependency signal; MGMT is better treated as biomarker/control rather than viability dependency.
+IDH1,GBM,-0.08,1,12,Weak pan-cell-line dependency; biological relevance is mutation-context specific.
+ATRX,GBM,-0.12,1,12,Weak dependency in general screening context; may require subtype-specific interpretation.
+PDGFRA,GBM,-0.34,4,12,Moderate dependency signal; may require amplified/subtype context.
+CDK4,GBM,-0.61,7,12,Cell-cycle dependency candidate with possible lineage relevance.
+MDM2,GBM,-0.38,4,12,p53-axis dependency may depend on TP53 wild-type context.
+MKI67,GBM,-0.70,9,12,Strong proliferation-associated dependency but likely low novelty.
+TOP2A,GBM,-0.80,10,12,Strong dependency-like signal but likely common proliferation/cell-cycle caution.
+TP53,Gastric cancer,-0.04,0,14,Weak dependency signal; tumor suppressor loss is not usually interpreted as knockout vulnerability.
+ERBB2,Gastric cancer,-0.42,5,14,Moderate dependency; likely stronger in ERBB2-amplified models.
+MET,Gastric cancer,-0.36,4,14,Moderate dependency; may require MET-amplified/context-specific framing.
+KRAS,Gastric cancer,-0.25,3,14,Variable dependency signal; mutation-specific context matters.
+MYC,Gastric cancer,-0.86,12,14,Strong dependency signal but major common-essential/safety caution.
+CDK1,Gastric cancer,-0.92,13,14,Very strong dependency but likely common-essential and not cancer-specific.
+AURKA,Gastric cancer,-0.66,8,14,Mitotic dependency candidate; specificity needs checking.
+MMP9,Gastric cancer,-0.10,1,14,Weak tumor-cell dependency; may reflect microenvironment biology rather than cell-autonomous viability.
+VEGFA,Gastric cancer,-0.18,2,14,Weak/moderate dependency; angiogenesis biology may not be captured well by tumor-cell CRISPR screens.
+CLDN18,Gastric cancer,-0.22,2,14,Weak cell-line dependency; may still be target-relevant through surface expression rather than knockout viability.

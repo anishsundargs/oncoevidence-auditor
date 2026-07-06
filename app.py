@@ -4,6 +4,7 @@ import streamlit as st
 
 from src.evidence_scoring import calculate_score, classify_tier, generate_flags, generate_safe_claim
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
+from src.depmap_dependency import get_dependency_result
 
 
 st.set_page_config(
@@ -98,6 +99,36 @@ with right:
 
 st.divider()
 
+st.subheader("DepMap Dependency Signal")
+
+depmap_result = get_dependency_result(gene, cancer_type)
+
+if depmap_result["available"]:
+    d1, d2, d3 = st.columns(3)
+
+    with d1:
+        st.metric("Median dependency score", depmap_result["median_dependency_score"])
+
+    with d2:
+        st.metric(
+            "Dependent cell lines",
+            f'{depmap_result["dependent_cell_lines"]}/{depmap_result["total_cell_lines"]}'
+        )
+
+    with d3:
+        st.metric("Dependency label", depmap_result["dependency_label"])
+
+    st.write(f'Percent dependent: **{depmap_result["percent_dependent"]}%**')
+    st.write(depmap_result["dependency_note"])
+
+    st.caption(
+        "Current module uses a local DepMap-style mock table. Next upgrade: real DepMap public release data."
+    )
+else:
+    st.warning(depmap_result["dependency_note"])
+
+st.divider()
+
 st.subheader("Live PubMed Literature Saturation")
 
 try:
@@ -145,6 +176,9 @@ summary = {
     "score": score,
     "tier": tier,
     "pubmed_count": pubmed_count if "pubmed_count" in locals() else None,
+    "depmap_dependency_label": depmap_result.get("dependency_label") if "depmap_result" in locals() else None,
+    "depmap_median_dependency_score": depmap_result.get("median_dependency_score") if "depmap_result" in locals() else None,
+    "depmap_percent_dependent": depmap_result.get("percent_dependent") if "depmap_result" in locals() else None,
     "literature_saturation": saturation_label if "saturation_label" in locals() else None,
     "inferred_novelty": inferred_novelty if "inferred_novelty" in locals() else None,
     "flags": flags,
