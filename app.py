@@ -8,6 +8,7 @@ from src.depmap_dependency import get_dependency_result, get_depmap_data_source_
 from src.common_essential import get_common_essential_result
 from src.auditor_verdict import build_auditor_verdict
 from src.specificity_index import calculate_specificity_index
+from src.cbioportal_alterations import get_cbioportal_alteration_summary
 
 
 st.set_page_config(
@@ -192,6 +193,68 @@ if specificity_result["available"]:
 else:
     st.info(specificity_result["specificity_note"])
 
+st.subheader("cBioPortal Patient-Tumor Alteration Evidence")
+
+@st.cache_data(show_spinner=False)
+def cached_cbioportal_summary(gene, cancer_type):
+    return get_cbioportal_alteration_summary(gene, cancer_type)
+
+try:
+    with st.spinner("Querying cBioPortal patient-tumor alteration data..."):
+        cbio_result = cached_cbioportal_summary(gene, cancer_type)
+
+    if cbio_result["available"]:
+        b1, b2, b3 = st.columns(3)
+
+        with b1:
+            st.metric("Mutation frequency", f'{cbio_result["mutation_frequency"]}%')
+
+        with b2:
+            st.metric("Amplification frequency", f'{cbio_result["amplification_frequency"]}%')
+
+        with b3:
+            st.metric("Patient alteration support", cbio_result["patient_alteration_support"])
+
+        b4, b5, b6 = st.columns(3)
+
+        with b4:
+            st.metric("Deep deletion frequency", f'{cbio_result["deep_deletion_frequency"]}%')
+
+        with b5:
+            st.metric("Broad CNA altered frequency", f'{cbio_result["cna_alteration_frequency"]}%')
+
+        with b6:
+            st.metric("Study samples", cbio_result["total_samples"])
+
+        st.write(f'Study: `{cbio_result["study_id"]}`')
+        st.write(f'Mutation profile: `{cbio_result["mutation_profile_id"]}`')
+        st.write(f'CNA profile: `{cbio_result["cna_profile_id"]}`')
+        st.caption(cbio_result["note"])
+
+        if cbio_result["patient_alteration_support"] == "Little or no patient alteration support":
+            st.warning(
+                "Patient-tumor alteration support is weak by mutation/high-level amplification/deep-deletion criteria. "
+                "Do not frame this gene as genomically altered in this cancer without another evidence layer."
+            )
+        elif cbio_result["patient_alteration_support"] == "Moderate patient alteration support":
+            st.info(
+                "Patient-tumor alteration support is moderate. This may support a genomically altered subgroup hypothesis."
+            )
+        else:
+            st.success(
+                "Patient-tumor alteration support is strong by mutation/high-level amplification/deep-deletion criteria."
+            )
+
+    else:
+        st.info(cbio_result["note"])
+
+except Exception as e:
+    cbio_result = {"available": False, "note": str(e)}
+    st.error("cBioPortal module failed. Check internet connection or cBioPortal API availability.")
+    st.code(str(e))
+
+st.divider()
+
 st.subheader("Auditor Verdict")
 
 if pubmed_count is not None and saturation_label is not None:
@@ -290,6 +353,9 @@ summary = {
     "specificity_label": specificity_result.get("specificity_label") if "specificity_result" in locals() else None,
     "auditor_verdict_tier": verdict.get("verdict_tier") if "verdict" in locals() else None,
     "auditor_safe_claim": verdict.get("safe_claim") if "verdict" in locals() else None,
+    "cbioportal_patient_alteration_support": cbio_result.get("patient_alteration_support") if "cbio_result" in locals() else None,
+    "cbioportal_mutation_frequency": cbio_result.get("mutation_frequency") if "cbio_result" in locals() else None,
+    "cbioportal_amplification_frequency": cbio_result.get("amplification_frequency") if "cbio_result" in locals() else None,
     "literature_saturation": saturation_label if "saturation_label" in locals() else None,
     "inferred_novelty": inferred_novelty if "inferred_novelty" in locals() else None,
     "flags": flags,
