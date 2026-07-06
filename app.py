@@ -3,6 +3,7 @@ import plotly.express as px
 import streamlit as st
 
 from src.evidence_scoring import calculate_score, classify_tier, generate_flags, generate_safe_claim
+from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 
 
 st.set_page_config(
@@ -19,9 +20,16 @@ st.warning(
     icon="⚠️"
 )
 
+
 @st.cache_data
 def load_mock_data():
     return pd.read_csv("data/mock_gene_evidence.csv")
+
+
+@st.cache_data(show_spinner=False)
+def cached_pubmed_count(gene, cancer_type):
+    return get_pubmed_count(gene, cancer_type)
+
 
 df = load_mock_data()
 
@@ -33,8 +41,8 @@ with st.sidebar:
 
     st.divider()
     st.subheader("MVP Status")
-    st.write("This starter version uses mock values to test the evidence-card design and scoring logic.")
-    st.write("Next step: replace mock values with real TCGA/GDC, cBioPortal, DepMap, GTEx, and GEO data.")
+    st.write("Main evidence card still uses curated mock values.")
+    st.write("PubMed literature saturation is now a live data layer using NCBI ESearch.")
 
 row = df[(df["gene"] == gene) & (df["cancer_type"] == cancer_type)].iloc[0].to_dict()
 
@@ -90,6 +98,36 @@ with right:
 
 st.divider()
 
+st.subheader("Live PubMed Literature Saturation")
+
+try:
+    with st.spinner("Querying PubMed through NCBI ESearch..."):
+        pubmed_count, pubmed_query = cached_pubmed_count(gene, cancer_type)
+
+    saturation_label, inferred_novelty, saturation_note = classify_literature_saturation(pubmed_count)
+
+    p1, p2, p3 = st.columns(3)
+
+    with p1:
+        st.metric("PubMed count", pubmed_count)
+
+    with p2:
+        st.metric("Literature saturation", saturation_label)
+
+    with p3:
+        st.metric("Inferred novelty", inferred_novelty)
+
+    st.write(saturation_note)
+
+    with st.expander("Show PubMed query"):
+        st.code(pubmed_query)
+
+except Exception as e:
+    st.error("PubMed module failed. Check your internet connection or try again later.")
+    st.code(str(e))
+
+st.divider()
+
 st.subheader("Contradiction and caution flags")
 for flag in flags:
     st.write(f"- {flag}")
@@ -100,11 +138,15 @@ st.info(safe_claim)
 st.divider()
 
 st.subheader("Exportable summary")
+
 summary = {
     "gene": gene,
     "cancer_type": cancer_type,
     "score": score,
     "tier": tier,
+    "pubmed_count": pubmed_count if "pubmed_count" in locals() else None,
+    "literature_saturation": saturation_label if "saturation_label" in locals() else None,
+    "inferred_novelty": inferred_novelty if "inferred_novelty" in locals() else None,
     "flags": flags,
     "safe_claim": safe_claim,
 }
