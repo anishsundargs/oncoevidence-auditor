@@ -14,20 +14,10 @@ It is structured so additional cancer types can be added later by extending STUD
 from typing import Dict, List, Optional
 import requests
 
+from src.cancer_registry import get_cbio_study_candidates
+
 
 CBIO_BASE_URL = "https://www.cbioportal.org/api"
-
-
-STUDY_CANDIDATES = {
-    "GBM": [
-        "gbm_tcga_pan_can_atlas_2018",
-        "gbm_tcga",
-    ],
-    "Gastric cancer": [
-        "stad_tcga_pan_can_atlas_2018",
-        "stad_tcga",
-    ],
-}
 
 
 def cbio_get(path: str, params: Optional[dict] = None):
@@ -57,8 +47,8 @@ def cbio_post(path: str, payload: dict):
 
 
 def choose_available_study(cancer_type: str) -> Optional[str]:
-    """Pick the first available cBioPortal study ID for the cancer type."""
-    candidates = STUDY_CANDIDATES.get(cancer_type, [])
+    """Pick the first available cBioPortal study ID from the central cancer registry."""
+    candidates = get_cbio_study_candidates(cancer_type)
 
     for study_id in candidates:
         try:
