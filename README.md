@@ -66,8 +66,9 @@ OncoEvidence Auditor is a Python/Streamlit cancer bioinformatics web application
 5. cBioPortal patient-tumor alteration evidence
 6. cBioPortal patient-tumor expression evidence
 7. Auditor Verdict synthesis
-8. Batch Audit Mode
-9. Evidence Coverage Score
+8. cBioPortal survival/prognosis evidence
+9. Batch Audit Mode
+10. Evidence Coverage Score
 
 ### Central registry
 
@@ -84,6 +85,23 @@ The registry currently controls:
 
 
 
+
+### Survival/prognosis evidence
+
+The survival/prognosis module uses cBioPortal clinical and expression data to descriptively compare high-expression tumors against other tumors.
+
+Current outputs include:
+
+- matched survival patient count
+- high-expression survival group size
+- comparison group size
+- median overall survival for each group
+- median overall survival difference
+- event rates
+- survival signal label
+
+This layer is deliberately cautious. It does not yet perform a full Kaplan-Meier/log-rank survival analysis. If the high-expression subgroup is too small, the app marks the comparison as underpowered rather than claiming prognostic significance.
+
 ### Evidence Coverage Score
 
 The Evidence Coverage Score reports how many major evidence layers are available for a gene/cancer analysis.
@@ -96,6 +114,7 @@ Current coverage layers:
 - Lineage specificity
 - cBioPortal patient-tumor alteration evidence
 - cBioPortal patient-tumor expression evidence
+- cBioPortal survival/prognosis evidence
 
 Coverage labels help distinguish complete evidence profiles from partial or limited profiles. This is important because a gene can look strong in one layer while patient-level or literature-level evidence is missing.
 

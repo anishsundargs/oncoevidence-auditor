@@ -156,7 +156,31 @@ to overstate evidence from one dataset.
 )
 
 
-st.subheader("8. Batch Audit Mode")
+
+st.subheader("8. cBioPortal survival/prognosis evidence")
+
+st.write(
+    """
+The survival/prognosis module performs a descriptive comparison between:
+- high-expression tumors, defined as expression z-score >= 2,
+- all other tumors with matched survival data.
+
+The module reports:
+- matched survival patient count,
+- high-expression survival group size,
+- comparison group size,
+- median overall survival for each group,
+- median overall survival difference,
+- event rates,
+- survival signal label.
+
+This is intentionally cautious. It is not a full Kaplan-Meier/log-rank survival analysis yet.
+If the high-expression subgroup is too small, the app labels the comparison as underpowered
+instead of overclaiming prognostic relevance.
+"""
+)
+
+st.subheader("9. Batch Audit Mode")
 
 st.write(
     """
@@ -182,7 +206,7 @@ page and downloadable Markdown evidence report should be used.
 )
 
 
-st.subheader("9. Evidence Coverage Score")
+st.subheader("10. Evidence Coverage Score")
 
 st.write(
     """

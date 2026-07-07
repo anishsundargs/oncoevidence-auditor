@@ -21,6 +21,7 @@ from src.common_essential import get_common_essential_result
 from src.specificity_index import calculate_specificity_index
 from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
+from src.cbioportal_survival import get_cbioportal_survival_summary
 from src.auditor_verdict import build_auditor_verdict
 from src.report_builder import build_markdown_report
 from src.batch_audit import build_batch_audit
@@ -110,14 +111,43 @@ def test_cbioportal():
     return True
 
 
+
+def test_survival():
+    """
+    Test survival/prognosis module when cBioPortal clinical data are available.
+    External cBioPortal failures should warn instead of failing the entire smoke test.
+    """
+    try:
+        result = get_cbioportal_survival_summary("ERBB2", "Gastric cancer")
+    except Exception as e:
+        print_warn(f"cBioPortal survival API unavailable during smoke test: {e}")
+        return False
+
+    if not result.get("available"):
+        print_warn(f"Survival module returned unavailable result: {result.get('note')}")
+        return False
+
+    assert_true(result.get("survival_signal") is not None, "Survival signal missing.")
+    assert_true(result.get("survival_patients_matched") is not None, "Matched survival patient count missing.")
+
+    print_pass(
+        f"Survival/prognosis module works. ERBB2/gastric signal={result.get('survival_signal')}, "
+        f"matched patients={result.get('survival_patients_matched')}."
+    )
+
+    return True
+
+
 def test_verdict_and_report(dep, common, spec):
     try:
         cbio = get_cbioportal_alteration_summary("OIP5", "GBM")
         expr = get_cbioportal_expression_summary("OIP5", "GBM")
+        surv = get_cbioportal_survival_summary("OIP5", "GBM")
     except Exception as e:
         print_warn(f"Skipping live cBioPortal fields in verdict/report test because API failed: {e}")
         cbio = None
         expr = None
+        surv = None
 
     verdict = build_auditor_verdict(
         gene="OIP5",
@@ -129,6 +159,7 @@ def test_verdict_and_report(dep, common, spec):
         specificity_result=spec,
         cbio_result=cbio,
         expression_result=expr,
+        survival_result=surv,
     )
 
     assert_true(verdict.get("verdict_tier") is not None, "Verdict tier missing.")
@@ -147,12 +178,14 @@ def test_verdict_and_report(dep, common, spec):
         specificity_result=spec,
         cbio_result=cbio,
         expression_result=expr,
+        survival_result=surv,
         verdict=verdict,
     )
 
     assert_true("# OncoEvidence Auditor Report" in report, "Markdown report title missing.")
     assert_true("## Evidence Coverage" in report, "Markdown report coverage section missing.")
     assert_true("## Auditor Verdict" in report, "Markdown report verdict section missing.")
+    assert_true("## cBioPortal Survival / Prognosis Evidence" in report, "Markdown report survival section missing.")
 
     print_pass(f"Auditor Verdict and Markdown report build successfully. Tier={verdict.get('verdict_tier')}.")
 
@@ -192,6 +225,7 @@ def main():
     test_pubmed()
     dep, common, spec = test_depmap_common_specificity()
     test_cbioportal()
+    test_survival()
     test_verdict_and_report(dep, common, spec)
     test_batch_audit()
 
