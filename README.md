@@ -67,6 +67,7 @@ OncoEvidence Auditor is a Python/Streamlit cancer bioinformatics web application
 6. cBioPortal patient-tumor expression evidence
 7. Auditor Verdict synthesis
 8. Batch Audit Mode
+9. Evidence Coverage Score
 
 ### Central registry
 
@@ -82,9 +83,27 @@ The registry currently controls:
 - Supported cancer dropdown options
 
 
+
+### Evidence Coverage Score
+
+The Evidence Coverage Score reports how many major evidence layers are available for a gene/cancer analysis.
+
+Current coverage layers:
+
+- PubMed literature saturation
+- DepMap dependency
+- Pan-cancer common-essential caution
+- Lineage specificity
+- cBioPortal patient-tumor alteration evidence
+- cBioPortal patient-tumor expression evidence
+
+Coverage labels help distinguish complete evidence profiles from partial or limited profiles. This is important because a gene can look strong in one layer while patient-level or literature-level evidence is missing.
+
 ### Batch Audit Mode
 
-Batch Audit Mode screens every curated gene for a selected cancer type and ranks genes by local evidence patterns.
+Batch Audit Mode screens every curated gene for a selected cancer type and ranks genes by evidence patterns.
+
+Fast mode uses local processed evidence layers. Optional live modes add PubMed literature saturation and cBioPortal patient alteration/expression evidence.
 
 Current batch-level outputs include:
 
@@ -96,6 +115,10 @@ Current batch-level outputs include:
 - Contradiction pattern
 - Auditor Verdict tier
 - Main warning
+- Evidence coverage label
+- Evidence coverage percent
+- Optional live PubMed count/literature saturation
+- Optional live cBioPortal alteration/expression support
 - Downloadable CSV output
 
 This helps the app function as a screening/auditing tool rather than only a single-gene dashboard.

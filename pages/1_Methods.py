@@ -160,8 +160,9 @@ st.subheader("8. Batch Audit Mode")
 
 st.write(
     """
-Batch Audit Mode screens all curated genes for a selected cancer type using the app's
-processed local evidence layers.
+Batch Audit Mode screens all curated genes for a selected cancer type. Fast mode uses
+processed local evidence layers, while optional live modes add PubMed literature saturation
+and cBioPortal patient alteration/expression evidence.
 
 The batch table reports:
 - DepMap dependency label,
@@ -174,8 +175,31 @@ The batch table reports:
 - main warning.
 
 This mode is designed to help identify which genes deserve deeper single-gene review.
+The batch table also reports evidence coverage so incomplete profiles are not overinterpreted.
 It is not a final biological conclusion by itself. For final interpretation, the single-gene
 page and downloadable Markdown evidence report should be used.
+"""
+)
+
+
+st.subheader("9. Evidence Coverage Score")
+
+st.write(
+    """
+The Evidence Coverage Score reports how many major evidence layers are available for a
+gene/cancer analysis.
+
+Current coverage layers:
+- PubMed literature saturation,
+- DepMap dependency,
+- pan-cancer common-essential caution,
+- lineage specificity,
+- cBioPortal patient alteration evidence,
+- cBioPortal patient expression evidence.
+
+This prevents the app from treating complete and incomplete evidence profiles as equally strong.
+A result with missing patient evidence, for example, should be interpreted more cautiously than
+a result supported across all major layers.
 """
 )
 
