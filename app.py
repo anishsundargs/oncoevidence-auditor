@@ -332,6 +332,7 @@ if pubmed_count is not None and saturation_label is not None:
         specificity_result=specificity_result,
         cbio_result=cbio_result if "cbio_result" in locals() else None,
         expression_result=expr_result if "expr_result" in locals() else None,
+        survival_result=survival_result if "survival_result" in locals() else None,
     )
 
     st.metric("Final hypothesis tier", verdict["verdict_tier"])

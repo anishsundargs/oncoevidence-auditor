@@ -16,6 +16,7 @@ def build_auditor_verdict(
     specificity_result=None,
     cbio_result=None,
     expression_result=None,
+    survival_result=None,
 ):
     """
     Return a final evidence-auditor verdict.
@@ -58,6 +59,18 @@ def build_auditor_verdict(
         median_expression_zscore = expression_result.get("median_expression_zscore")
         percent_high_expression = expression_result.get("percent_high_expression")
         expression_reference = expression_result.get("expression_reference")
+
+    survival_signal = None
+    survival_patients_matched = None
+    high_expression_survival_n = None
+    other_expression_survival_n = None
+    median_os_difference_months = None
+    if survival_result and survival_result.get("available"):
+        survival_signal = survival_result.get("survival_signal")
+        survival_patients_matched = survival_result.get("survival_patients_matched")
+        high_expression_survival_n = survival_result.get("high_expression_survival_n")
+        other_expression_survival_n = survival_result.get("other_expression_survival_n")
+        median_os_difference_months = survival_result.get("median_os_difference_months")
 
     # Strengths
     if dependency_label == "Strong dependency":
@@ -155,6 +168,31 @@ def build_auditor_verdict(
             f"{gene} has little or no patient-tumor expression support in {cancer_type} by the current z-score criteria."
         )
 
+    # Survival/prognosis support
+    if survival_signal == "High-expression subgroup shows worse-survival signal":
+        strengths.append(
+            f"High {gene} expression in {cancer_type} shows a worse-survival descriptive signal, supporting possible prognostic relevance."
+        )
+    elif survival_signal == "High-expression subgroup shows better-survival signal":
+        warnings.append(
+            f"High {gene} expression in {cancer_type} shows a better-survival descriptive signal, which weakens a simple high-risk biomarker framing."
+        )
+    elif survival_signal == "No clear median-survival separation":
+        warnings.append(
+            f"High {gene} expression in {cancer_type} does not show clear median-survival separation in the current descriptive survival screen."
+        )
+    elif survival_signal in {
+        "Insufficient high-expression subgroup for survival comparison",
+        "Insufficient comparison group for survival comparison",
+    }:
+        warnings.append(
+            f"Survival interpretation for {gene} in {cancer_type} is underpowered because one expression-defined group is too small."
+        )
+    elif survival_signal == "Survival data incomplete":
+        warnings.append(
+            f"Survival interpretation for {gene} in {cancer_type} is limited because survival data are incomplete."
+        )
+
     # Tier logic
     if (
         dependency_label == "Strong dependency"
@@ -196,7 +234,10 @@ def build_auditor_verdict(
         f"patient alteration support='{patient_support}', mutation frequency={mutation_frequency}, "
         f"amplification frequency={amplification_frequency}, deep deletion frequency={deep_deletion_frequency}, "
         f"expression support='{expression_support}', median expression z-score={median_expression_zscore}, "
-        f"percent high expression={percent_high_expression}, and expression reference='{expression_reference}'."
+        f"percent high expression={percent_high_expression}, expression reference='{expression_reference}', "
+        f"survival signal='{survival_signal}', matched survival patients={survival_patients_matched}, "
+        f"high-expression survival n={high_expression_survival_n}, other-expression survival n={other_expression_survival_n}, "
+        f"and median OS difference months={median_os_difference_months}."
     )
 
     return {

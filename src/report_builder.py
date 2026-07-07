@@ -7,6 +7,7 @@ This module turns one app analysis into a downloadable research-style summary.
 from datetime import datetime
 
 from src.evidence_coverage import calculate_evidence_coverage
+from src.auditor_verdict import build_auditor_verdict
 
 
 def _safe(value, fallback="Not available"):
@@ -52,6 +53,26 @@ def build_markdown_report(
     expression_result = expression_result or {}
     survival_result = survival_result or {}
     verdict = verdict or {}
+
+    # Rebuild verdict inside the report so late-added evidence layers, such as
+    # survival/prognosis, are included even if the app created an earlier verdict
+    # before those layers finished loading.
+    try:
+        verdict = build_auditor_verdict(
+            gene=gene,
+            cancer_type=cancer_type,
+            pubmed_count=pubmed_count,
+            saturation_label=saturation_label,
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+            survival_result=survival_result,
+        )
+    except Exception:
+        # Keep the provided verdict if rebuilding fails.
+        verdict = verdict or {}
 
     if coverage_result is None:
         coverage_result = calculate_evidence_coverage(
