@@ -9,6 +9,7 @@ from datetime import datetime
 from src.evidence_coverage import calculate_evidence_coverage
 from src.auditor_verdict import build_auditor_verdict
 from src.final_interpretation import build_final_interpretation
+from src.contradiction_labels import build_contradiction_labels
 
 
 def _safe(value, fallback="Not available"):
@@ -105,6 +106,25 @@ def build_markdown_report(
         saturation_label=saturation_label,
     )
 
+    contradiction_result = build_contradiction_labels(
+        gene=gene,
+        cancer_type=cancer_type,
+        depmap_result=depmap_result,
+        common_result=common_result,
+        specificity_result=specificity_result,
+        cbio_result=cbio_result,
+        expression_result=expression_result,
+        survival_result=survival_result,
+        saturation_label=saturation_label,
+    )
+
+    contradiction_lines = "\n".join(
+        [
+            f"- **{item['label']}** ({item['severity']}): {item['explanation']}"
+            for item in contradiction_result.get("labels", [])
+        ]
+    ) or "- None"
+
     available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
     missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"
 
@@ -150,6 +170,15 @@ def build_markdown_report(
 
 **Recommended next validation:**  
 {_safe(final_interpretation_result.get("recommended_next_validation"))}
+
+---
+
+## Contradiction Type Labels
+
+**Primary contradiction label:** {_safe(contradiction_result.get("primary_label"))}  
+**Primary severity:** {_safe(contradiction_result.get("primary_severity"))}  
+
+{contradiction_lines}
 
 ---
 

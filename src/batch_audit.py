@@ -26,6 +26,7 @@ from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
 from src.evidence_coverage import calculate_evidence_coverage
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
+from src.contradiction_labels import build_contradiction_labels
 
 
 EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
@@ -224,6 +225,17 @@ def build_batch_audit(
             expression_result=expression_result,
         )
 
+        contradiction_result = build_contradiction_labels(
+            gene=gene,
+            cancer_type=cancer_type,
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+            saturation_label=saturation_label,
+        )
+
         dependency_label = depmap_result.get("dependency_label")
         common_label = common_result.get("common_essential_label")
         specificity_label = specificity_result.get("specificity_label")
@@ -258,6 +270,9 @@ def build_batch_audit(
                 "evidence_layers_possible": coverage_result.get("evidence_layers_possible"),
                 "evidence_coverage_percent": coverage_result.get("evidence_coverage_percent"),
                 "evidence_coverage_label": coverage_result.get("evidence_coverage_label"),
+                "primary_contradiction_label": contradiction_result.get("primary_label"),
+                "primary_contradiction_severity": contradiction_result.get("primary_severity"),
+                "contradiction_label_summary": contradiction_result.get("label_summary"),
                 "pubmed_count": pubmed_count,
                 "literature_saturation": saturation_label,
                 "inferred_novelty": novelty_label,

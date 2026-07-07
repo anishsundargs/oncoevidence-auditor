@@ -59,6 +59,8 @@ if st.button("Run batch audit", type="primary"):
             "gene",
             "evidence_coverage_label",
             "evidence_coverage_percent",
+            "primary_contradiction_label",
+            "primary_contradiction_severity",
             "dependency_label",
             "percent_dependent",
             "common_essential_caution",
