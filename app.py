@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from src.evidence_coverage import calculate_evidence_coverage
+
 from src.report_builder import build_markdown_report
 
 from src.cancer_registry import list_supported_cancers
@@ -436,6 +438,41 @@ st.download_button(
 )
 
 
+
+st.subheader("Evidence Coverage")
+
+coverage_result = calculate_evidence_coverage(
+    pubmed_count=pubmed_count if "pubmed_count" in locals() else None,
+    depmap_result=depmap_result if "depmap_result" in locals() else None,
+    common_result=common_result if "common_result" in locals() else None,
+    specificity_result=specificity_result if "specificity_result" in locals() else None,
+    cbio_result=cbio_result if "cbio_result" in locals() else None,
+    expression_result=expr_result if "expr_result" in locals() else None,
+)
+
+cov1, cov2, cov3 = st.columns(3)
+
+with cov1:
+    st.metric(
+        "Layers available",
+        f'{coverage_result["evidence_layers_available"]}/{coverage_result["evidence_layers_possible"]}',
+    )
+
+with cov2:
+    st.metric("Coverage percent", f'{coverage_result["evidence_coverage_percent"]}%')
+
+with cov3:
+    st.metric("Coverage label", coverage_result["evidence_coverage_label"])
+
+with st.expander("Coverage details"):
+    st.write("Available layers:")
+    st.write(coverage_result["available_layers"])
+
+    st.write("Missing layers:")
+    st.write(coverage_result["missing_layers"])
+
+st.divider()
+
 st.subheader("Download Evidence Report")
 
 try:
@@ -452,6 +489,7 @@ try:
         cbio_result=cbio_result if "cbio_result" in locals() else None,
         expression_result=expr_result if "expr_result" in locals() else None,
         verdict=verdict if "verdict" in locals() else None,
+        coverage_result=coverage_result if "coverage_result" in locals() else None,
     )
 
     st.download_button(

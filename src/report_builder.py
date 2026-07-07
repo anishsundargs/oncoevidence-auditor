@@ -6,6 +6,8 @@ This module turns one app analysis into a downloadable research-style summary.
 
 from datetime import datetime
 
+from src.evidence_coverage import calculate_evidence_coverage
+
 
 def _safe(value, fallback="Not available"):
     """Return a clean display value."""
@@ -37,6 +39,7 @@ def build_markdown_report(
     cbio_result=None,
     expression_result=None,
     verdict=None,
+    coverage_result=None,
 ):
     """
     Build a Markdown report for one gene/cancer analysis.
@@ -48,11 +51,24 @@ def build_markdown_report(
     expression_result = expression_result or {}
     verdict = verdict or {}
 
+    if coverage_result is None:
+        coverage_result = calculate_evidence_coverage(
+            pubmed_count=pubmed_count,
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+        )
+
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     strengths = verdict.get("strengths", [])
     warnings = verdict.get("warnings", [])
     claim_style = verdict.get("claim_style") or verdict.get("claim_type") or verdict.get("verdict_tier")
+
+    available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
+    missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"
 
     depmap_note = depmap_result.get("note") or depmap_result.get("dependency_note") or ""
     oncotree_codes = depmap_result.get("oncotree_codes")
@@ -87,10 +103,24 @@ def build_markdown_report(
 
 ---
 
+## Evidence Coverage
+
+**Coverage label:** {_safe(coverage_result.get("evidence_coverage_label"))}  
+**Layers available:** {_safe(coverage_result.get("evidence_layers_available"))}/{_safe(coverage_result.get("evidence_layers_possible"))}  
+**Coverage percent:** {_safe(coverage_result.get("evidence_coverage_percent"))}%  
+
+**Available layers:** {available_layers_text}  
+
+**Missing layers:** {missing_layers_text}  
+
+---
+
 ## Evidence Summary
 
 | Evidence layer | Result |
 |---|---|
+| Evidence coverage label | {_safe(coverage_result.get("evidence_coverage_label"))} |
+| Evidence coverage percent | {_safe(coverage_result.get("evidence_coverage_percent"))}% |
 | PubMed count | {_safe(pubmed_count)} |
 | Literature saturation | {_safe(saturation_label)} |
 | Novelty label | {_safe(novelty_label)} |
