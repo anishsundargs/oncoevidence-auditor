@@ -8,6 +8,7 @@ from datetime import datetime
 
 from src.evidence_coverage import calculate_evidence_coverage
 from src.auditor_verdict import build_auditor_verdict
+from src.final_interpretation import build_final_interpretation
 
 
 def _safe(value, fallback="Not available"):
@@ -91,6 +92,19 @@ def build_markdown_report(
     warnings = verdict.get("warnings", [])
     claim_style = verdict.get("claim_style") or verdict.get("claim_type") or verdict.get("verdict_tier")
 
+    final_interpretation_result = build_final_interpretation(
+        gene=gene,
+        cancer_type=cancer_type,
+        depmap_result=depmap_result,
+        common_result=common_result,
+        specificity_result=specificity_result,
+        cbio_result=cbio_result,
+        expression_result=expression_result,
+        survival_result=survival_result,
+        verdict=verdict,
+        saturation_label=saturation_label,
+    )
+
     available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
     missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"
 
@@ -124,6 +138,18 @@ def build_markdown_report(
 ### Warnings
 
 {_bullet_list(warnings)}
+
+---
+
+## Final Interpretation and Next Validation
+
+**Interpretation label:** {_safe(final_interpretation_result.get("interpretation_label"))}  
+
+**Final interpretation:**  
+{_safe(final_interpretation_result.get("final_interpretation"))}
+
+**Recommended next validation:**  
+{_safe(final_interpretation_result.get("recommended_next_validation"))}
 
 ---
 
