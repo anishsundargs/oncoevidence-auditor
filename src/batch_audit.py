@@ -24,6 +24,7 @@ from src.specificity_index import calculate_specificity_index
 from src.auditor_verdict import build_auditor_verdict
 from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
+from src.evidence_coverage import calculate_evidence_coverage
 
 
 EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
@@ -210,9 +211,22 @@ def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.D
             median_expression_zscore = expression_result.get("median_expression_zscore")
             percent_high_expression = expression_result.get("percent_high_expression")
 
+        coverage_result = calculate_evidence_coverage(
+            pubmed_count=None,
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+        )
+
         results.append(
             {
                 "gene": gene,
+                "evidence_layers_available": coverage_result.get("evidence_layers_available"),
+                "evidence_layers_possible": coverage_result.get("evidence_layers_possible"),
+                "evidence_coverage_percent": coverage_result.get("evidence_coverage_percent"),
+                "evidence_coverage_label": coverage_result.get("evidence_coverage_label"),
                 "cancer_type": cancer_type,
                 "curated_score": row.get("score"),
                 "curated_tier": row.get("tier"),

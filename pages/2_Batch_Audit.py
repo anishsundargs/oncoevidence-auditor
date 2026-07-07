@@ -43,6 +43,8 @@ if st.button("Run batch audit", type="primary"):
 
         base_cols = [
             "gene",
+            "evidence_coverage_label",
+            "evidence_coverage_percent",
             "dependency_label",
             "percent_dependent",
             "common_essential_caution",
