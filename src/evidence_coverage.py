@@ -29,6 +29,7 @@ def calculate_evidence_coverage(
     specificity_result: Optional[Dict] = None,
     cbio_result: Optional[Dict] = None,
     expression_result: Optional[Dict] = None,
+    survival_result: Optional[Dict] = None,
 ) -> Dict:
     """
     Calculate evidence coverage across the main evidence layers.
@@ -38,6 +39,7 @@ def calculate_evidence_coverage(
     specificity_result = specificity_result or {}
     cbio_result = cbio_result or {}
     expression_result = expression_result or {}
+    survival_result = survival_result or {}
 
     layers = {
         "PubMed literature": pubmed_count is not None,
@@ -46,6 +48,7 @@ def calculate_evidence_coverage(
         "Lineage specificity": _has_value(specificity_result.get("specificity_label")),
         "Patient alteration": bool(cbio_result.get("available")) and _has_value(cbio_result.get("patient_alteration_support")),
         "Patient expression": bool(expression_result.get("available")) and _has_value(expression_result.get("expression_support")),
+        "Survival/prognosis": bool(survival_result.get("available")) and _has_value(survival_result.get("survival_signal")),
     }
 
     available_layers = [name for name, available in layers.items() if available]

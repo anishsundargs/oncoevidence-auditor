@@ -38,6 +38,7 @@ def build_markdown_report(
     specificity_result=None,
     cbio_result=None,
     expression_result=None,
+    survival_result=None,
     verdict=None,
     coverage_result=None,
 ):
@@ -49,6 +50,7 @@ def build_markdown_report(
     specificity_result = specificity_result or {}
     cbio_result = cbio_result or {}
     expression_result = expression_result or {}
+    survival_result = survival_result or {}
     verdict = verdict or {}
 
     if coverage_result is None:
@@ -59,6 +61,7 @@ def build_markdown_report(
             specificity_result=specificity_result,
             cbio_result=cbio_result,
             expression_result=expression_result,
+            survival_result=survival_result,
         )
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -138,6 +141,10 @@ def build_markdown_report(
 | Patient expression support | {_safe(expression_result.get("expression_support"))} |
 | Median expression z-score | {_safe(expression_result.get("median_expression_zscore"))} |
 | Percent high expression | {_safe(expression_result.get("percent_high_expression"))}% |
+| Survival signal | {_safe(survival_result.get("survival_signal"))} |
+| High-expression survival n | {_safe(survival_result.get("high_expression_survival_n"))} |
+| Other-expression survival n | {_safe(survival_result.get("other_expression_survival_n"))} |
+| Median OS difference | {_safe(survival_result.get("median_os_difference_months"))} months |
 
 ---
 
@@ -202,6 +209,28 @@ PubMed count is used as a literature saturation and novelty signal. A high count
 **Expression support:** {_safe(expression_result.get("expression_support"))}  
 
 **Note:** {_safe(expression_result.get("note"))}
+
+---
+
+## cBioPortal Survival / Prognosis Evidence
+
+**Study:** {_safe(survival_result.get("study_id"))}  
+**Matched survival patients:** {_safe(survival_result.get("survival_patients_matched"))}  
+**High-expression threshold:** z >= {_safe(survival_result.get("high_expression_threshold_z"))}  
+
+**High-expression survival n:** {_safe(survival_result.get("high_expression_survival_n"))}  
+**Other-expression survival n:** {_safe(survival_result.get("other_expression_survival_n"))}  
+
+**High-expression median OS:** {_safe(survival_result.get("high_expression_median_os_months"))} months  
+**Other-expression median OS:** {_safe(survival_result.get("other_expression_median_os_months"))} months  
+**Median OS difference:** {_safe(survival_result.get("median_os_difference_months"))} months  
+
+**High-expression event rate:** {_safe(survival_result.get("high_expression_event_rate_percent"))}%  
+**Other-expression event rate:** {_safe(survival_result.get("other_expression_event_rate_percent"))}%  
+
+**Survival signal:** {_safe(survival_result.get("survival_signal"))}  
+
+**Note:** {_safe(survival_result.get("note"))}
 
 ---
 

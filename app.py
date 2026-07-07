@@ -16,6 +16,7 @@ from src.auditor_verdict import build_auditor_verdict
 from src.specificity_index import calculate_specificity_index
 from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
+from src.cbioportal_survival import get_cbioportal_survival_summary
 
 
 st.set_page_config(
@@ -439,6 +440,63 @@ st.download_button(
 
 
 
+
+st.subheader("cBioPortal Survival / Prognosis Evidence")
+
+@st.cache_data(show_spinner=False)
+def cached_cbioportal_survival(gene, cancer_type):
+    return get_cbioportal_survival_summary(gene, cancer_type)
+
+try:
+    with st.spinner("Querying cBioPortal survival/prognosis data..."):
+        survival_result = cached_cbioportal_survival(gene, cancer_type)
+
+    if survival_result["available"]:
+        s1, s2, s3 = st.columns(3)
+
+        with s1:
+            st.metric("Survival patients matched", survival_result["survival_patients_matched"])
+
+        with s2:
+            st.metric("High-expression survival n", survival_result["high_expression_survival_n"])
+
+        with s3:
+            st.metric("Survival signal", survival_result["survival_signal"])
+
+        s4, s5, s6 = st.columns(3)
+
+        with s4:
+            st.metric("High-expression median OS", f'{survival_result["high_expression_median_os_months"]} months')
+
+        with s5:
+            st.metric("Other-expression median OS", f'{survival_result["other_expression_median_os_months"]} months')
+
+        with s6:
+            st.metric("Median OS difference", f'{survival_result["median_os_difference_months"]} months')
+
+        st.caption(survival_result["note"])
+
+        if survival_result["survival_signal"] == "High-expression subgroup shows worse-survival signal":
+            st.warning("High-expression tumors show a worse-survival descriptive signal.")
+        elif survival_result["survival_signal"] == "High-expression subgroup shows better-survival signal":
+            st.info("High-expression tumors show a better-survival descriptive signal.")
+        elif "Insufficient" in survival_result["survival_signal"]:
+            st.warning("Survival comparison is underpowered because one expression group is too small.")
+        elif survival_result["survival_signal"] == "No clear median-survival separation":
+            st.info("No clear median-survival separation was detected by this descriptive screen.")
+        else:
+            st.info(survival_result["survival_signal"])
+
+    else:
+        st.info(survival_result["note"])
+
+except Exception as e:
+    survival_result = {"available": False, "note": str(e)}
+    st.error("cBioPortal survival module failed. Check internet connection or cBioPortal API availability.")
+    st.code(str(e))
+
+st.divider()
+
 st.subheader("Evidence Coverage")
 
 coverage_result = calculate_evidence_coverage(
@@ -448,6 +506,7 @@ coverage_result = calculate_evidence_coverage(
     specificity_result=specificity_result if "specificity_result" in locals() else None,
     cbio_result=cbio_result if "cbio_result" in locals() else None,
     expression_result=expr_result if "expr_result" in locals() else None,
+    survival_result=survival_result if "survival_result" in locals() else None,
 )
 
 cov1, cov2, cov3 = st.columns(3)
@@ -488,6 +547,7 @@ try:
         specificity_result=specificity_result if "specificity_result" in locals() else None,
         cbio_result=cbio_result if "cbio_result" in locals() else None,
         expression_result=expr_result if "expr_result" in locals() else None,
+        survival_result=survival_result if "survival_result" in locals() else None,
         verdict=verdict if "verdict" in locals() else None,
         coverage_result=coverage_result if "coverage_result" in locals() else None,
     )
