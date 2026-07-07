@@ -1,20 +1,20 @@
 """
 Batch audit module for OncoEvidence Auditor.
 
-This module creates a batch summary for every curated gene in a selected cancer type.
+Default fast mode:
+- local curated evidence table
+- processed DepMap subset
+- common-essential flags
+- lineage specificity index
 
-Default mode:
-- fast/local
-- uses curated evidence table, DepMap subset, common-essential flags, specificity index
-
-Optional live mode:
-- adds cBioPortal patient alteration evidence
-- adds cBioPortal patient expression evidence
-- slower because it queries cBioPortal for each gene
+Optional live modes:
+- PubMed literature saturation
+- cBioPortal patient alteration evidence
+- cBioPortal patient expression evidence
 """
 
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
@@ -25,6 +25,7 @@ from src.auditor_verdict import build_auditor_verdict
 from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
 from src.evidence_coverage import calculate_evidence_coverage
+from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 
 
 EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
@@ -83,6 +84,7 @@ def classify_batch_pattern(
     specificity_label: str,
     patient_support: str = None,
     expression_support: str = None,
+    saturation_label: str = None,
 ) -> str:
     """
     Assign a compact contradiction pattern for batch ranking.
@@ -92,6 +94,7 @@ def classify_batch_pattern(
     specificity_label = specificity_label or ""
     patient_support = patient_support or ""
     expression_support = expression_support or ""
+    saturation_label = saturation_label or ""
 
     if (
         dependency_label == "Strong dependency"
@@ -112,6 +115,9 @@ def classify_batch_pattern(
     ):
         return "Strong dependency + weak lineage specificity"
 
+    if saturation_label == "High saturation":
+        return "Literature-saturated hypothesis"
+
     if dependency_label == "Strong dependency":
         return "Strong dependency signal"
 
@@ -122,6 +128,16 @@ def classify_batch_pattern(
         return "Weak dependency signal"
 
     return "Data-limited"
+
+
+def safe_pubmed(gene: str, cancer_type: str) -> Tuple[Optional[int], Optional[str], Optional[str], Optional[str]]:
+    """Safely call PubMed saturation module."""
+    try:
+        pubmed_count, pubmed_query = get_pubmed_count(gene, cancer_type)
+        saturation_label, novelty_label, _note = classify_literature_saturation(pubmed_count)
+        return pubmed_count, saturation_label, novelty_label, pubmed_query
+    except Exception:
+        return None, None, None, None
 
 
 def safe_cbio_alteration(gene: str, cancer_type: str) -> Dict:
@@ -150,12 +166,16 @@ def safe_cbio_expression(gene: str, cancer_type: str) -> Dict:
         }
 
 
-def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.DataFrame:
+def build_batch_audit(
+    cancer_type: str,
+    include_live_cbio: bool = False,
+    include_live_pubmed: bool = False,
+) -> pd.DataFrame:
     """
     Build a batch audit table for all curated genes in a selected cancer type.
 
-    include_live_cbio=False keeps the batch fast/local.
-    include_live_cbio=True adds live cBioPortal alteration/expression columns.
+    include_live_cbio=False keeps the batch faster.
+    include_live_pubmed=False avoids repeated PubMed calls.
     """
     gene_rows = get_genes_for_cancer(cancer_type)
 
@@ -168,6 +188,14 @@ def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.D
         common_result = get_common_essential_result(gene)
         specificity_result = calculate_specificity_index(depmap_result, common_result)
 
+        pubmed_count = None
+        saturation_label = None
+        novelty_label = None
+        pubmed_query = None
+
+        if include_live_pubmed:
+            pubmed_count, saturation_label, novelty_label, pubmed_query = safe_pubmed(gene, cancer_type)
+
         cbio_result = None
         expression_result = None
 
@@ -178,8 +206,17 @@ def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.D
         verdict = build_auditor_verdict(
             gene=gene,
             cancer_type=cancer_type,
-            pubmed_count=None,
-            saturation_label=None,
+            pubmed_count=pubmed_count,
+            saturation_label=saturation_label,
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+        )
+
+        coverage_result = calculate_evidence_coverage(
+            pubmed_count=pubmed_count,
             depmap_result=depmap_result,
             common_result=common_result,
             specificity_result=specificity_result,
@@ -211,25 +248,20 @@ def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.D
             median_expression_zscore = expression_result.get("median_expression_zscore")
             percent_high_expression = expression_result.get("percent_high_expression")
 
-        coverage_result = calculate_evidence_coverage(
-            pubmed_count=None,
-            depmap_result=depmap_result,
-            common_result=common_result,
-            specificity_result=specificity_result,
-            cbio_result=cbio_result,
-            expression_result=expression_result,
-        )
-
         results.append(
             {
                 "gene": gene,
+                "cancer_type": cancer_type,
+                "curated_score": row.get("score"),
+                "curated_tier": row.get("tier"),
                 "evidence_layers_available": coverage_result.get("evidence_layers_available"),
                 "evidence_layers_possible": coverage_result.get("evidence_layers_possible"),
                 "evidence_coverage_percent": coverage_result.get("evidence_coverage_percent"),
                 "evidence_coverage_label": coverage_result.get("evidence_coverage_label"),
-                "cancer_type": cancer_type,
-                "curated_score": row.get("score"),
-                "curated_tier": row.get("tier"),
+                "pubmed_count": pubmed_count,
+                "literature_saturation": saturation_label,
+                "inferred_novelty": novelty_label,
+                "pubmed_query": pubmed_query,
                 "dependency_label": dependency_label,
                 "median_dependency_score": depmap_result.get("median_dependency_score"),
                 "percent_dependent": depmap_result.get("percent_dependent"),
@@ -250,6 +282,7 @@ def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.D
                     specificity_label,
                     patient_support,
                     expression_support,
+                    saturation_label,
                 ),
                 "auditor_verdict_tier": verdict.get("verdict_tier"),
                 "claim_style": verdict.get("claim_style"),
@@ -261,11 +294,12 @@ def build_batch_audit(cancer_type: str, include_live_cbio: bool = False) -> pd.D
     out = pd.DataFrame(results)
 
     if not out.empty:
+        out["_coverage_sort"] = out["evidence_coverage_percent"].fillna(-1)
         out["_dependency_sort"] = out["percent_dependent"].fillna(-1)
         out["_specificity_sort"] = out["specificity_delta"].fillna(-999)
         out = out.sort_values(
-            by=["_dependency_sort", "_specificity_sort"],
-            ascending=[False, False],
-        ).drop(columns=["_dependency_sort", "_specificity_sort"])
+            by=["_coverage_sort", "_dependency_sort", "_specificity_sort"],
+            ascending=[False, False, False],
+        ).drop(columns=["_coverage_sort", "_dependency_sort", "_specificity_sort"])
 
     return out
