@@ -155,6 +155,30 @@ to overstate evidence from one dataset.
 """
 )
 
+
+st.subheader("8. Batch Audit Mode")
+
+st.write(
+    """
+Batch Audit Mode screens all curated genes for a selected cancer type using the app's
+processed local evidence layers.
+
+The batch table reports:
+- DepMap dependency label,
+- percent dependent,
+- common-essential caution,
+- lineage specificity label,
+- specificity delta,
+- contradiction pattern,
+- auditor verdict tier,
+- main warning.
+
+This mode is designed to help identify which genes deserve deeper single-gene review.
+It is not a final biological conclusion by itself. For final interpretation, the single-gene
+page and downloadable Markdown evidence report should be used.
+"""
+)
+
 st.header("Central cancer registry")
 
 st.write(

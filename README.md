@@ -66,6 +66,7 @@ OncoEvidence Auditor is a Python/Streamlit cancer bioinformatics web application
 5. cBioPortal patient-tumor alteration evidence
 6. cBioPortal patient-tumor expression evidence
 7. Auditor Verdict synthesis
+8. Batch Audit Mode
 
 ### Central registry
 
@@ -79,6 +80,25 @@ The registry currently controls:
 - DepMap OncotreeCode filters
 - PubMed cancer query terms
 - Supported cancer dropdown options
+
+
+### Batch Audit Mode
+
+Batch Audit Mode screens every curated gene for a selected cancer type and ranks genes by local evidence patterns.
+
+Current batch-level outputs include:
+
+- DepMap dependency label
+- Percent dependent
+- Pan-cancer common-essential caution
+- Lineage specificity label
+- Specificity delta
+- Contradiction pattern
+- Auditor Verdict tier
+- Main warning
+- Downloadable CSV output
+
+This helps the app function as a screening/auditing tool rather than only a single-gene dashboard.
 
 ### Research-use disclaimer
 
