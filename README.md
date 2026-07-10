@@ -152,3 +152,17 @@ OncoEvidence Auditor is designed to detect contradiction across evidence layers.
 
 That contradiction-aware synthesis is the main purpose of the tool.
 
+
+## Example reports
+
+The repository includes generated example reports in `docs/example_reports/`.
+
+Recommended examples:
+
+- `OIP5_GBM_example_report.md`  
+  Demonstrates a strong DepMap dependency signal that is weakened by broad common-essentiality, low lineage specificity, weak patient-level support, and proliferation/cell-cycle role caution.
+
+- `ERBB2_Gastric_cancer_example_report.md`  
+  Demonstrates a therapeutically relevant biomarker/subgroup case where patient alteration/expression and therapeutic relevance exist despite weak DepMap dependency.
+
+These examples illustrate the central purpose of the tool: not to rank genes by one evidence layer, but to expose contradictions across literature, dependency, patient tumors, survival, pathway context, and therapeutic relevance.
