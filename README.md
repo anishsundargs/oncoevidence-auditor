@@ -196,4 +196,6 @@ This summary explains the motivation, 10-layer evidence profile, flagship exampl
 
 A step-by-step demonstration guide is available at:
 
-`docs/DEMO_WORKFLOW.md`
+`docs/DEMO_WORKFLOW.md`\n\n## Catalog explorer
+
+The app includes a Catalog Explorer page for browsing the curated pan-cancer gene-cancer hypothesis catalog without running live API calls. The page supports filtering by cancer type, gene role, pathway category, therapeutic relevance, dependency context, and safety context.\n

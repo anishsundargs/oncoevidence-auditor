@@ -16,6 +16,7 @@ REQUIRED_FILES = [
     "pages/1_Methods.py",
     "pages/2_Batch_Audit.py",
     "pages/3_Examples_and_Interpretation_Guide.py",
+    "pages/4_Catalog_Explorer.py",
     "scripts/smoke_test.py",
     "scripts/generate_example_reports.py",
     "src/evidence_coverage.py",
