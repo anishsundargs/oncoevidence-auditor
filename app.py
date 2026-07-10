@@ -32,6 +32,7 @@ from src.cbioportal_survival import get_cbioportal_survival_summary
 from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
 from src.therapeutic_relevance import get_therapeutic_relevance_summary
+from src.live_evidence_score import build_live_evidence_score
 
 
 st.set_page_config(
@@ -428,6 +429,56 @@ if not (expr_result if "expr_result" in locals() else {}).get("available"):
 st.divider()
 
 st.subheader("Auditor Verdict")
+
+try:
+    _live_score_contradiction_result = build_contradiction_labels(
+        gene=gene,
+        cancer_type=cancer_type,
+        depmap_result=depmap_result,
+        common_result=common_result,
+        specificity_result=specificity_result,
+        cbio_result=cbio_result,
+        expression_result=expr_result,
+        survival_result=survival_result if "survival_result" in locals() else {},
+        gene_role_result=gene_role_result if "gene_role_result" in locals() else {},
+        saturation_label=saturation_label if "saturation_label" in locals() else None,
+    )
+except Exception:
+    _live_score_contradiction_result = {}
+
+try:
+    _live_score_therapeutic_result = therapeutic_result
+except Exception:
+    _live_score_therapeutic_result = {}
+
+live_score_result = build_live_evidence_score(
+    depmap_result=depmap_result,
+    common_result=common_result,
+    specificity_result=specificity_result,
+    cbio_result=cbio_result,
+    expression_result=expr_result,
+    survival_result=survival_result if "survival_result" in locals() else {},
+    therapeutic_result=_live_score_therapeutic_result,
+    contradiction_result=_live_score_contradiction_result,
+)
+
+live_col1, live_col2 = st.columns(2)
+with live_col1:
+    st.metric("Live evidence score", f"{live_score_result['live_evidence_score']}/100")
+with live_col2:
+    st.metric("Live evidence tier", live_score_result["live_evidence_tier"])
+
+st.caption(live_score_result["interpretation_note"])
+
+with st.expander("Show live evidence score breakdown"):
+    st.dataframe(
+        [
+            {"Evidence component": key, "Points": value}
+            for key, value in live_score_result["breakdown"].items()
+        ],
+        use_container_width=True,
+    )
+
 
 if pubmed_count is not None and saturation_label is not None:
     verdict = build_auditor_verdict(
