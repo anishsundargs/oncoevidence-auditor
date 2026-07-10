@@ -198,4 +198,6 @@ A step-by-step demonstration guide is available at:
 
 `docs/DEMO_WORKFLOW.md`\n\n## Catalog explorer
 
-The app includes a Catalog Explorer page for browsing the curated pan-cancer gene-cancer hypothesis catalog without running live API calls. The page supports filtering by cancer type, gene role, pathway category, therapeutic relevance, dependency context, and safety context.\n
+The app includes a Catalog Explorer page for browsing the curated pan-cancer gene-cancer hypothesis catalog without running live API calls. The page supports filtering by cancer type, gene role, pathway category, therapeutic relevance, dependency context, and safety context.\n\n\n## Evidence provenance
+
+The app includes an Evidence Provenance page that documents every evidence layer, its source, data type, interpretation purpose, and main limitation. This is intended to make the tool's claims more transparent and prevent overinterpretation of any single evidence layer.\n
