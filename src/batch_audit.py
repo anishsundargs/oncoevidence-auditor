@@ -29,6 +29,7 @@ from src.pubmed_saturation import get_pubmed_count, classify_literature_saturati
 from src.contradiction_labels import build_contradiction_labels
 from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
+from src.therapeutic_relevance import get_therapeutic_relevance_summary
 
 
 EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
@@ -229,6 +230,13 @@ def build_batch_audit(
 
         gene_role_result = get_gene_role_summary(gene, common_result)
         pathway_result = get_pathway_function_summary(gene, common_result)
+        therapeutic_result = get_therapeutic_relevance_summary(
+            gene,
+            cancer_type,
+            depmap_result=depmap_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+        )
 
         contradiction_result = build_contradiction_labels(
             gene=gene,
@@ -289,6 +297,10 @@ def build_batch_audit(
                 "function_group": pathway_result.get("function_group"),
                 "pathway_caution_label": pathway_result.get("pathway_caution_label"),
                 "pathway_caution_severity": pathway_result.get("pathway_caution_severity"),
+                "therapeutic_relevance": therapeutic_result.get("therapeutic_relevance"),
+                "biomarker_type": therapeutic_result.get("biomarker_type"),
+                "therapeutic_alignment_label": therapeutic_result.get("therapeutic_alignment_label"),
+                "therapeutic_alignment_severity": therapeutic_result.get("therapeutic_alignment_severity"),
                 "pubmed_count": pubmed_count,
                 "literature_saturation": saturation_label,
                 "inferred_novelty": novelty_label,

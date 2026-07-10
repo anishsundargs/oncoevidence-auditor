@@ -19,6 +19,7 @@ from src.cbioportal_expression import get_cbioportal_expression_summary
 from src.cbioportal_survival import get_cbioportal_survival_summary
 from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
+from src.therapeutic_relevance import get_therapeutic_relevance_summary
 
 
 st.set_page_config(
@@ -566,6 +567,58 @@ if _pathway_gene:
         st.write(pathway_result.get("validation_suggestions", "Not available"))
 else:
     st.info("Pathway/function annotation is unavailable because no gene was selected.")
+st.subheader("Drug / Therapeutic Relevance Annotation")
+
+_therapeutic_gene = locals().get("gene") or locals().get("selected_gene") or locals().get("gene_input")
+_therapeutic_cancer = locals().get("cancer_type") or locals().get("selected_cancer") or locals().get("cancer")
+_therapeutic_depmap_result = locals().get("depmap_result")
+_therapeutic_cbio_result = locals().get("cbio_result")
+_therapeutic_expression_result = locals().get("expression_result")
+
+if _therapeutic_gene and _therapeutic_cancer:
+    therapeutic_result = get_therapeutic_relevance_summary(
+        _therapeutic_gene,
+        _therapeutic_cancer,
+        depmap_result=_therapeutic_depmap_result,
+        cbio_result=_therapeutic_cbio_result,
+        expression_result=_therapeutic_expression_result,
+    )
+
+    therapeutic_col1, therapeutic_col2 = st.columns(2)
+
+    with therapeutic_col1:
+        st.markdown("**Therapeutic relevance**")
+        st.write(therapeutic_result.get("therapeutic_relevance", "Not available"))
+
+        st.markdown("**Biomarker type**")
+        st.write(therapeutic_result.get("biomarker_type", "Not available"))
+
+        st.markdown("**Dependency/actionability alignment**")
+        st.write(therapeutic_result.get("therapeutic_alignment_label", "Not available"))
+
+    with therapeutic_col2:
+        st.markdown("**Alignment severity**")
+        st.write(therapeutic_result.get("therapeutic_alignment_severity", "Not available"))
+
+        st.markdown("**Therapeutic caution**")
+        st.write(therapeutic_result.get("therapeutic_caution", "Not available"))
+
+    with st.expander("Therapeutic relevance interpretation note"):
+        st.markdown("**Therapeutic context**")
+        st.write(therapeutic_result.get("therapeutic_context", "Not available"))
+
+        st.markdown("**Dependency interpretation**")
+        st.write(therapeutic_result.get("dependency_interpretation", "Not available"))
+
+        st.markdown("**Alignment note**")
+        st.write(therapeutic_result.get("therapeutic_alignment_note", "Not available"))
+
+        st.markdown("**Suggested validation**")
+        st.write(therapeutic_result.get("validation_suggestions", "Not available"))
+
+        st.warning("Research triage only. This section does not provide treatment recommendations.")
+else:
+    st.info("Therapeutic relevance annotation is unavailable because no gene/cancer pair was selected.")
 st.subheader("Evidence Coverage")
 
 coverage_result = calculate_evidence_coverage(

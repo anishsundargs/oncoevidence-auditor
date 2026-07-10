@@ -12,6 +12,7 @@ from src.final_interpretation import build_final_interpretation
 from src.contradiction_labels import build_contradiction_labels
 from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
+from src.therapeutic_relevance import get_therapeutic_relevance_summary
 
 
 def _safe(value, fallback="Not available"):
@@ -97,6 +98,13 @@ def build_markdown_report(
 
     gene_role_result = get_gene_role_summary(gene, common_result)
     pathway_result = get_pathway_function_summary(gene, common_result)
+    therapeutic_result = get_therapeutic_relevance_summary(
+        gene,
+        cancer_type,
+        depmap_result=depmap_result,
+        cbio_result=cbio_result,
+        expression_result=expression_result,
+    )
 
     final_interpretation_result = build_final_interpretation(
         gene=gene,
@@ -226,6 +234,33 @@ def build_markdown_report(
 
 ---
 
+## Drug / Therapeutic Relevance Annotation
+
+**Therapeutic relevance:** {_safe(therapeutic_result.get("therapeutic_relevance"))}  
+**Biomarker type:** {_safe(therapeutic_result.get("biomarker_type"))}  
+
+**Therapeutic context:**  
+{_safe(therapeutic_result.get("therapeutic_context"))}
+
+**Dependency interpretation:**  
+{_safe(therapeutic_result.get("dependency_interpretation"))}
+
+**Therapeutic caution:**  
+{_safe(therapeutic_result.get("therapeutic_caution"))}
+
+**Dependency/actionability alignment:** {_safe(therapeutic_result.get("therapeutic_alignment_label"))}  
+**Alignment severity:** {_safe(therapeutic_result.get("therapeutic_alignment_severity"))}  
+
+**Alignment note:**  
+{_safe(therapeutic_result.get("therapeutic_alignment_note"))}
+
+**Suggested validation:**  
+{_safe(therapeutic_result.get("validation_suggestions"))}
+
+**Important:** This section is for research triage only. It does not provide treatment recommendations.
+
+---
+
 ## Evidence Coverage
 
 **Coverage label:** {_safe(coverage_result.get("evidence_coverage_label"))}  
@@ -248,6 +283,8 @@ def build_markdown_report(
 | Role-based caution | {_safe(gene_role_result.get("role_risk_label"))} |
 | Pathway category | {_safe(pathway_result.get("pathway_category"))} |
 | Pathway caution | {_safe(pathway_result.get("pathway_caution_label"))} |
+| Therapeutic relevance | {_safe(therapeutic_result.get("therapeutic_relevance"))} |
+| Therapeutic alignment | {_safe(therapeutic_result.get("therapeutic_alignment_label"))} |
 | PubMed count | {_safe(pubmed_count)} |
 | Literature saturation | {_safe(saturation_label)} |
 | Novelty label | {_safe(novelty_label)} |
