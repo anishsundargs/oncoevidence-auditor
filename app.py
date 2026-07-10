@@ -621,6 +621,76 @@ else:
     st.info("Therapeutic relevance annotation is unavailable because no gene/cancer pair was selected.")
 st.subheader("Evidence Coverage")
 
+
+# Precompute interpretation-layer annotations before evidence coverage.
+# Coverage depends on these being available.
+# This block uses defensive local-variable lookup because app.py has evolved over time.
+_coverage_gene = (
+    locals().get("gene")
+    or locals().get("selected_gene")
+    or locals().get("gene_input")
+    or locals().get("input_gene")
+)
+
+_coverage_cancer = (
+    locals().get("cancer_type")
+    or locals().get("selected_cancer")
+    or locals().get("cancer")
+    or locals().get("selected_cancer_type")
+)
+
+_coverage_common_result = (
+    locals().get("common_result")
+    or locals().get("common_essential_result")
+)
+
+_coverage_depmap_result = (
+    locals().get("depmap_result")
+    or locals().get("dependency_result")
+)
+
+_coverage_cbio_result = (
+    locals().get("cbio_result")
+    or locals().get("cbioportal_result")
+    or locals().get("alteration_result")
+)
+
+_coverage_expression_result = (
+    locals().get("expression_result")
+    or locals().get("expr_result")
+    or locals().get("expression_summary")
+    or locals().get("cbio_expression_result")
+)
+
+try:
+    gene_role_result = get_gene_role_summary(_coverage_gene, _coverage_common_result) if _coverage_gene else None
+except Exception as e:
+    gene_role_result = None
+    st.warning(f"Gene role coverage layer unavailable: {e}")
+
+try:
+    pathway_result = get_pathway_function_summary(_coverage_gene, _coverage_common_result) if _coverage_gene else None
+except Exception as e:
+    pathway_result = None
+    st.warning(f"Pathway/function coverage layer unavailable: {e}")
+
+try:
+    therapeutic_result = (
+        get_therapeutic_relevance_summary(
+            _coverage_gene,
+            _coverage_cancer,
+            depmap_result=_coverage_depmap_result,
+            cbio_result=_coverage_cbio_result,
+            expression_result=_coverage_expression_result,
+        )
+        if _coverage_gene and _coverage_cancer
+        else None
+    )
+except Exception as e:
+    therapeutic_result = None
+    st.warning(f"Therapeutic relevance coverage layer unavailable: {e}")
+
+
 coverage_result = calculate_evidence_coverage(
     pubmed_count=pubmed_count if "pubmed_count" in locals() else None,
     depmap_result=depmap_result if "depmap_result" in locals() else None,
@@ -629,6 +699,9 @@ coverage_result = calculate_evidence_coverage(
     cbio_result=cbio_result if "cbio_result" in locals() else None,
     expression_result=expr_result if "expr_result" in locals() else None,
     survival_result=survival_result if "survival_result" in locals() else None,
+    gene_role_result=gene_role_result,
+    pathway_result=pathway_result,
+    therapeutic_result=therapeutic_result,
 )
 
 cov1, cov2, cov3 = st.columns(3)

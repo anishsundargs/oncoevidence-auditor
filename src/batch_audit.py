@@ -226,6 +226,9 @@ def build_batch_audit(
             specificity_result=specificity_result,
             cbio_result=cbio_result,
             expression_result=expression_result,
+            gene_role_result=gene_role_result,
+            pathway_result=pathway_result,
+            therapeutic_result=therapeutic_result,
         )
 
         gene_role_result = get_gene_role_summary(gene, common_result)
