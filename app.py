@@ -1,7 +1,13 @@
 import pandas as pd
 import plotly.express as px
 from src.survival_figures import plot_km_survival, plot_median_os_bar, plot_event_rate_bar
-from src.evidence_figures import plot_evidence_coverage_gauge, plot_evidence_layer_bar
+from src.evidence_figures import (
+    plot_evidence_coverage_gauge,
+    plot_evidence_layer_bar,
+    plot_dependency_context_bar,
+    plot_dependency_score_context_bar,
+    plot_specificity_delta_indicator,
+)
 import streamlit as st
 from src.catalog_summary import get_catalog_summary
 
@@ -215,6 +221,37 @@ if common_result["available"]:
     st.warning(common_result["common_essential_note"])
 else:
     st.info(common_result["common_essential_note"])
+
+st.markdown("### Dependency context visualization")
+
+dep_fig_col1, dep_fig_col2 = st.columns(2)
+
+with dep_fig_col1:
+    dependency_context_fig = plot_dependency_context_bar(depmap_result, common_result)
+    if dependency_context_fig is not None:
+        st.plotly_chart(dependency_context_fig, use_container_width=True)
+
+with dep_fig_col2:
+    dependency_score_fig = plot_dependency_score_context_bar(depmap_result, common_result)
+    if dependency_score_fig is not None:
+        st.plotly_chart(dependency_score_fig, use_container_width=True)
+
+_figure_specificity_result = locals().get("specificity_result")
+
+if _figure_specificity_result is None:
+    try:
+        _figure_specificity_result = calculate_specificity_index(depmap_result, common_result)
+    except Exception:
+        _figure_specificity_result = None
+
+specificity_indicator_fig = plot_specificity_delta_indicator(_figure_specificity_result)
+if specificity_indicator_fig is not None:
+    st.plotly_chart(specificity_indicator_fig, use_container_width=True)
+
+st.caption(
+    "Dependency context figures compare the selected cancer against the pan-cancer background. "
+    "A strong selected-cancer dependency with similarly strong pan-cancer dependency may indicate broad essentiality rather than lineage specificity."
+)
 
 st.subheader("Lineage Specificity Index")
 
