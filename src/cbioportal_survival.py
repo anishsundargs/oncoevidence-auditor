@@ -282,11 +282,14 @@ def get_cbioportal_survival_summary(gene: str, cancer_type: str) -> Dict:
         matched_patients.add(patient_id)
 
         survival_record = survival_map[patient_id].copy()
+        survival_record["patient_id"] = patient_id
         survival_record["expression_zscore"] = value
 
         if value >= HIGH_EXPRESSION_Z:
+            survival_record["group"] = "High expression"
             high_records.append(survival_record)
         else:
+            survival_record["group"] = "Other expression"
             other_records.append(survival_record)
 
     high_summary = summarize_survival_group(high_records)
@@ -319,6 +322,9 @@ def get_cbioportal_survival_summary(gene: str, cancer_type: str) -> Dict:
         "median_os_difference_months": median_difference,
         "high_expression_event_rate_percent": high_summary.get("event_rate_percent"),
         "other_expression_event_rate_percent": other_summary.get("event_rate_percent"),
+        "survival_records": high_records + other_records,
+        "high_expression_records": high_records,
+        "other_expression_records": other_records,
         "survival_signal": survival_signal,
         "note": (
             "Survival comparison is based on high-expression tumors "

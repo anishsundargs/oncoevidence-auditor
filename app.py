@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+from src.survival_figures import plot_km_survival, plot_median_os_bar, plot_event_rate_bar
 import streamlit as st
 
 from src.evidence_coverage import calculate_evidence_coverage
@@ -479,6 +480,29 @@ try:
             st.metric("Median OS difference", f'{survival_result["median_os_difference_months"]} months')
 
         st.caption(survival_result["note"])
+
+        if survival_result.get("survival_records"):
+            st.markdown("### Survival figures")
+
+            km_fig = plot_km_survival(survival_result)
+            if km_fig is not None:
+                st.plotly_chart(km_fig, use_container_width=True)
+
+            fig_col1, fig_col2 = st.columns(2)
+
+            with fig_col1:
+                median_fig = plot_median_os_bar(survival_result)
+                if median_fig is not None:
+                    st.plotly_chart(median_fig, use_container_width=True)
+
+            with fig_col2:
+                event_fig = plot_event_rate_bar(survival_result)
+                if event_fig is not None:
+                    st.plotly_chart(event_fig, use_container_width=True)
+
+            st.caption("These figures are descriptive visualizations from cBioPortal patient records and do not replace formal prognostic modeling.")
+        else:
+            st.info("Patient-level survival records were not returned, so survival figures are unavailable for this run.")
 
         if survival_result["survival_signal"] == "High-expression subgroup shows worse-survival signal":
             st.warning("High-expression tumors show a worse-survival descriptive signal.")
