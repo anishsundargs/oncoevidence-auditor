@@ -9,13 +9,37 @@ CDK4,GBM,positive,negative,partial,moderate,moderate,strong,moderate,Cell-cycle 
 MDM2,GBM,positive,mixed,partial,moderate,moderate,strong,moderate,p53-pathway related candidate; requires mutation/CNA context.
 MKI67,GBM,positive,negative,partial,strong,moderate,weak,low,Proliferation marker; strong biological signal but low novelty.
 TOP2A,GBM,positive,negative,partial,strong,moderate,weak,moderate,Proliferation/cell-cycle associated candidate; useful for dependency testing.
-TP53,Gastric cancer,mixed,mixed,strong,weak,high,strong,low,Highly studied tumor suppressor; useful control but poor novelty.
 ERBB2,Gastric cancer,positive,moderate,strong,moderate,moderate,strong,low,Known gastric cancer target/control case.
-MET,Gastric cancer,positive,negative,partial,moderate,moderate,moderate,moderate,Potential gastric cancer candidate; needs careful validation.
-KRAS,Gastric cancer,mixed,mixed,partial,moderate,moderate,strong,low,Canonical oncogene; useful control but low novelty.
 MYC,Gastric cancer,positive,negative,partial,strong,high,strong,low,Strong cancer biology relevance but major normal-tissue/common-essential caution.
 CDK1,Gastric cancer,positive,negative,partial,strong,moderate,weak,moderate,Cell-cycle dependency candidate; may be biologically plausible but needs specificity checks.
 AURKA,Gastric cancer,positive,negative,partial,strong,moderate,moderate,moderate,Mitotic kinase candidate; plausible but requires validation.
 MMP9,Gastric cancer,positive,mixed,partial,weak,moderate,weak,moderate,Invasion/stromal-associated candidate; may have conflicting tumor-cell versus microenvironment interpretation.
-VEGFA,Gastric cancer,positive,mixed,partial,moderate,moderate,moderate,low,Angiogenesis-associated control; known biology but less novel.
-CLDN18,Gastric cancer,positive,moderate,partial,weak,low,moderate,moderate,Gastric lineage/targeting relevance; useful for testing target-safety logic.
+PTEN,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Loss-of-function context,Strong alteration context,6,Canonical GBM tumor suppressor/pathway context case.
+NF1,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Loss-of-function context,Alteration/pathway support,6,RAS-MAPK pathway tumor suppressor context case.
+RB1,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Loss-of-function context,Cell-cycle alteration context,5,Cell-cycle tumor suppressor context case.
+CDKN2A,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Loss-of-function context,Strong deletion context,5,CDK4/6-RB axis context case.
+CDKN2B,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Loss-of-function context,Deletion context,5,Neighboring cell-cycle tumor suppressor context case.
+PIK3CA,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Pathway safety context,Mutation/pathway support,6,PI3K pathway oncogene context case.
+PIK3R1,GBM,Context-dependent,Subtype/context dependent,Needs validation,Variable,Pathway safety context,Mutation/pathway support,6,PI3K regulatory pathway context case.
+BRAF,GBM,Subtype-specific,Subtype/context dependent,Needs validation,Variable,Pathway safety context,Alteration subtype support,6,MAPK pathway alteration/subtype case.
+TERT,GBM,Context-dependent,Context dependent,Needs validation,Variable,Maintenance biology caution,Promoter/maintenance context,6,Telomerase maintenance and promoter-alteration context case.
+SOX2,GBM,Cell-state enriched,Unclear,Needs validation,Variable,Transcription factor caution,Expression/state support,7,Stemness/cell-state transcription factor case.
+OLIG2,GBM,Glioma lineage enriched,Unclear,Needs validation,Variable,Lineage factor caution,Expression/state support,7,Glioma lineage transcription factor case.
+NES,GBM,Cell-state enriched,Unclear,Needs validation,Variable,Normal progenitor caution,Expression/state support,7,Neural progenitor/cancer stem-like marker case.
+PROM1,GBM,Subgroup/cell-state enriched,Unclear,Needs validation,Variable,Stem/progenitor safety caution,Expression/antigen context,7,Stem-like surface marker case.
+IL13RA2,GBM,Subgroup high expression,Unclear,Needs validation,Not primary dependency mechanism,Surface antigen safety context,Antigen/expression support,7,GBM antigen/immunotherapy hypothesis case.
+CD276,GBM,Broad/subgroup expression,Unclear,Needs validation,Not primary dependency mechanism,Immune antigen safety context,Antigen/expression support,7,B7-H3 antigen/immunotherapy hypothesis case.
+EPHA2,GBM,Subgroup expression,Unclear,Needs validation,Variable,RTK/surface safety context,Expression/pathway support,7,RTK/surface antigen-signaling hypothesis case.
+FGFR2,Gastric cancer,Subgroup high expression,Unclear,Needs validation,Variable,RTK pathway safety context,Amplification/fusion/expression context,6,FGFR2-amplified/fusion subgroup hypothesis case.
+CLDN18,Gastric cancer,Subgroup protein-expression context,Unclear,Needs validation,Not primary dependency mechanism,Surface antigen safety context,Antigen/expression support,6,CLDN18.2 gastric antigen/biomarker case.
+CDH1,Gastric cancer,Subtype/context dependent,Subtype/context dependent,Needs validation,Variable,Loss-of-function context,Mutation/loss context,5,Adhesion loss and diffuse-type biology context case.
+MET,Gastric cancer,Subgroup high expression,Unclear,Needs validation,Variable,RTK pathway safety context,Amplification/expression context,6,MET amplification/overexpression subgroup hypothesis case.
+KRAS,Gastric cancer,Subtype/context dependent,Unclear,Needs validation,Variable,Pathway safety context,Mutation/pathway context,6,RAS-MAPK pathway alteration context case.
+PIK3CA,Gastric cancer,Subtype/context dependent,Unclear,Needs validation,Variable,Pathway safety context,Mutation/pathway context,6,PI3K pathway mutation/context case.
+TP53,Gastric cancer,Alteration context,Unclear,Needs validation,Variable,Loss-of-function context,Mutation context,4,Canonical tumor suppressor control/context case.
+MUC1,Gastric cancer,Subgroup expression,Unclear,Needs validation,Not primary dependency mechanism,Normal epithelial caution,Antigen/expression context,6,Mucin antigen/biomarker hypothesis case.
+MUC16,Gastric cancer,Subgroup expression,Unclear,Needs validation,Not primary dependency mechanism,Normal epithelial caution,Antigen/expression context,6,Mucin antigen/marker hypothesis case.
+EPCAM,Gastric cancer,Epithelial expression,Unclear,Needs validation,Not primary dependency mechanism,Normal epithelial caution,Antigen/expression context,5,Epithelial surface antigen hypothesis case.
+VEGFA,Gastric cancer,Microenvironment/expression context,Unclear,Needs validation,Not primary dependency mechanism,Secreted ligand context,Angiogenesis context,5,Angiogenesis/microenvironment hypothesis case.
+CD274,Gastric cancer,Immune biomarker context,Unclear,Needs validation,Not primary dependency mechanism,Immune checkpoint context,Expression/immune context,5,PD-L1 immune biomarker context case.
+MSLN,Gastric cancer,Subgroup antigen expression,Unclear,Needs validation,Not primary dependency mechanism,Surface antigen safety context,Antigen/expression context,6,Mesothelin antigen hypothesis case.

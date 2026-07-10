@@ -1,21 +1,44 @@
 gene,role_category,target_class,biological_process,interpretation_note
-OIP5,Proliferation/cell-cycle associated,Proliferation-associated nuclear protein,Cell-cycle progression and proliferation,"OIP5 should be interpreted cautiously as a dependency candidate because proliferation-linked genes can show broad essentiality across cancer models."
-EGFR,Oncogene,Receptor tyrosine kinase,Growth factor signaling,"EGFR is a canonical receptor tyrosine kinase oncogene; interpretation should distinguish alteration/expression support from general pathway relevance."
-ERBB2,Oncogene,Receptor tyrosine kinase,Growth factor signaling,"ERBB2 is a canonical receptor tyine kinase oncogene; strongest framing is usually alteration/expression-defined subgroup biology."
-MYC,Oncogene / transcription factor,Transcription factor,Transcriptional amplification and proliferation,"MYC is a broad proliferation-associated oncogene; dependency can be strong but often has common-essential risk."
-TP53,Tumor suppressor,Transcription factor,p53 DNA damage and apoptosis pathway,"TP53 is a tumor suppressor; interpretation should emphasize mutation/loss and pathway disruption rather than dependency target framing."
-MGMT,DNA repair,DNA repair enzyme,DNA alkylation repair,"MGMT is best interpreted as a DNA repair/resistance-associated gene rather than a classic dependency target."
-CDK1,Core cell-cycle essential,Cell-cycle kinase,Mitosis and cell-cycle progression,"CDK1 is a core cell-cycle kinase; dependency signals are likely to carry broad essentiality risk."
-CDK4,Cell-cycle oncogene,Cell-cycle kinase,G1/S cell-cycle progression,"CDK4 is a cell-cycle kinase; dependency signals should be checked for selectivity versus broad proliferation effects."
-MKI67,Proliferation marker,Proliferation marker,Cell proliferation,"MKI67 is primarily a proliferation marker; dependency or expression signals may reflect tumor growth rate rather than targetability."
-TOP2A,Proliferation/DNA topology,DNA topoisomerase,DNA replication and chromosome segregation,"TOP2A is linked to proliferation and DNA topology; strong dependency may reflect broad essentiality."
-AURKA,Mitotic kinase,Cell-cycle kinase,Mitosis and chromosome segregation,"AURKA is a mitotic kinase; dependency should be checked for selectivity versus general proliferation."
-PDGFRA,Oncogene,Receptor tyrosine kinase,Growth factor signaling,"PDGFRA is a receptor tyrosine kinase oncogene candidate; amplification/expression subgroup context is important."
-MET,Oncogene,Receptor tyrosine kinase,Growth factor and invasive signaling,"MET is a receptor tyrosine kinase oncogene candidate; subgroup alteration/expression evidence is important."
-KRAS,Oncogene,Small GTPase,MAPK signaling,"KRAS is a canonical signaling oncogene; mutation-defined subgroup context is central."
-MDM2,Oncogene / p53 pathway regulator,E3 ubiquitin ligase,p53 pathway regulation,"MDM2 is best interpreted through p53 pathway suppression and amplification/subgroup biology."
-IDH1,Metabolic cancer gene,Metabolic enzyme,Oncometabolite/metabolic rewiring,"IDH1 is best interpreted through mutation-defined biology and metabolic pathway context."
-ATRX,Tumor suppressor / chromatin regulator,Chromatin remodeling factor,Chromatin regulation and telomere biology,"ATRX is usually interpreted through loss-of-function and chromatin/telomere biology rather than overexpression."
-VEGFA,Angiogenesis factor,Secreted growth factor,Angiogenesis,"VEGFA is best interpreted through angiogenesis and tumor microenvironment biology rather than tumor-cell dependency alone."
+OIP5,Proliferation/cell-cycle associated,Proliferation-associated nuclear protein,Cell-cycle progression and proliferation,OIP5 should be interpreted cautiously as a dependency candidate because proliferation-linked genes can show broad essentiality across cancer models.
+EGFR,Oncogene,Receptor tyrosine kinase,Growth factor signaling,EGFR is a canonical receptor tyrosine kinase oncogene; interpretation should distinguish alteration/expression support from general pathway relevance.
+ERBB2,Oncogene,Receptor tyrosine kinase,Growth factor signaling,ERBB2 is a canonical receptor tyrosine kinase oncogene; strongest framing is usually alteration/expression-defined subgroup biology.
+MYC,Oncogene / transcription factor,Transcription factor,Transcriptional amplification and proliferation,MYC is a broad proliferation-associated oncogene; dependency can be strong but often has common-essential risk.
+TP53,Tumor suppressor,Transcription factor,p53 DNA damage and apoptosis pathway,TP53 is a tumor suppressor; interpretation should emphasize mutation/loss and pathway disruption rather than dependency target framing.
+MGMT,DNA repair,DNA repair enzyme,DNA alkylation repair,MGMT is best interpreted as a DNA repair/resistance-associated gene rather than a classic dependency target.
+CDK1,Core cell-cycle essential,Cell-cycle kinase,Mitosis and cell-cycle progression,CDK1 is a core cell-cycle kinase; dependency signals are likely to carry broad essentiality risk.
+CDK4,Cell-cycle oncogene,Cell-cycle kinase,G1/S cell-cycle progression,CDK4 is a cell-cycle kinase; dependency signals should be checked for selectivity versus broad proliferation effects.
+MKI67,Proliferation marker,Proliferation marker,Cell proliferation,MKI67 is primarily a proliferation marker; dependency or expression signals may reflect tumor growth rate rather than targetability.
+TOP2A,Proliferation/DNA topology,DNA topoisomerase,DNA replication and chromosome segregation,TOP2A is linked to proliferation and DNA topology; strong dependency may reflect broad essentiality.
+AURKA,Mitotic kinase,Cell-cycle kinase,Mitosis and chromosome segregation,AURKA is a mitotic kinase; dependency should be checked for selectivity versus general proliferation.
+PDGFRA,Oncogene,Receptor tyrosine kinase,Growth factor signaling,PDGFRA is a receptor tyrosine kinase oncogene candidate; amplification/expression subgroup context is important.
+MDM2,Oncogene / p53 pathway regulator,E3 ubiquitin ligase,p53 pathway regulation,MDM2 is best interpreted through p53 pathway suppression and amplification/subgroup biology.
+IDH1,Metabolic cancer gene,Metabolic enzyme,Oncometabolite/metabolic rewiring,IDH1 is best interpreted through mutation-defined biology and metabolic pathway context.
+ATRX,Tumor suppressor / chromatin regulator,Chromatin remodeling factor,Chromatin regulation and telomere biology,ATRX is usually interpreted through loss-of-function and chromatin/telomere biology rather than overexpression.
 MMP9,Invasion/ECM remodeling,Secreted protease,Extracellular matrix remodeling and invasion,"MMP9 is best interpreted through invasion, microenvironment, and remodeling biology rather than direct dependency alone."
-CLDN18,Lineage/subtype biomarker,Tight-junction protein,Epithelial differentiation and gastric lineage,"CLDN18 is best interpreted as a lineage/subtype and therapeutic biomarker candidate in gastric cancer context."
+PTEN,Tumor suppressor,Lipid phosphatase / PI3K pathway regulator,PI3K-AKT signaling restraint,"PTEN should be interpreted as a loss-of-function tumor suppressor context gene, not a simple dependency target."
+NF1,Tumor suppressor,RAS pathway negative regulator,RAS-MAPK pathway regulation,NF1 loss supports pathway activation context and subgroup biology rather than direct gain-of-function targeting.
+RB1,Tumor suppressor,Cell-cycle checkpoint regulator,G1/S cell-cycle control,RB1 should be interpreted through loss-of-function and cell-cycle state context.
+CDKN2A,Tumor suppressor,Cell-cycle inhibitor locus,CDK4/6-RB cell-cycle control,CDKN2A loss supports cell-cycle dysregulation context and may inform pathway-level hypotheses.
+CDKN2B,Tumor suppressor,Cell-cycle inhibitor locus,CDK4/6-RB cell-cycle control,CDKN2B loss should be interpreted as cell-cycle pathway context rather than direct target dependency.
+PIK3CA,Oncogene,PI3K catalytic subunit,PI3K-AKT-mTOR signaling,PIK3CA should be interpreted as a pathway-activating oncogene where mutation and pathway context matter.
+PIK3R1,Pathway regulator,PI3K regulatory subunit,PI3K-AKT signaling regulation,PIK3R1 alterations require pathway-context interpretation and may not produce simple dependency patterns.
+BRAF,Oncogene,Serine/threonine kinase,MAPK signaling,BRAF should be interpreted through alteration subtype and MAPK pathway activation context.
+TERT,Cancer-associated maintenance gene,Telomerase catalytic subunit,Telomere maintenance,TERT is often relevant through promoter activation or telomere maintenance rather than ordinary coding alteration evidence.
+SOX2,Lineage/stem-state transcription factor,Transcription factor,Stemness and cell-state maintenance,SOX2 should be interpreted as a cell-state and lineage factor; therapeutic claims require careful validation.
+OLIG2,Lineage transcription factor,Transcription factor,Glioma lineage and developmental state,OLIG2 is best interpreted as a glioma lineage/state marker rather than a conventional drug target.
+NES,Stem/progenitor-state marker,Intermediate filament protein,Neural stem/progenitor state,NES supports cell-state interpretation and should not be overclaimed as a selective therapeutic target.
+PROM1,Stem/progenitor-state marker,Cell-surface marker,Cancer stem-like and progenitor-associated state,"PROM1 is useful for subgroup or cell-state hypotheses, but marker expression does not equal dependency."
+IL13RA2,Tumor-associated surface antigen,Cell-surface receptor antigen,Cytokine receptor antigen context,IL13RA2 is best interpreted as an antigen/subgroup hypothesis where surface expression and safety are critical.
+CD276,Immune/tumor-associated surface antigen,Immune checkpoint / surface antigen,Tumor immune interaction and antigen targeting,"CD276/B7-H3 should be interpreted as an immunotherapy antigen hypothesis, not primarily a DepMap dependency target."
+EPHA2,Oncogene / surface receptor,Receptor tyrosine kinase,"Ephrin receptor signaling, invasion, and antigen context",EPHA2 may support receptor/signaling or antigen-style hypotheses depending on expression and safety context.
+FGFR2,Oncogene,Receptor tyrosine kinase,FGF receptor signaling,FGFR2 should be interpreted through amplification/fusion/expression subgroup evidence and pathway activation.
+CLDN18,Tumor-associated surface antigen,Tight-junction / surface antigen,Epithelial lineage and gastric antigen context,CLDN18 is best interpreted as a gastric lineage/surface-antigen biomarker where protein-level validation is central.
+CDH1,Tumor suppressor / adhesion gene,Cell adhesion molecule,Epithelial adhesion and invasion,CDH1 is usually interpreted through loss-of-function and histologic/subtype context rather than dependency.
+MET,Oncogene,Receptor tyrosine kinase,"HGF-MET signaling, invasion, and growth signaling",MET should be interpreted through amplification/overexpression and pathway activation context.
+KRAS,Oncogene,Small GTPase,RAS-MAPK signaling,KRAS interpretation depends on mutation subtype and pathway context; dependency can vary by lineage and allele.
+MUC1,Tumor-associated surface antigen,Mucin / surface glycoprotein,Epithelial tumor antigen and signaling context,MUC1 supports antigen/biomarker hypotheses but requires expression and normal-tissue safety validation.
+MUC16,Tumor-associated surface antigen,Mucin / surface glycoprotein,Tumor antigen and epithelial cancer marker context,MUC16 is best interpreted as a marker/antigen hypothesis rather than a primary dependency target.
+EPCAM,Epithelial surface antigen,Cell adhesion / surface antigen,Epithelial identity and tumor antigen context,EPCAM supports epithelial tumor antigen hypotheses but safety and normal epithelial expression are central limitations.
+VEGFA,Microenvironment / angiogenesis factor,Secreted ligand,Angiogenesis and vascular signaling,VEGFA is not expected to behave like a cell-autonomous CRISPR dependency in many tumor-cell models.
+CD274,Immune checkpoint ligand,Immune checkpoint ligand,Tumor immune evasion,"CD274/PD-L1 should be interpreted as immune biomarker context, not a standard cell-line dependency target."
+MSLN,Tumor-associated surface antigen,Cell-surface antigen,Tumor antigen and adhesion context,"MSLN supports antigen-targeting hypotheses where protein expression, heterogeneity, and safety require validation."

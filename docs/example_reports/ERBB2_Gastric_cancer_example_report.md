@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 16:21  
+**Generated:** 2026-07-10 16:51  
 **Gene:** ERBB2  
 **Cancer type:** Gastric cancer  
 
@@ -60,7 +60,7 @@ Validate whether ERBB2-altered Gastric cancer tumors form a biologically distinc
 **Biological process:** Growth factor signaling  
 
 **Role interpretation note:**  
-ERBB2 is a canonical receptor tyine kinase oncogene; strongest framing is usually alteration/expression-defined subgroup biology.
+ERBB2 is a canonical receptor tyrosine kinase oncogene; strongest framing is usually alteration/expression-defined subgroup biology.
 
 **Role-based caution:** Subgroup/actionability context important  
 **Role caution severity:** Low  
