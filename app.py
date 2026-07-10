@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 from src.survival_figures import plot_km_survival, plot_median_os_bar, plot_event_rate_bar
+from src.evidence_figures import plot_evidence_coverage_gauge, plot_evidence_layer_bar
 import streamlit as st
 
 from src.evidence_coverage import calculate_evidence_coverage
@@ -741,6 +742,20 @@ with cov2:
 
 with cov3:
     st.metric("Coverage label", coverage_result["evidence_coverage_label"])
+
+st.markdown("### Evidence profile visualization")
+
+fig_col1, fig_col2 = st.columns([1, 1.4])
+
+with fig_col1:
+    coverage_gauge_fig = plot_evidence_coverage_gauge(coverage_result)
+    if coverage_gauge_fig is not None:
+        st.plotly_chart(coverage_gauge_fig, use_container_width=True)
+
+with fig_col2:
+    coverage_bar_fig = plot_evidence_layer_bar(coverage_result)
+    if coverage_bar_fig is not None:
+        st.plotly_chart(coverage_bar_fig, use_container_width=True)
 
 with st.expander("Coverage details"):
     st.write("Available layers:")
