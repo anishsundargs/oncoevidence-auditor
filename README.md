@@ -183,3 +183,11 @@ OncoEvidence Auditor evaluates gene/cancer hypotheses across a 10-layer evidence
 10. Drug/therapeutic relevance annotation
 
 Coverage is a completeness metric, not a strength metric. A complete 10/10 profile can still produce a cautious or contradictory interpretation.
+
+## Project summary
+
+A polished project summary is available at:
+
+`docs/PROJECT_SUMMARY.md`
+
+This summary explains the motivation, 10-layer evidence profile, flagship examples, current limitations, and research-use disclaimer.
