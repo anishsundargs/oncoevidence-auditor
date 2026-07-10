@@ -191,3 +191,9 @@ A polished project summary is available at:
 `docs/PROJECT_SUMMARY.md`
 
 This summary explains the motivation, 10-layer evidence profile, flagship examples, current limitations, and research-use disclaimer.
+
+## Demo workflow
+
+A step-by-step demonstration guide is available at:
+
+`docs/DEMO_WORKFLOW.md`
