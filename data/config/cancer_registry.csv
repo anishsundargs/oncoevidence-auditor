@@ -1,3 +1,9 @@
 cancer_type,cbio_study_candidates,depmap_oncotree_codes,pubmed_query_terms
-GBM,gbm_tcga_pan_can_atlas_2018;gbm_tcga,GB,"glioblastoma[Title/Abstract] OR GBM[Title/Abstract] OR glioma[Title/Abstract]"
-Gastric cancer,stad_tcga_pan_can_atlas_2018;stad_tcga,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,"gastric cancer[Title/Abstract] OR stomach cancer[Title/Abstract] OR gastric adenocarcinoma[Title/Abstract]"
+GBM,gbm_tcga_pan_can_atlas_2018;gbm_tcga,GB,glioblastoma[Title/Abstract] OR GBM[Title/Abstract] OR glioma[Title/Abstract]
+Gastric cancer,stad_tcga_pan_can_atlas_2018;stad_tcga,STAD;DSTAD;TSTAD;MSTAD;SSRCC;STSC;STAS,gastric cancer[Title/Abstract] OR stomach cancer[Title/Abstract] OR gastric adenocarcinoma[Title/Abstract]
+Breast cancer,brca_tcga_pan_can_atlas_2018;brca_tcga,BRCA;IDC;ILC;MDLC,breast cancer[Title/Abstract] OR breast carcinoma[Title/Abstract] OR BRCA[Title/Abstract]
+Lung adenocarcinoma,luad_tcga_pan_can_atlas_2018;luad_tcga,LUAD,lung adenocarcinoma[Title/Abstract] OR LUAD[Title/Abstract] OR non-small cell lung cancer[Title/Abstract]
+Colorectal cancer,coadread_tcga_pan_can_atlas_2018;coadread_tcga;coad_tcga;read_tcga,COAD;READ;COADREAD;CRC,colorectal cancer[Title/Abstract] OR colon cancer[Title/Abstract] OR rectal cancer[Title/Abstract] OR CRC[Title/Abstract]
+Pancreatic cancer,paad_tcga_pan_can_atlas_2018;paad_tcga,PAAD;PDAC,pancreatic cancer[Title/Abstract] OR pancreatic adenocarcinoma[Title/Abstract] OR PDAC[Title/Abstract]
+Melanoma,skcm_tcga_pan_can_atlas_2018;skcm_tcga,SKCM;MEL,melanoma[Title/Abstract] OR skin cutaneous melanoma[Title/Abstract] OR SKCM[Title/Abstract]
+Prostate cancer,prad_tcga_pan_can_atlas_2018;prad_tcga,PRAD,prostate cancer[Title/Abstract] OR prostate adenocarcinoma[Title/Abstract] OR PRAD[Title/Abstract]

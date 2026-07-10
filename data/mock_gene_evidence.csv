@@ -43,3 +43,51 @@ EPCAM,Gastric cancer,Epithelial expression,Unclear,Needs validation,Not primary 
 VEGFA,Gastric cancer,Microenvironment/expression context,Unclear,Needs validation,Not primary dependency mechanism,Secreted ligand context,Angiogenesis context,5,Angiogenesis/microenvironment hypothesis case.
 CD274,Gastric cancer,Immune biomarker context,Unclear,Needs validation,Not primary dependency mechanism,Immune checkpoint context,Expression/immune context,5,PD-L1 immune biomarker context case.
 MSLN,Gastric cancer,Subgroup antigen expression,Unclear,Needs validation,Not primary dependency mechanism,Surface antigen safety context,Antigen/expression context,6,Mesothelin antigen hypothesis case.
+ERBB2,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical HER2-positive breast cancer biomarker/control case.
+ESR1,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Hormone receptor biology and endocrine-resistance context case.
+PGR,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Hormone receptor context/control case.
+PIK3CA,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,PI3K pathway alteration context case.
+BRCA1,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,DNA repair and hereditary/subgroup context case.
+BRCA2,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,DNA repair and homologous recombination context case.
+TP53,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical tumor suppressor context case.
+MYC,Breast cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Broad oncogene/proliferation context case.
+EGFR,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical EGFR-mutant lung adenocarcinoma biomarker/control case.
+KRAS,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,RAS-MAPK oncogene/subtype context case.
+ALK,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Fusion-driven therapeutic biomarker context case.
+ROS1,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Fusion-driven therapeutic biomarker context case.
+MET,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,MET exon/amplification pathway context case.
+BRAF,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,MAPK alteration subtype context case.
+ERBB2,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,HER2 alteration subgroup context case.
+TP53,Lung adenocarcinoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical tumor suppressor context case.
+APC,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,WNT pathway tumor suppressor/context control case.
+KRAS,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,RAS-MAPK mutation context case.
+TP53,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical tumor suppressor context case.
+SMAD4,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,TGF-beta pathway tumor suppressor context case.
+PIK3CA,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,PI3K pathway mutation context case.
+BRAF,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,MAPK alteration subtype context case.
+ERBB2,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,HER2-amplified subgroup biomarker context case.
+MSH2,Colorectal cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Mismatch repair/MSI context case.
+KRAS,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical pancreatic cancer oncogene/control case.
+TP53,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical tumor suppressor context case.
+CDKN2A,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Cell-cycle tumor suppressor context case.
+SMAD4,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,TGF-beta pathway tumor suppressor context case.
+BRCA1,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,DNA repair subgroup context case.
+BRCA2,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,DNA repair subgroup context case.
+ERBB2,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,HER2 alteration subgroup context case.
+MSLN,Pancreatic cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Mesothelin antigen hypothesis case.
+BRAF,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical MAPK oncogene/subtype biomarker case.
+NRAS,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,RAS-MAPK mutation context case.
+NF1,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,RAS pathway tumor suppressor context case.
+KIT,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,RTK alteration subtype context case.
+CDKN2A,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Cell-cycle tumor suppressor context case.
+MITF,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Melanocyte lineage transcription factor context case.
+TERT,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Telomerase promoter/maintenance context case.
+TP53,Melanoma,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Tumor suppressor context case.
+AR,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Androgen receptor lineage/dependency biomarker context case.
+PTEN,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,PI3K pathway tumor suppressor context case.
+TP53,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Canonical tumor suppressor context case.
+SPOP,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Prostate cancer subtype/context gene.
+FOXA1,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Lineage transcription factor context case.
+BRCA1,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,DNA repair subgroup context case.
+BRCA2,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,DNA repair subgroup context case.
+MYC,Prostate cancer,Context-dependent,Unclear,Needs validation,Variable,Context-dependent safety,Known cancer-context gene,5,Broad oncogene/proliferation context case.
