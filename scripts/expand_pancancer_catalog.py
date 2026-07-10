@@ -197,6 +197,7 @@ CANCER_SPECIFIC = {
 }
 
 GENE_META = {
+    "OIP5": ("Proliferation/cell-cycle associated", "Proliferation-associated nuclear protein", "Cell cycle, proliferation, and chromosome-associated biology", "Cell cycle / proliferation"),
     "TP53": ("Tumor suppressor", "p53 pathway regulator", "DNA damage response / cell-cycle checkpoint", "Tumor-suppressor pathway"),
     "MYC": ("Oncogene", "Transcription factor", "Proliferation and growth control", "MYC/proliferation program"),
     "KRAS": ("Oncogene", "Small GTPase", "RAS-MAPK signaling", "RAS-MAPK signaling"),
@@ -351,6 +352,18 @@ def pathway_for_gene(gene):
 
 
 def therapeutic_for_pair(gene, cancer_type):
+    if gene == "OIP5" and cancer_type == "GBM":
+        return {
+            "gene": gene,
+            "cancer_type": cancer_type,
+            "therapeutic_relevance": "Low direct therapeutic relevance",
+            "therapeutic_context": "OIP5 has dependency-associated research interest but no direct curated GBM therapeutic or biomarker context in this app.",
+            "biomarker_type": "Research-use dependency candidate",
+            "dependency_interpretation": "Strong dependency should be interpreted cautiously because OIP5 may reflect broad proliferation or cell-cycle essentiality.",
+            "therapeutic_caution": "Dependency without therapeutic actionability. Do not frame OIP5 as clinically actionable or selectively targetable without additional validation.",
+            "validation_suggestions": "Validate whether OIP5 dependency is GBM-specific versus pan-essential; test recurrence retention, tumor-state specificity, protein-level relevance, and normal proliferative-cell safety.",
+        }
+
     if gene == "ERBB2" and cancer_type == "Gastric cancer":
         return {
             "gene": gene,

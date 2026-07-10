@@ -111,7 +111,6 @@ NPM1,Leukemia-associated gene,Nucleolar protein,AML subtype biology,NPM1 should 
 NRAS,Oncogene,Small GTPase,RAS-MAPK signaling,NRAS should be interpreted through RAS-MAPK signaling context; do not infer therapeutic actionability from one evidence layer alone.
 NTRK1,Oncogenic fusion kinase,Receptor tyrosine kinase,TRK signaling,NTRK1 should be interpreted through TRK signaling context; do not infer therapeutic actionability from one evidence layer alone.
 NTRK3,Oncogenic fusion kinase,Receptor tyrosine kinase,TRK signaling,NTRK3 should be interpreted through TRK signaling context; do not infer therapeutic actionability from one evidence layer alone.
-OIP5,Cancer-associated gene,Curated cancer-context gene,Cancer-associated biology,OIP5 is included as a curated cancer-context gene; interpretation requires layer-specific validation.
 OLIG2,Cancer-associated gene,Curated cancer-context gene,Cancer-associated biology,OLIG2 is included as a curated cancer-context gene; interpretation requires layer-specific validation.
 PALB2,DNA repair tumor suppressor,Homologous recombination repair gene,DNA repair,PALB2 should be interpreted through DNA repair context; do not infer therapeutic actionability from one evidence layer alone.
 PBRM1,Chromatin regulator / tumor suppressor,SWI/SNF chromatin regulator,Chromatin remodeling,PBRM1 should be interpreted through Chromatin remodeling context; do not infer therapeutic actionability from one evidence layer alone.
@@ -153,3 +152,4 @@ TROP2,Tumor-associated surface antigen,Surface glycoprotein,Epithelial tumor ant
 VEGFA,Microenvironment / angiogenesis factor,Secreted ligand,Angiogenesis,VEGFA should be interpreted through Angiogenesis context; do not infer therapeutic actionability from one evidence layer alone.
 VHL,Tumor suppressor,Hypoxia pathway regulator,HIF/oxygen sensing,VHL should be interpreted through HIF/oxygen sensing context; do not infer therapeutic actionability from one evidence layer alone.
 ZNRF3,Cancer-associated gene,Curated cancer-context gene,Cancer-associated biology,ZNRF3 is included as a curated cancer-context gene; interpretation requires layer-specific validation.
+OIP5,Proliferation/cell-cycle associated,Proliferation-associated nuclear protein,"Cell cycle, proliferation, and chromosome-associated biology",OIP5 should be interpreted cautiously as a dependency signal because its biology is tied to proliferation/cell-cycle programs. Strong dependency may reflect broad proliferative essentiality rather than a selective GBM target.
