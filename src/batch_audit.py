@@ -219,6 +219,16 @@ def build_batch_audit(
             expression_result=expression_result,
         )
 
+        gene_role_result = get_gene_role_summary(gene, common_result)
+        pathway_result = get_pathway_function_summary(gene, common_result)
+        therapeutic_result = get_therapeutic_relevance_summary(
+            gene,
+            cancer_type,
+            depmap_result=depmap_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+        )
+
         coverage_result = calculate_evidence_coverage(
             pubmed_count=pubmed_count,
             depmap_result=depmap_result,
@@ -231,15 +241,6 @@ def build_batch_audit(
             therapeutic_result=therapeutic_result,
         )
 
-        gene_role_result = get_gene_role_summary(gene, common_result)
-        pathway_result = get_pathway_function_summary(gene, common_result)
-        therapeutic_result = get_therapeutic_relevance_summary(
-            gene,
-            cancer_type,
-            depmap_result=depmap_result,
-            cbio_result=cbio_result,
-            expression_result=expression_result,
-        )
 
         contradiction_result = build_contradiction_labels(
             gene=gene,
@@ -253,7 +254,6 @@ def build_batch_audit(
             saturation_label=saturation_label,
         )
 
-        gene_role_result = get_gene_role_summary(gene, common_result)
 
         dependency_label = depmap_result.get("dependency_label")
         common_label = common_result.get("common_essential_label")

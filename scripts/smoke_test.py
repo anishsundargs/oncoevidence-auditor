@@ -26,6 +26,10 @@ from src.auditor_verdict import build_auditor_verdict
 from src.report_builder import build_markdown_report
 from src.batch_audit import build_batch_audit
 from src.cancer_registry import list_supported_cancers
+from src.gene_role import get_gene_role_summary
+from src.pathway_function import get_pathway_function_summary
+from src.therapeutic_relevance import get_therapeutic_relevance_summary
+from src.evidence_coverage import calculate_evidence_coverage
 
 
 def assert_true(condition, message):
@@ -218,6 +222,67 @@ def test_batch_audit():
         print_warn(f"Live PubMed batch audit unavailable during smoke test: {e}")
 
 
+
+def test_expanded_interpretation_layers():
+    """
+    Test the expanded 10-layer evidence profile using ERBB2/gastric cancer.
+    """
+    gene = "ERBB2"
+    cancer_type = "Gastric cancer"
+
+    dep = get_dependency_result(gene, cancer_type)
+    common = get_common_essential_result(gene)
+    spec = calculate_specificity_index(dep, common)
+
+    try:
+        cbio = get_cbioportal_alteration_summary(gene, cancer_type)
+        expr = get_cbioportal_expression_summary(gene, cancer_type)
+        surv = get_cbioportal_survival_summary(gene, cancer_type)
+    except Exception as e:
+        print_warn(f"Skipping expanded interpretation layer test because cBioPortal failed: {e}")
+        return False
+
+    role = get_gene_role_summary(gene, common)
+    pathway = get_pathway_function_summary(gene, common)
+    therapeutic = get_therapeutic_relevance_summary(
+        gene,
+        cancer_type,
+        depmap_result=dep,
+        cbio_result=cbio,
+        expression_result=expr,
+    )
+
+    coverage = calculate_evidence_coverage(
+        pubmed_count=425,
+        depmap_result=dep,
+        common_result=common,
+        specificity_result=spec,
+        cbio_result=cbio,
+        expression_result=expr,
+        survival_result=surv,
+        gene_role_result=role,
+        pathway_result=pathway,
+        therapeutic_result=therapeutic,
+    )
+
+    assert_true(role.get("role_category") == "Oncogene", "Gene role annotation failed for ERBB2.")
+    assert_true(pathway.get("pathway_category") == "RTK signaling", "Pathway annotation failed for ERBB2.")
+    assert_true(
+        therapeutic.get("therapeutic_relevance") == "High therapeutic relevance",
+        "Therapeutic relevance annotation failed for ERBB2/gastric cancer.",
+    )
+    assert_true(coverage.get("layers_available") == 10, "Expanded evidence coverage should be 10/10.")
+    assert_true(coverage.get("total_layers") == 10, "Expanded evidence coverage total should be 10.")
+
+    print_pass(
+        "Expanded 10-layer evidence profile works. "
+        f"Coverage={coverage.get('layers_available')}/{coverage.get('total_layers')}, "
+        f"therapeutic={therapeutic.get('therapeutic_alignment_label')}."
+    )
+
+    return True
+
+
 def main():
     print("\nRunning OncoEvidence Auditor smoke tests...\n")
 
@@ -229,6 +294,7 @@ def main():
     test_verdict_and_report(dep, common, spec)
     test_batch_audit()
 
+    test_expanded_interpretation_layers()
     print("\n🎉 Smoke test completed. Any warnings above were external API availability issues, not necessarily code failures.\n")
 
 
