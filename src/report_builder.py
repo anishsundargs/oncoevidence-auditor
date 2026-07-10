@@ -152,11 +152,77 @@ def build_markdown_report(
     if not oncotree_codes and "OncotreeCode values:" in depmap_note:
         oncotree_codes = depmap_note.split("OncotreeCode values:", 1)[1].strip().rstrip(".")
 
+    best_supported_claim = (
+        verdict.get("safe_claim")
+        or final_interpretation_result.get("final_interpretation")
+        or "No conservative claim was generated for this run."
+    )
+
+    main_contradiction = (
+        f"{_safe(contradiction_result.get('primary_label'))} "
+        f"({_safe(contradiction_result.get('primary_severity'))})"
+    )
+
+    unsafe_claim_to_avoid = (
+        f"Do not claim that {_safe(gene)} is a clinically actionable or selectively targetable "
+        f"{_safe(cancer_type)} target from this report alone. The auditor is designed for "
+        "research triage, not treatment guidance."
+    )
+
+    recommended_validation = (
+        final_interpretation_result.get("recommended_next_validation")
+        or pathway_result.get("validation_suggestions")
+        or therapeutic_result.get("validation_suggestions")
+        or "Validate the hypothesis using independent patient cohorts, protein-level evidence, and functional perturbation assays."
+    )
+
+    executive_summary = (
+        f"{_safe(gene)} in {_safe(cancer_type)} is classified as "
+        f"{_safe(verdict.get('verdict_tier'))}. The most conservative claim style is "
+        f"{_safe(claim_style)}. The primary contradiction is {main_contradiction}. "
+        f"The recommended next step is: {_safe(recommended_validation)}"
+    )
+
+    report_limitations = [
+        "This report integrates public and curated evidence layers for hypothesis triage only.",
+        "DepMap dependency is based on cancer model systems and does not prove patient-tumor actionability.",
+        "cBioPortal alteration and expression evidence are cohort-dependent and do not prove causality.",
+        "mRNA expression does not prove protein abundance, surface localization, or antigen accessibility.",
+        "Survival/prognosis output is descriptive and does not replace Kaplan-Meier/log-rank/Cox clinical modeling.",
+        "Curated role, pathway, and therapeutic annotations are interpretive aids and require manual review.",
+        "Therapeutic relevance annotations are not treatment recommendations.",
+    ]
+
     report = f"""# OncoEvidence Auditor Report
 
 **Generated:** {timestamp}  
 **Gene:** {_safe(gene)}  
 **Cancer type:** {_safe(cancer_type)}  
+
+---
+
+## Executive Summary
+
+{_safe(executive_summary)}
+
+## Best Supported Claim
+
+{_safe(best_supported_claim)}
+
+## Main Contradiction
+
+**Primary contradiction:** {_safe(contradiction_result.get("primary_label"))}  
+**Severity:** {_safe(contradiction_result.get("primary_severity"))}  
+
+{_safe(contradiction_result.get("primary_explanation") or "See contradiction labels below for detailed interpretation.")}
+
+## Unsafe Claim to Avoid
+
+{_safe(unsafe_claim_to_avoid)}
+
+## Recommended Next Validation
+
+{_safe(recommended_validation)}
 
 ---
 
@@ -395,6 +461,12 @@ PubMed count is used as a literature saturation and novelty signal. A high count
 **Survival signal:** {_safe(survival_result.get("survival_signal"))}  
 
 **Note:** {_safe(survival_result.get("note"))}
+
+---
+
+## Limitations
+
+{_bullet_list(report_limitations)}
 
 ---
 

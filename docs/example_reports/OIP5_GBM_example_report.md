@@ -1,8 +1,33 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 17:13  
+**Generated:** 2026-07-10 17:28  
 **Gene:** OIP5  
 **Cancer type:** GBM  
+
+---
+
+## Executive Summary
+
+OIP5 in GBM is classified as Strong dependency but specificity/patient-support risk hypothesis. The most conservative claim style is broad dependency-associated candidate, not a selective patient-supported target. The primary contradiction is Broad essentiality risk (High). The recommended next step is: Test whether OIP5 dependency reflects general proliferation or cell-cycle essentiality rather than GBM-specific biology. Useful next checks include comparing dependency against known pan-essential/cell-cycle genes, testing independent DepMap releases, and looking for protein-level or single-cell evidence in patient tumors. The survival comparison is underpowered, so a larger cohort or different subgroup threshold is needed before making any prognostic claim.
+
+## Best Supported Claim
+
+OIP5 in GBM is best framed as a broad dependency-associated candidate, not a selective patient-supported target. This interpretation is based on public-data evidence and should be treated as hypothesis-generating, not clinically validated.
+
+## Main Contradiction
+
+**Primary contradiction:** Broad essentiality risk  
+**Severity:** High  
+
+OIP5 shows strong dependency in GBM, but it is also broadly dependency-associated across many cancer models.
+
+## Unsafe Claim to Avoid
+
+Do not claim that OIP5 is a clinically actionable or selectively targetable GBM target from this report alone. The auditor is designed for research triage, not treatment guidance.
+
+## Recommended Next Validation
+
+Test whether OIP5 dependency reflects general proliferation or cell-cycle essentiality rather than GBM-specific biology. Useful next checks include comparing dependency against known pan-essential/cell-cycle genes, testing independent DepMap releases, and looking for protein-level or single-cell evidence in patient tumors. The survival comparison is underpowered, so a larger cohort or different subgroup threshold is needed before making any prognostic claim.
 
 ---
 
@@ -248,6 +273,18 @@ PubMed count is used as a literature saturation and novelty signal. A high count
 **Survival signal:** Insufficient high-expression subgroup for survival comparison  
 
 **Note:** Survival comparison is based on high-expression tumors (z >= 2.0) versus other tumors. This is a descriptive screening summary, not a Kaplan-Meier/log-rank survival analysis.
+
+---
+
+## Limitations
+
+- This report integrates public and curated evidence layers for hypothesis triage only.
+- DepMap dependency is based on cancer model systems and does not prove patient-tumor actionability.
+- cBioPortal alteration and expression evidence are cohort-dependent and do not prove causality.
+- mRNA expression does not prove protein abundance, surface localization, or antigen accessibility.
+- Survival/prognosis output is descriptive and does not replace Kaplan-Meier/log-rank/Cox clinical modeling.
+- Curated role, pathway, and therapeutic annotations are interpretive aids and require manual review.
+- Therapeutic relevance annotations are not treatment recommendations.
 
 ---
 

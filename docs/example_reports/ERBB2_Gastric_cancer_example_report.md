@@ -1,8 +1,33 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 17:13  
+**Generated:** 2026-07-10 17:28  
 **Gene:** ERBB2  
 **Cancer type:** Gastric cancer  
+
+---
+
+## Executive Summary
+
+ERBB2 in Gastric cancer is classified as Exploratory hypothesis. The most conservative claim style is exploratory candidate. The primary contradiction is Alteration-without-dependency signal (Moderate). The recommended next step is: Validate whether ERBB2-altered Gastric cancer tumors form a biologically distinct subgroup. Recommended next checks include alteration-expression correlation, pathway enrichment, drug-response association, and independent cohort validation. Because the gene role suggests subgroup/actionability context, prioritize alteration-expression concordance and subgroup-specific evidence over broad pan-cohort claims. Since the current survival screen shows no clear median-survival separation, avoid framing this as a prognostic biomarker unless stronger survival evidence appears. Role-based caution note: Receptor tyrosine kinase genes are often most meaningful in alteration- or expression-defined subgroups. Patient-level alteration/expression evidence should drive interpretation.
+
+## Best Supported Claim
+
+ERBB2 in Gastric cancer is best framed as a exploratory candidate. This interpretation is based on public-data evidence and should be treated as hypothesis-generating, not clinically validated.
+
+## Main Contradiction
+
+**Primary contradiction:** Alteration-without-dependency signal  
+**Severity:** Moderate  
+
+ERBB2 has patient alteration support in Gastric cancer, but the current dependency signal is not strong.
+
+## Unsafe Claim to Avoid
+
+Do not claim that ERBB2 is a clinically actionable or selectively targetable Gastric cancer target from this report alone. The auditor is designed for research triage, not treatment guidance.
+
+## Recommended Next Validation
+
+Validate whether ERBB2-altered Gastric cancer tumors form a biologically distinct subgroup. Recommended next checks include alteration-expression correlation, pathway enrichment, drug-response association, and independent cohort validation. Because the gene role suggests subgroup/actionability context, prioritize alteration-expression concordance and subgroup-specific evidence over broad pan-cohort claims. Since the current survival screen shows no clear median-survival separation, avoid framing this as a prognostic biomarker unless stronger survival evidence appears. Role-based caution note: Receptor tyrosine kinase genes are often most meaningful in alteration- or expression-defined subgroups. Patient-level alteration/expression evidence should drive interpretation.
 
 ---
 
@@ -248,6 +273,18 @@ PubMed count is used as a literature saturation and novelty signal. A high count
 **Survival signal:** No clear median-survival separation  
 
 **Note:** Survival comparison is based on high-expression tumors (z >= 2.0) versus other tumors. This is a descriptive screening summary, not a Kaplan-Meier/log-rank survival analysis.
+
+---
+
+## Limitations
+
+- This report integrates public and curated evidence layers for hypothesis triage only.
+- DepMap dependency is based on cancer model systems and does not prove patient-tumor actionability.
+- cBioPortal alteration and expression evidence are cohort-dependent and do not prove causality.
+- mRNA expression does not prove protein abundance, surface localization, or antigen accessibility.
+- Survival/prognosis output is descriptive and does not replace Kaplan-Meier/log-rank/Cox clinical modeling.
+- Curated role, pathway, and therapeutic annotations are interpretive aids and require manual review.
+- Therapeutic relevance annotations are not treatment recommendations.
 
 ---
 
