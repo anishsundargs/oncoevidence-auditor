@@ -79,23 +79,6 @@ def build_markdown_report(
         # Keep the provided verdict if rebuilding fails.
         verdict = verdict or {}
 
-    if coverage_result is None:
-        coverage_result = calculate_evidence_coverage(
-            pubmed_count=pubmed_count,
-            depmap_result=depmap_result,
-            common_result=common_result,
-            specificity_result=specificity_result,
-            cbio_result=cbio_result,
-            expression_result=expression_result,
-            survival_result=survival_result,
-        )
-
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-
-    strengths = verdict.get("strengths", [])
-    warnings = verdict.get("warnings", [])
-    claim_style = verdict.get("claim_style") or verdict.get("claim_type") or verdict.get("verdict_tier")
-
     gene_role_result = get_gene_role_summary(gene, common_result)
     pathway_result = get_pathway_function_summary(gene, common_result)
     therapeutic_result = get_therapeutic_relevance_summary(
@@ -105,6 +88,26 @@ def build_markdown_report(
         cbio_result=cbio_result,
         expression_result=expression_result,
     )
+
+    if coverage_result is None:
+        coverage_result = calculate_evidence_coverage(
+            pubmed_count=pubmed_count,
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            cbio_result=cbio_result,
+            expression_result=expression_result,
+            survival_result=survival_result,
+            gene_role_result=gene_role_result,
+            pathway_result=pathway_result,
+            therapeutic_result=therapeutic_result,
+        )
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    strengths = verdict.get("strengths", [])
+    warnings = verdict.get("warnings", [])
+    claim_style = verdict.get("claim_style") or verdict.get("claim_type") or verdict.get("verdict_tier")
 
     final_interpretation_result = build_final_interpretation(
         gene=gene,

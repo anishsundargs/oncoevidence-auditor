@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 16:15  
+**Generated:** 2026-07-10 16:17  
 **Gene:** OIP5  
 **Cancer type:** GBM  
 
@@ -120,13 +120,13 @@ Check druggability, protein localization, single-cell expression, pan-essentiali
 
 ## Evidence Coverage
 
-**Coverage label:** Moderate evidence coverage  
-**Layers available:** 7/10  
-**Coverage percent:** 70.0%  
+**Coverage label:** Complete evidence profile  
+**Layers available:** 10/10  
+**Coverage percent:** 100.0%  
 
-**Available layers:** PubMed literature, DepMap dependency, Common-essential caution, Lineage specificity, Patient alteration, Patient expression, Survival/prognosis  
+**Available layers:** PubMed literature, DepMap dependency, Common-essential caution, Lineage specificity, Patient alteration, Patient expression, Survival/prognosis, Gene role classification, Pathway/function annotation, Therapeutic relevance  
 
-**Missing layers:** Gene role classification, Pathway/function annotation, Therapeutic relevance  
+**Missing layers:** None  
 
 ---
 
@@ -134,8 +134,8 @@ Check druggability, protein localization, single-cell expression, pan-essentiali
 
 | Evidence layer | Result |
 |---|---|
-| Evidence coverage label | Moderate evidence coverage |
-| Evidence coverage percent | 70.0% |
+| Evidence coverage label | Complete evidence profile |
+| Evidence coverage percent | 100.0% |
 | Gene role category | Proliferation/cell-cycle associated |
 | Role-based caution | Proliferation/common-essential caution |
 | Pathway category | Cell cycle / proliferation |

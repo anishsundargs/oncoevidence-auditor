@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 16:15  
+**Generated:** 2026-07-10 16:18  
 **Gene:** ERBB2  
 **Cancer type:** Gastric cancer  
 
@@ -119,13 +119,13 @@ Check HER2 amplification-expression concordance, protein/IHC or FISH evidence, H
 
 ## Evidence Coverage
 
-**Coverage label:** Moderate evidence coverage  
-**Layers available:** 7/10  
-**Coverage percent:** 70.0%  
+**Coverage label:** Complete evidence profile  
+**Layers available:** 10/10  
+**Coverage percent:** 100.0%  
 
-**Available layers:** PubMed literature, DepMap dependency, Common-essential caution, Lineage specificity, Patient alteration, Patient expression, Survival/prognosis  
+**Available layers:** PubMed literature, DepMap dependency, Common-essential caution, Lineage specificity, Patient alteration, Patient expression, Survival/prognosis, Gene role classification, Pathway/function annotation, Therapeutic relevance  
 
-**Missing layers:** Gene role classification, Pathway/function annotation, Therapeutic relevance  
+**Missing layers:** None  
 
 ---
 
@@ -133,8 +133,8 @@ Check HER2 amplification-expression concordance, protein/IHC or FISH evidence, H
 
 | Evidence layer | Result |
 |---|---|
-| Evidence coverage label | Moderate evidence coverage |
-| Evidence coverage percent | 70.0% |
+| Evidence coverage label | Complete evidence profile |
+| Evidence coverage percent | 100.0% |
 | Gene role category | Oncogene |
 | Role-based caution | Subgroup/actionability context important |
 | Pathway category | RTK signaling |
