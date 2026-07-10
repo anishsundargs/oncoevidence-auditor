@@ -42,3 +42,18 @@ EPCAM,Epithelial surface antigen,Cell adhesion / surface antigen,Epithelial iden
 VEGFA,Microenvironment / angiogenesis factor,Secreted ligand,Angiogenesis and vascular signaling,VEGFA is not expected to behave like a cell-autonomous CRISPR dependency in many tumor-cell models.
 CD274,Immune checkpoint ligand,Immune checkpoint ligand,Tumor immune evasion,"CD274/PD-L1 should be interpreted as immune biomarker context, not a standard cell-line dependency target."
 MSLN,Tumor-associated surface antigen,Cell-surface antigen,Tumor antigen and adhesion context,"MSLN supports antigen-targeting hypotheses where protein expression, heterogeneity, and safety require validation."
+ESR1,Lineage/onco-dependency transcription factor,Nuclear hormone receptor,Estrogen receptor signaling,ESR1 should be interpreted as a lineage and endocrine biomarker/dependency context gene in breast cancer.
+PGR,Hormone receptor biomarker,Nuclear hormone receptor,Progesterone receptor signaling,"PGR is best interpreted as hormone receptor context and breast cancer subtype evidence, not necessarily direct dependency."
+BRCA1,DNA repair tumor suppressor,Homologous recombination repair gene,DNA double-strand break repair,"BRCA1 should be interpreted through loss-of-function, homologous recombination deficiency, and DNA repair subgroup context."
+BRCA2,DNA repair tumor suppressor,Homologous recombination repair gene,DNA double-strand break repair,"BRCA2 should be interpreted through loss-of-function, homologous recombination deficiency, and DNA repair subgroup context."
+ALK,Oncogenic fusion kinase,Receptor tyrosine kinase,RTK/MAPK signaling,ALK is best interpreted through fusion or activating alteration subgroup context.
+ROS1,Oncogenic fusion kinase,Receptor tyrosine kinase,RTK/MAPK signaling,ROS1 is best interpreted through fusion-driven subgroup context.
+APC,Tumor suppressor,WNT pathway destruction-complex regulator,WNT/beta-catenin pathway regulation,"APC is a loss-of-function tumor suppressor and WNT pathway context gene, not a direct dependency target."
+SMAD4,Tumor suppressor,TGF-beta pathway transcriptional mediator,TGF-beta signaling,SMAD4 should be interpreted through loss-of-function and pathway/subtype context.
+MSH2,DNA repair tumor suppressor,Mismatch repair gene,DNA mismatch repair and MSI biology,MSH2 is best interpreted as mismatch repair/MSI context rather than direct dependency.
+NRAS,Oncogene,Small GTPase,RAS-MAPK signaling,NRAS should be interpreted through mutation subtype and MAPK pathway state.
+KIT,Oncogene / receptor kinase,Receptor tyrosine kinase,KIT signaling,KIT relevance is subtype- and alteration-dependent and should not be generalized across all melanoma.
+MITF,Lineage transcription factor,Transcription factor,Melanocyte lineage and differentiation state,MITF should be interpreted as a melanoma lineage/state factor and possible lineage dependency.
+AR,Lineage/onco-dependency transcription factor,Nuclear hormone receptor,Androgen receptor signaling,AR should be interpreted as a prostate lineage and hormone signaling dependency context gene.
+SPOP,Subtype-associated tumor suppressor/regulator,E3 ubiquitin ligase adaptor,Protein turnover and prostate cancer subtype biology,SPOP should be interpreted through mutation-defined prostate cancer subtype context.
+FOXA1,Lineage transcription factor,Pioneer transcription factor,Androgen receptor chromatin program and lineage regulation,FOXA1 should be interpreted as prostate lineage/chromatin-state context rather than a simple target.
