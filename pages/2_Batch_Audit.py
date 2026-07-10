@@ -92,8 +92,16 @@ mode_label = st.session_state.get("batch_audit_mode") or "stored results"
 st.success(f"Audited {len(batch_df)} genes for {active_cancer} using {mode_label}.")
 st.caption("Changing filters below will not rerun external APIs. Click Run batch audit again to refresh results.")
 
+st.info(
+    "Coverage note: local curated coverage measures fast-mode layers such as DepMap, common-essential caution, "
+    "specificity, gene role, pathway, and therapeutic annotation. Full evidence coverage includes live layers "
+    "such as PubMed, cBioPortal alteration/expression, and survival/prognosis evidence."
+)
+
 base_cols = [
     "gene",
+    "local_curated_coverage_label",
+    "local_curated_coverage_percent",
     "evidence_coverage_label",
     "evidence_coverage_percent",
     "primary_contradiction_label",
@@ -298,11 +306,14 @@ with m2:
     st.metric("High-severity contradictions", high_count)
 
 with m3:
-    if "evidence_coverage_percent" in filtered_df.columns and not filtered_df.empty:
+    if "local_curated_coverage_percent" in filtered_df.columns and not filtered_df.empty:
+        avg_local_coverage = round(float(pd.to_numeric(filtered_df["local_curated_coverage_percent"], errors="coerce").mean()), 1)
+        st.metric("Mean local curated coverage", f"{avg_local_coverage}%")
+    elif "evidence_coverage_percent" in filtered_df.columns and not filtered_df.empty:
         avg_coverage = round(float(pd.to_numeric(filtered_df["evidence_coverage_percent"], errors="coerce").mean()), 1)
         st.metric("Mean evidence coverage", f"{avg_coverage}%")
     else:
-        st.metric("Mean evidence coverage", "Not available")
+        st.metric("Mean local curated coverage", "Not available")
 
 with m4:
     therapeutic_count = 0
@@ -318,6 +329,10 @@ with chart_col1:
     fig = count_chart(filtered_df, "primary_contradiction_severity", "Contradiction severity distribution")
     if fig is not None:
         st.plotly_chart(fig, use_container_width=True)
+
+local_cov_fig = count_chart(filtered_df, "local_curated_coverage_label", "Local curated coverage distribution")
+if local_cov_fig is not None:
+    st.plotly_chart(local_cov_fig, use_container_width=True)
 
 with chart_col2:
     fig = count_chart(filtered_df, "therapeutic_relevance", "Therapeutic relevance distribution")

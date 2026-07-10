@@ -170,6 +170,65 @@ def safe_cbio_expression(gene: str, cancer_type: str) -> Dict:
         }
 
 
+
+
+def is_layer_available(result: Dict) -> bool:
+    """Return whether a local batch evidence layer is available."""
+    if not isinstance(result, dict):
+        return False
+    if result.get("available") is False:
+        return False
+    return True
+
+
+def summarize_local_curated_coverage(
+    depmap_result: Dict,
+    common_result: Dict,
+    specificity_result: Dict,
+    gene_role_result: Dict,
+    pathway_result: Dict,
+    therapeutic_result: Dict,
+) -> Dict:
+    """
+    Summarize local/non-live evidence layers used in fast batch mode.
+
+    This is separate from full 10-layer coverage because PubMed, cBioPortal,
+    expression, and survival require live external data calls.
+    """
+    layers = {
+        "DepMap dependency": is_layer_available(depmap_result),
+        "Common-essential caution": is_layer_available(common_result),
+        "Lineage specificity": is_layer_available(specificity_result),
+        "Gene role classification": is_layer_available(gene_role_result),
+        "Pathway/function annotation": is_layer_available(pathway_result),
+        "Therapeutic relevance": is_layer_available(therapeutic_result),
+    }
+
+    available_layers = [name for name, available in layers.items() if available]
+    missing_layers = [name for name, available in layers.items() if not available]
+
+    possible = len(layers)
+    available = len(available_layers)
+    percent = round((available / possible) * 100, 1) if possible else 0
+
+    if percent == 100:
+        label = "Complete local curated profile"
+    elif percent >= 70:
+        label = "Mostly complete local curated profile"
+    elif percent >= 40:
+        label = "Partial local curated profile"
+    else:
+        label = "Sparse local curated profile"
+
+    return {
+        "local_curated_layers_available": available,
+        "local_curated_layers_possible": possible,
+        "local_curated_coverage_percent": percent,
+        "local_curated_coverage_label": label,
+        "local_curated_available_layers": available_layers,
+        "local_curated_missing_layers": missing_layers,
+    }
+
 def build_batch_audit(
     cancer_type: str,
     include_live_cbio: bool = False,
@@ -241,6 +300,15 @@ def build_batch_audit(
             therapeutic_result=therapeutic_result,
         )
 
+        local_coverage_result = summarize_local_curated_coverage(
+            depmap_result=depmap_result,
+            common_result=common_result,
+            specificity_result=specificity_result,
+            gene_role_result=gene_role_result,
+            pathway_result=pathway_result,
+            therapeutic_result=therapeutic_result,
+        )
+
 
         contradiction_result = build_contradiction_labels(
             gene=gene,
@@ -289,6 +357,10 @@ def build_batch_audit(
                 "evidence_layers_possible": coverage_result.get("evidence_layers_possible"),
                 "evidence_coverage_percent": coverage_result.get("evidence_coverage_percent"),
                 "evidence_coverage_label": coverage_result.get("evidence_coverage_label"),
+                "local_curated_layers_available": local_coverage_result.get("local_curated_layers_available"),
+                "local_curated_layers_possible": local_coverage_result.get("local_curated_layers_possible"),
+                "local_curated_coverage_percent": local_coverage_result.get("local_curated_coverage_percent"),
+                "local_curated_coverage_label": local_coverage_result.get("local_curated_coverage_label"),
                 "primary_contradiction_label": contradiction_result.get("primary_label"),
                 "primary_contradiction_severity": contradiction_result.get("primary_severity"),
                 "contradiction_label_summary": contradiction_result.get("label_summary"),
