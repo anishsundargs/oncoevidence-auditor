@@ -17,6 +17,7 @@ from src.specificity_index import calculate_specificity_index
 from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
 from src.cbioportal_survival import get_cbioportal_survival_summary
+from src.gene_role import get_gene_role_summary
 
 
 st.set_page_config(
@@ -498,6 +499,38 @@ except Exception as e:
 
 st.divider()
 
+st.subheader("Gene Role Classification")
+
+_role_gene = locals().get("gene") or locals().get("selected_gene") or locals().get("gene_input")
+_role_common_result = locals().get("common_result")
+
+if _role_gene:
+    gene_role_result = get_gene_role_summary(_role_gene, _role_common_result)
+
+    role_col1, role_col2 = st.columns(2)
+
+    with role_col1:
+        st.markdown("**Role category**")
+        st.write(gene_role_result.get("role_category", "Not available"))
+
+        st.markdown("**Target class**")
+        st.write(gene_role_result.get("target_class", "Not available"))
+
+        st.markdown("**Biological process**")
+        st.write(gene_role_result.get("biological_process", "Not available"))
+
+    with role_col2:
+        st.markdown("**Role-based caution**")
+        st.write(gene_role_result.get("role_risk_label", "Not available"))
+
+        st.markdown("**Role caution severity**")
+        st.write(gene_role_result.get("role_risk_severity", "Not available"))
+
+    with st.expander("Gene role interpretation note"):
+        st.write(gene_role_result.get("interpretation_note", "Not available"))
+        st.write(gene_role_result.get("role_risk_note", "Not available"))
+else:
+    st.info("Gene role classification is unavailable because no gene was selected.")
 st.subheader("Evidence Coverage")
 
 coverage_result = calculate_evidence_coverage(

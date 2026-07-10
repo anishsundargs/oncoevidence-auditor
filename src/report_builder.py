@@ -10,6 +10,7 @@ from src.evidence_coverage import calculate_evidence_coverage
 from src.auditor_verdict import build_auditor_verdict
 from src.final_interpretation import build_final_interpretation
 from src.contradiction_labels import build_contradiction_labels
+from src.gene_role import get_gene_role_summary
 
 
 def _safe(value, fallback="Not available"):
@@ -125,6 +126,8 @@ def build_markdown_report(
         ]
     ) or "- None"
 
+    gene_role_result = get_gene_role_summary(gene, common_result)
+
     available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
     missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"
 
@@ -182,6 +185,23 @@ def build_markdown_report(
 
 ---
 
+## Gene Role Classification
+
+**Role category:** {_safe(gene_role_result.get("role_category"))}  
+**Target class:** {_safe(gene_role_result.get("target_class"))}  
+**Biological process:** {_safe(gene_role_result.get("biological_process"))}  
+
+**Role interpretation note:**  
+{_safe(gene_role_result.get("interpretation_note"))}
+
+**Role-based caution:** {_safe(gene_role_result.get("role_risk_label"))}  
+**Role caution severity:** {_safe(gene_role_result.get("role_risk_severity"))}  
+
+**Role caution note:**  
+{_safe(gene_role_result.get("role_risk_note"))}
+
+---
+
 ## Evidence Coverage
 
 **Coverage label:** {_safe(coverage_result.get("evidence_coverage_label"))}  
@@ -200,6 +220,8 @@ def build_markdown_report(
 |---|---|
 | Evidence coverage label | {_safe(coverage_result.get("evidence_coverage_label"))} |
 | Evidence coverage percent | {_safe(coverage_result.get("evidence_coverage_percent"))}% |
+| Gene role category | {_safe(gene_role_result.get("role_category"))} |
+| Role-based caution | {_safe(gene_role_result.get("role_risk_label"))} |
 | PubMed count | {_safe(pubmed_count)} |
 | Literature saturation | {_safe(saturation_label)} |
 | Novelty label | {_safe(novelty_label)} |

@@ -27,6 +27,7 @@ from src.cbioportal_expression import get_cbioportal_expression_summary
 from src.evidence_coverage import calculate_evidence_coverage
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 from src.contradiction_labels import build_contradiction_labels
+from src.gene_role import get_gene_role_summary
 
 
 EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
@@ -236,6 +237,8 @@ def build_batch_audit(
             saturation_label=saturation_label,
         )
 
+        gene_role_result = get_gene_role_summary(gene, common_result)
+
         dependency_label = depmap_result.get("dependency_label")
         common_label = common_result.get("common_essential_label")
         specificity_label = specificity_result.get("specificity_label")
@@ -273,6 +276,10 @@ def build_batch_audit(
                 "primary_contradiction_label": contradiction_result.get("primary_label"),
                 "primary_contradiction_severity": contradiction_result.get("primary_severity"),
                 "contradiction_label_summary": contradiction_result.get("label_summary"),
+                "gene_role_category": gene_role_result.get("role_category"),
+                "target_class": gene_role_result.get("target_class"),
+                "role_risk_label": gene_role_result.get("role_risk_label"),
+                "role_risk_severity": gene_role_result.get("role_risk_severity"),
                 "pubmed_count": pubmed_count,
                 "literature_saturation": saturation_label,
                 "inferred_novelty": novelty_label,
