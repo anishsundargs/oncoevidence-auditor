@@ -166,3 +166,20 @@ Recommended examples:
   Demonstrates a therapeutically relevant biomarker/subgroup case where patient alteration/expression and therapeutic relevance exist despite weak DepMap dependency.
 
 These examples illustrate the central purpose of the tool: not to rank genes by one evidence layer, but to expose contradictions across literature, dependency, patient tumors, survival, pathway context, and therapeutic relevance.
+
+## Expanded 10-layer evidence profile
+
+OncoEvidence Auditor evaluates gene/cancer hypotheses across a 10-layer evidence profile:
+
+1. PubMed literature saturation
+2. DepMap dependency
+3. Common-essential caution
+4. Lineage specificity
+5. Patient-tumor alteration evidence
+6. Patient-tumor expression evidence
+7. Survival/prognosis evidence
+8. Gene role classification
+9. Pathway/function annotation
+10. Drug/therapeutic relevance annotation
+
+Coverage is a completeness metric, not a strength metric. A complete 10/10 profile can still produce a cautious or contradictory interpretation.
