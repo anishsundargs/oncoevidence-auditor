@@ -1,5 +1,6 @@
 from typing import Dict, Optional
 import plotly.graph_objects as go
+from src.plotly_theme import apply_plotly_theme
 
 LAYER_ORDER = [
     "PubMed literature",
@@ -34,7 +35,7 @@ def plot_evidence_coverage_gauge(coverage_result: Dict) -> Optional[go.Figure]:
     )
 
     fig.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20))
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_evidence_layer_bar(coverage_result: Dict) -> Optional[go.Figure]:
@@ -83,7 +84,7 @@ def plot_evidence_layer_bar(coverage_result: Dict) -> Optional[go.Figure]:
         showlegend=False,
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 def plot_dependency_context_bar(depmap_result: Dict, common_result: Dict) -> Optional[go.Figure]:
     """Compare selected-cancer dependency against pan-cancer dependency."""
     if not depmap_result or not common_result:
@@ -116,7 +117,7 @@ def plot_dependency_context_bar(depmap_result: Dict, common_result: Dict) -> Opt
         showlegend=False,
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_dependency_score_context_bar(depmap_result: Dict, common_result: Dict) -> Optional[go.Figure]:
@@ -150,7 +151,7 @@ def plot_dependency_score_context_bar(depmap_result: Dict, common_result: Dict) 
         showlegend=False,
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_specificity_delta_indicator(specificity_result: Dict) -> Optional[go.Figure]:
@@ -177,7 +178,7 @@ def plot_specificity_delta_indicator(specificity_result: Dict) -> Optional[go.Fi
         margin=dict(l=20, r=20, t=50, b=20),
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 def plot_patient_alteration_bar(cbio_result: Dict) -> Optional[go.Figure]:
     """Show cBioPortal patient alteration frequencies."""
     if not cbio_result or not cbio_result.get("available"):
@@ -218,7 +219,7 @@ def plot_patient_alteration_bar(cbio_result: Dict) -> Optional[go.Figure]:
         showlegend=False,
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_patient_expression_bar(expression_result: Dict) -> Optional[go.Figure]:
@@ -253,7 +254,7 @@ def plot_patient_expression_bar(expression_result: Dict) -> Optional[go.Figure]:
         showlegend=False,
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_expression_summary_bar(expression_result: Dict) -> Optional[go.Figure]:
@@ -287,4 +288,4 @@ def plot_expression_summary_bar(expression_result: Dict) -> Optional[go.Figure]:
         showlegend=False,
     )
 
-    return fig
+    return apply_plotly_theme(fig)

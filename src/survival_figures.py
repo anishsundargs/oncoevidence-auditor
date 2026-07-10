@@ -1,5 +1,6 @@
 from typing import Dict, List, Optional
 import plotly.graph_objects as go
+from src.plotly_theme import apply_plotly_theme
 
 
 def _valid_records(records: List[Dict]) -> List[Dict]:
@@ -76,7 +77,7 @@ def plot_km_survival(survival_result: Dict) -> Optional[go.Figure]:
         legend_title_text='Expression group',
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_median_os_bar(survival_result: Dict) -> Optional[go.Figure]:
@@ -103,7 +104,7 @@ def plot_median_os_bar(survival_result: Dict) -> Optional[go.Figure]:
         margin=dict(l=20, r=20, t=60, b=20),
     )
 
-    return fig
+    return apply_plotly_theme(fig)
 
 
 def plot_event_rate_bar(survival_result: Dict) -> Optional[go.Figure]:
@@ -131,4 +132,4 @@ def plot_event_rate_bar(survival_result: Dict) -> Optional[go.Figure]:
         margin=dict(l=20, r=20, t=60, b=20),
     )
 
-    return fig
+    return apply_plotly_theme(fig)
