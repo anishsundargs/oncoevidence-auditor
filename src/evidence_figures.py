@@ -178,3 +178,113 @@ def plot_specificity_delta_indicator(specificity_result: Dict) -> Optional[go.Fi
     )
 
     return fig
+def plot_patient_alteration_bar(cbio_result: Dict) -> Optional[go.Figure]:
+    """Show cBioPortal patient alteration frequencies."""
+    if not cbio_result or not cbio_result.get("available"):
+        return None
+
+    values = {
+        "Mutation": cbio_result.get("mutation_frequency"),
+        "Amplification": cbio_result.get("amplification_frequency"),
+        "Deep deletion": cbio_result.get("deep_deletion_frequency"),
+    }
+
+    if cbio_result.get("broad_cna_altered_frequency") is not None:
+        values["Broad CNA altered"] = cbio_result.get("broad_cna_altered_frequency")
+
+    clean = {k: v for k, v in values.items() if v is not None}
+
+    if not clean:
+        return None
+
+    fig = go.Figure(
+        data=[
+            go.Bar(
+                x=list(clean.keys()),
+                y=list(clean.values()),
+                text=list(clean.values()),
+                textposition="auto",
+            )
+        ]
+    )
+
+    fig.update_layout(
+        title="Patient alteration frequencies",
+        xaxis_title="Alteration type",
+        yaxis_title="Frequency (%)",
+        yaxis=dict(range=[0, max(10, min(100, max(clean.values()) * 1.25))]),
+        height=380,
+        margin=dict(l=20, r=20, t=60, b=20),
+        showlegend=False,
+    )
+
+    return fig
+
+
+def plot_patient_expression_bar(expression_result: Dict) -> Optional[go.Figure]:
+    """Show high-expression and low-expression tumor fractions."""
+    if not expression_result or not expression_result.get("available"):
+        return None
+
+    high = expression_result.get("percent_high_expression")
+    low = expression_result.get("percent_low_expression")
+
+    if high is None and low is None:
+        return None
+
+    fig = go.Figure(
+        data=[
+            go.Bar(
+                x=["High expression tumors", "Low expression tumors"],
+                y=[high or 0, low or 0],
+                text=[high or 0, low or 0],
+                textposition="auto",
+            )
+        ]
+    )
+
+    fig.update_layout(
+        title="Expression subgroup frequencies",
+        xaxis_title="Expression subgroup",
+        yaxis_title="Tumors (%)",
+        yaxis=dict(range=[0, 100]),
+        height=380,
+        margin=dict(l=20, r=20, t=60, b=20),
+        showlegend=False,
+    )
+
+    return fig
+
+
+def plot_expression_summary_bar(expression_result: Dict) -> Optional[go.Figure]:
+    """Show mean and median expression z-score summary."""
+    if not expression_result or not expression_result.get("available"):
+        return None
+
+    median = expression_result.get("median_expression_zscore")
+    mean = expression_result.get("mean_expression_zscore")
+
+    if median is None and mean is None:
+        return None
+
+    fig = go.Figure(
+        data=[
+            go.Bar(
+                x=["Median z-score", "Mean z-score"],
+                y=[median or 0, mean or 0],
+                text=[median or 0, mean or 0],
+                textposition="auto",
+            )
+        ]
+    )
+
+    fig.update_layout(
+        title="Expression z-score summary",
+        xaxis_title="Statistic",
+        yaxis_title="Expression z-score",
+        height=340,
+        margin=dict(l=20, r=20, t=60, b=20),
+        showlegend=False,
+    )
+
+    return fig

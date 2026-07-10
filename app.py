@@ -7,6 +7,9 @@ from src.evidence_figures import (
     plot_dependency_context_bar,
     plot_dependency_score_context_bar,
     plot_specificity_delta_indicator,
+    plot_patient_alteration_bar,
+    plot_patient_expression_bar,
+    plot_expression_summary_bar,
 )
 import streamlit as st
 from src.catalog_summary import get_catalog_summary
@@ -337,6 +340,17 @@ except Exception as e:
 
 st.divider()
 
+
+st.markdown("### Patient alteration visualization")
+
+alteration_fig = plot_patient_alteration_bar(cbio_result if "cbio_result" in locals() else {})
+if alteration_fig is not None:
+    st.plotly_chart(alteration_fig, use_container_width=True)
+else:
+    st.info("Patient alteration figure unavailable for this run.")
+
+st.divider()
+
 st.subheader("cBioPortal Patient-Tumor Expression Evidence")
 
 @st.cache_data(show_spinner=False)
@@ -390,6 +404,26 @@ except Exception as e:
     expr_result = {"available": False, "note": str(e)}
     st.error("cBioPortal expression module failed. Check internet connection or cBioPortal API availability.")
     st.code(str(e))
+
+st.divider()
+
+
+st.markdown("### Patient expression visualization")
+
+expr_fig_col1, expr_fig_col2 = st.columns(2)
+
+with expr_fig_col1:
+    expression_bar_fig = plot_patient_expression_bar(expr_result if "expr_result" in locals() else {})
+    if expression_bar_fig is not None:
+        st.plotly_chart(expression_bar_fig, use_container_width=True)
+
+with expr_fig_col2:
+    expression_summary_fig = plot_expression_summary_bar(expr_result if "expr_result" in locals() else {})
+    if expression_summary_fig is not None:
+        st.plotly_chart(expression_summary_fig, use_container_width=True)
+
+if not (expr_result if "expr_result" in locals() else {}).get("available"):
+    st.info("Patient expression figures unavailable for this run.")
 
 st.divider()
 
