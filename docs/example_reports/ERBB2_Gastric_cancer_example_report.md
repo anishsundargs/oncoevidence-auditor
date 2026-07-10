@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 16:51  
+**Generated:** 2026-07-10 17:13  
 **Gene:** ERBB2  
 **Cancer type:** Gastric cancer  
 
@@ -57,10 +57,10 @@ Validate whether ERBB2-altered Gastric cancer tumors form a biologically distinc
 
 **Role category:** Oncogene  
 **Target class:** Receptor tyrosine kinase  
-**Biological process:** Growth factor signaling  
+**Biological process:** HER2/RTK signaling  
 
 **Role interpretation note:**  
-ERBB2 is a canonical receptor tyrosine kinase oncogene; strongest framing is usually alteration/expression-defined subgroup biology.
+ERBB2 should be interpreted through HER2/RTK signaling context; do not infer therapeutic actionability from one evidence layer alone.
 
 **Role-based caution:** Subgroup/actionability context important  
 **Role caution severity:** Low  
@@ -73,11 +73,11 @@ Receptor tyrosine kinase genes are often most meaningful in alteration- or expre
 ## Pathway / Function Annotation
 
 **Pathway category:** RTK signaling  
-**Function group:** Growth factor receptor signaling  
-**Pathway process:** ERBB2/HER2-MAPK-PI3K signaling  
+**Function group:** Receptor tyrosine kinase  
+**Pathway process:** HER2/RTK signaling  
 
 **Interpretive use:**  
-ERBB2 pathway context supports an alteration/expression-defined subgroup hypothesis rather than a broad dependency claim.
+Use ERBB2 as RTK signaling context rather than a standalone claim.
 
 **Pathway caution:** Signaling-subgroup interpretation  
 **Pathway caution severity:** Low  
@@ -86,7 +86,7 @@ ERBB2 pathway context supports an alteration/expression-defined subgroup hypothe
 The gene is annotated to oncogenic signaling. Interpretation should emphasize alteration/expression subgroups, downstream pathway activation, and drug-response context.
 
 **Suggested validation:**  
-Check amplification-expression concordance, HER2 pathway activation, drug-response association, and cohort/subtype validation.
+Check alteration, expression, dependency, subgroup specificity, and literature support for ERBB2.
 
 ---
 
@@ -99,10 +99,10 @@ Check amplification-expression concordance, HER2 pathway activation, drug-respon
 HER2-directed therapeutic biomarker context in gastric/GEJ adenocarcinoma
 
 **Dependency interpretation:**  
-Therapeutic relevance can be strong even when DepMap dependency is weak because clinical actionability may reflect antibody targeting, immune-mediated effects, or subgroup biology rather than cell-autonomous CRISPR dependency.
+Do not interpret weak DepMap dependency as absence of clinical relevance.
 
 **Therapeutic caution:**  
-Do not interpret weak DepMap dependency as absence of clinical relevance. Separate biomarker actionability from dependency target strength.
+Therapeutic relevance is subgroup-specific and requires amplification/expression/protein-level validation.
 
 **Dependency/actionability alignment:** Therapeutic relevance without strong dependency  
 **Alignment severity:** Moderate  
@@ -111,7 +111,7 @@ Do not interpret weak DepMap dependency as absence of clinical relevance. Separa
 This gene/cancer pair has curated therapeutic or biomarker relevance, but the current DepMap dependency signal is not strong. This should be framed as biomarker/subgroup relevance rather than cell-autonomous dependency evidence.
 
 **Suggested validation:**  
-Check HER2 amplification-expression concordance, protein/IHC or FISH evidence, HER2 subgroup survival, and therapy-response literature.
+Check HER2 amplification-expression concordance, protein/IHC or FISH evidence, subgroup-specific pathway activity, and therapy-response literature.
 
 **Important:** This section is for research triage only. It does not provide treatment recommendations.
 

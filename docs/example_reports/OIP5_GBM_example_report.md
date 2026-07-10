@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 16:51  
+**Generated:** 2026-07-10 17:13  
 **Gene:** OIP5  
 **Cancer type:** GBM  
 
@@ -34,10 +34,10 @@ OIP5 in GBM is best framed as a broad dependency-associated candidate, not a sel
 **Interpretation label:** Broad dependency with weak patient-level support  
 
 **Final interpretation:**  
-OIP5 in GBM is best interpreted as a broad dependency-associated gene, not a selective patient-supported cancer target. The strongest evidence comes from cell-line dependency, but the signal is weakened by high common-essential caution, low lineage specificity, and weak patient alteration/expression support. Gene role annotation further strengthens this caution because OIP5 is classified as Proliferation/cell-cycle associated, with a target class of Proliferation-associated nuclear protein.
+OIP5 in GBM is best interpreted as a broad dependency-associated gene, not a selective patient-supported cancer target. The strongest evidence comes from cell-line dependency, but the signal is weakened by high common-essential caution, low lineage specificity, and weak patient alteration/expression support.
 
 **Recommended next validation:**  
-Test whether OIP5 dependency reflects general proliferation or cell-cycle essentiality rather than GBM-specific biology. Useful next checks include comparing dependency against known pan-essential/cell-cycle genes, testing independent DepMap releases, and looking for protein-level or single-cell evidence in patient tumors. Because the gene role is proliferation/cell-cycle-linked, prioritize tests that distinguish general growth dependence from cancer-lineage-specific vulnerability. The survival comparison is underpowered, so a larger cohort or different subgroup threshold is needed before making any prognostic claim. Role-based caution note: The gene role is linked to proliferation or cell-cycle biology and the gene also has high common-essential caution. Dependency evidence may reflect broad growth essentiality rather than selective cancer vulnerability.
+Test whether OIP5 dependency reflects general proliferation or cell-cycle essentiality rather than GBM-specific biology. Useful next checks include comparing dependency against known pan-essential/cell-cycle genes, testing independent DepMap releases, and looking for protein-level or single-cell evidence in patient tumors. The survival comparison is underpowered, so a larger cohort or different subgroup threshold is needed before making any prognostic claim.
 
 ---
 
@@ -47,7 +47,6 @@ Test whether OIP5 dependency reflects general proliferation or cell-cycle essent
 **Primary severity:** High  
 
 - **Broad essentiality risk** (High): OIP5 shows strong dependency in GBM, but it is also broadly dependency-associated across many cancer models.
-- **Role-supported broad essentiality risk** (High): OIP5 is classified as Proliferation/cell-cycle associated and also has high common-essential caution, strengthening the concern that dependency reflects broad proliferation biology.
 - **Weak lineage specificity** (High): OIP5 dependency is not clearly enriched in GBM compared with the pan-cancer background.
 - **Dependency-only signal** (High): OIP5 has strong cell-line dependency evidence but weak patient-tumor alteration and expression support.
 - **Underpowered survival signal** (Moderate): Survival interpretation for OIP5 in GBM is underpowered because one expression-defined group is too small.
@@ -56,63 +55,63 @@ Test whether OIP5 dependency reflects general proliferation or cell-cycle essent
 
 ## Gene Role Classification
 
-**Role category:** Proliferation/cell-cycle associated  
-**Target class:** Proliferation-associated nuclear protein  
-**Biological process:** Cell-cycle progression and proliferation  
+**Role category:** Cancer-associated gene  
+**Target class:** Curated cancer-context gene  
+**Biological process:** Cancer-associated biology  
 
 **Role interpretation note:**  
-OIP5 should be interpreted cautiously as a dependency candidate because proliferation-linked genes can show broad essentiality across cancer models.
+OIP5 is included as a curated cancer-context gene; interpretation requires layer-specific validation.
 
-**Role-based caution:** Proliferation/common-essential caution  
-**Role caution severity:** High  
+**Role-based caution:** No special role-based caution  
+**Role caution severity:** Low  
 
 **Role caution note:**  
-The gene role is linked to proliferation or cell-cycle biology and the gene also has high common-essential caution. Dependency evidence may reflect broad growth essentiality rather than selective cancer vulnerability.
+No additional role-based caution was assigned by the current rule set.
 
 ---
 
 ## Pathway / Function Annotation
 
-**Pathway category:** Cell cycle / proliferation  
-**Function group:** Proliferation and chromosome biology  
-**Pathway process:** Cell-cycle progression and proliferation  
+**Pathway category:** Cancer-associated pathway context  
+**Function group:** Curated cancer-context gene  
+**Pathway process:** Cancer-associated biology  
 
 **Interpretive use:**  
-OIP5 pathway context supports caution that dependency may reflect broad proliferation biology rather than GBM-specific vulnerability.
+Use OIP5 as a hypothesis-generating cancer-context gene.
 
-**Pathway caution:** Pathway-supported common-essential caution  
-**Pathway caution severity:** High  
+**Pathway caution:** No special pathway caution  
+**Pathway caution severity:** Low  
 
 **Pathway caution note:**  
-The gene is annotated to a proliferation, replication, or mitotic pathway and also has high common-essential caution. This strengthens the interpretation that dependency may reflect broad growth biology rather than a selective cancer vulnerability.
+No additional pathway-based caution was assigned by the current rule set.
 
 **Suggested validation:**  
-Compare dependency with pan-essential and cell-cycle gene sets; check single-cell tumor-state expression and protein-level evidence.
+Check alteration, expression, dependency, subgroup specificity, and literature support for OIP5.
 
 ---
 
 ## Drug / Therapeutic Relevance Annotation
 
-**Therapeutic relevance:** Low direct therapeutic relevance  
-**Biomarker type:** Proliferation/dependency hypothesis  
+**Therapeutic relevance:** Research-context relevance  
+**Biomarker type:** Research-use hypothesis gene  
 
 **Therapeutic context:**  
-No curated direct therapeutic biomarker context for GBM
+OIP5 in GBM research/biomarker context
 
 **Dependency interpretation:**  
-OIP5 dependency should be treated as a research hypothesis rather than a therapeutic actionability signal.
+DepMap dependency and biomarker relevance should be interpreted as separate evidence layers.
 
 **Therapeutic caution:**  
-Do not frame OIP5 as therapeutically actionable without druggability, protein-level, and disease-specific validation.
+Do not interpret as clinical actionability.
 
-**Dependency/actionability alignment:** Dependency without therapeutic actionability  
-**Alignment severity:** High  
+**Dependency/actionability alignment:** Therapeutic relevance not curated  
+**Alignment severity:** Low  
 
 **Alignment note:**  
-The gene shows dependency evidence but has low or uncertain curated therapeutic relevance. Do not equate dependency with druggability or clinical actionability.
+No curated therapeutic relevance alignment was assigned by the current rule set.
 
 **Suggested validation:**  
-Check druggability, protein localization, single-cell expression, pan-essentiality, and orthogonal perturbation evidence.
+Validate OIP5 in GBM using alteration, expression, patient subgroup, dependency, and literature evidence.
 
 **Important:** This section is for research triage only. It does not provide treatment recommendations.
 
@@ -136,12 +135,12 @@ Check druggability, protein localization, single-cell expression, pan-essentiali
 |---|---|
 | Evidence coverage label | Complete evidence profile |
 | Evidence coverage percent | 100.0% |
-| Gene role category | Proliferation/cell-cycle associated |
-| Role-based caution | Proliferation/common-essential caution |
-| Pathway category | Cell cycle / proliferation |
-| Pathway caution | Pathway-supported common-essential caution |
-| Therapeutic relevance | Low direct therapeutic relevance |
-| Therapeutic alignment | Dependency without therapeutic actionability |
+| Gene role category | Cancer-associated gene |
+| Role-based caution | No special role-based caution |
+| Pathway category | Cancer-associated pathway context |
+| Pathway caution | No special pathway caution |
+| Therapeutic relevance | Research-context relevance |
+| Therapeutic alignment | Therapeutic relevance not curated |
 | PubMed count | 16 |
 | Literature saturation | ('Low-moderate saturation', 'moderate', 'This gene/cancer pair has some literature but may still allow a focused public-data hypothesis.') |
 | Novelty label | moderate |
