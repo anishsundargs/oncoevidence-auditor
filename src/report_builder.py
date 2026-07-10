@@ -94,6 +94,8 @@ def build_markdown_report(
     warnings = verdict.get("warnings", [])
     claim_style = verdict.get("claim_style") or verdict.get("claim_type") or verdict.get("verdict_tier")
 
+    gene_role_result = get_gene_role_summary(gene, common_result)
+
     final_interpretation_result = build_final_interpretation(
         gene=gene,
         cancer_type=cancer_type,
@@ -103,6 +105,7 @@ def build_markdown_report(
         cbio_result=cbio_result,
         expression_result=expression_result,
         survival_result=survival_result,
+        gene_role_result=gene_role_result,
         verdict=verdict,
         saturation_label=saturation_label,
     )
@@ -116,6 +119,7 @@ def build_markdown_report(
         cbio_result=cbio_result,
         expression_result=expression_result,
         survival_result=survival_result,
+        gene_role_result=gene_role_result,
         saturation_label=saturation_label,
     )
 
@@ -125,8 +129,6 @@ def build_markdown_report(
             for item in contradiction_result.get("labels", [])
         ]
     ) or "- None"
-
-    gene_role_result = get_gene_role_summary(gene, common_result)
 
     available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
     missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"

@@ -31,6 +31,7 @@ def build_contradiction_labels(
     cbio_result=None,
     expression_result=None,
     survival_result=None,
+    gene_role_result=None,
     saturation_label=None,
 ):
     """
@@ -45,12 +46,56 @@ def build_contradiction_labels(
     expression_support = _get(expression_result, "expression_support")
     survival_signal = _get(survival_result, "survival_signal")
 
+    role_category = _get(gene_role_result, "role_category")
+    role_risk_label = _get(gene_role_result, "role_risk_label")
+    role_risk_severity = _get(gene_role_result, "role_risk_severity")
+
     if dep_label == "Strong dependency" and common_label == "High common-essential caution":
         _add(
             labels,
             "Broad essentiality risk",
             "High",
             f"{gene} shows strong dependency in {cancer_type}, but it is also broadly dependency-associated across many cancer models.",
+        )
+
+    if role_risk_label == "Proliferation/common-essential caution":
+        _add(
+            labels,
+            "Role-supported broad essentiality risk",
+            "High",
+            f"{gene} is classified as {role_category} and also has high common-essential caution, strengthening the concern that dependency reflects broad proliferation biology.",
+        )
+
+    elif role_risk_label == "Proliferation-linked interpretation caution":
+        _add(
+            labels,
+            "Proliferation-linked interpretation caution",
+            "Moderate",
+            f"{gene} is classified as {role_category}, so dependency or expression signals may partly reflect tumor growth state.",
+        )
+
+    elif role_risk_label == "Tumor-suppressor framing caution":
+        _add(
+            labels,
+            "Tumor-suppressor framing caution",
+            "Moderate",
+            f"{gene} has tumor-suppressor framing, so interpretation should emphasize loss-of-function or pathway disruption rather than simple target dependency.",
+        )
+
+    elif role_risk_label == "Subgroup/actionability context important":
+        _add(
+            labels,
+            "Subgroup/actionability context",
+            "Low",
+            f"{gene} has a role where alteration- or expression-defined subgroup context is especially important.",
+        )
+
+    elif role_risk_label == "Microenvironment/pathway-context caution":
+        _add(
+            labels,
+            "Microenvironment/pathway-context caution",
+            "Low",
+            f"{gene} may involve microenvironmental, extracellular, invasion, or angiogenesis biology not fully captured by tumor-cell dependency.",
         )
 
     if dep_label == "Strong dependency" and specificity_label in {
@@ -185,4 +230,6 @@ def build_contradiction_labels(
         "primary_severity": primary["severity"],
         "primary_explanation": primary["explanation"],
         "label_summary": "; ".join([item["label"] for item in labels]),
+        "role_risk_label": role_risk_label,
+        "role_risk_severity": role_risk_severity,
     }

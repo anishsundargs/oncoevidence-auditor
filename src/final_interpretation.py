@@ -21,6 +21,7 @@ def build_final_interpretation(
     cbio_result=None,
     expression_result=None,
     survival_result=None,
+    gene_role_result=None,
     verdict=None,
     saturation_label=None,
 ):
@@ -33,6 +34,12 @@ def build_final_interpretation(
     patient_support = _get(cbio_result, "patient_alteration_support")
     expression_support = _get(expression_result, "expression_support")
     survival_signal = _get(survival_result, "survival_signal")
+
+    role_category = _get(gene_role_result, "role_category")
+    target_class = _get(gene_role_result, "target_class")
+    role_risk_label = _get(gene_role_result, "role_risk_label")
+    role_risk_note = _get(gene_role_result, "role_risk_note")
+
     verdict_tier = _get(verdict, "verdict_tier")
     safe_claim = _get(verdict, "safe_claim")
 
@@ -107,6 +114,35 @@ def build_final_interpretation(
             f"and comparison across {cancer_type} molecular subtypes."
         )
 
+    # Gene-role-aware refinement
+    if role_risk_label == "Proliferation/common-essential caution":
+        final_interpretation += (
+            f" Gene role annotation further strengthens this caution because {gene} is classified as "
+            f"{role_category}, with a target class of {target_class}."
+        )
+        next_validation += (
+            " Because the gene role is proliferation/cell-cycle-linked, prioritize tests that distinguish "
+            "general growth dependence from cancer-lineage-specific vulnerability."
+        )
+
+    elif role_risk_label == "Tumor-suppressor framing caution":
+        next_validation += (
+            " Because the gene has tumor-suppressor framing, prioritize mutation/loss-of-function and pathway-context "
+            "analyses over simple overexpression or dependency-target claims."
+        )
+
+    elif role_risk_label == "Subgroup/actionability context important":
+        next_validation += (
+            " Because the gene role suggests subgroup/actionability context, prioritize alteration-expression concordance "
+            "and subgroup-specific evidence over broad pan-cohort claims."
+        )
+
+    elif role_risk_label == "Microenvironment/pathway-context caution":
+        next_validation += (
+            " Because the gene role may involve microenvironmental or extracellular biology, tumor-cell dependency alone "
+            "may miss the main biological mechanism."
+        )
+
     if survival_signal == "High-expression subgroup shows worse-survival signal":
         next_validation += (
             " Because high expression also shows a worse-survival descriptive signal, a formal Kaplan-Meier/log-rank "
@@ -132,9 +168,14 @@ def build_final_interpretation(
             "subgroup, mechanism, or validation angle rather than presenting the gene/cancer pair as broadly novel."
         )
 
+    if role_risk_note and role_risk_label not in {None, "No special role-based caution"}:
+        next_validation += f" Role-based caution note: {role_risk_note}"
+
     return {
         "interpretation_label": interpretation_label,
         "final_interpretation": final_interpretation,
         "recommended_next_validation": next_validation,
         "verdict_tier": verdict_tier,
+        "role_category": role_category,
+        "role_risk_label": role_risk_label,
     }
