@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 17:37  
+**Generated:** 2026-07-10 17:56  
 **Gene:** ERBB2  
 **Cancer type:** Gastric cancer  
 
@@ -28,6 +28,25 @@ Do not claim that ERBB2 is a clinically actionable or selectively targetable Gas
 ## Recommended Next Validation
 
 Validate whether ERBB2-altered Gastric cancer tumors form a biologically distinct subgroup. Recommended next checks include alteration-expression correlation, pathway enrichment, drug-response association, and independent cohort validation. Because the gene role suggests subgroup/actionability context, prioritize alteration-expression concordance and subgroup-specific evidence over broad pan-cohort claims. Since the current survival screen shows no clear median-survival separation, avoid framing this as a prognostic biomarker unless stronger survival evidence appears. Role-based caution note: Receptor tyrosine kinase genes are often most meaningful in alteration- or expression-defined subgroups. Patient-level alteration/expression evidence should drive interpretation.
+
+---
+
+## Live Evidence Score
+
+**Live evidence score:** 30/100  
+**Live evidence tier:** Weak live evidence support  
+
+This score summarizes the current live/local evidence layers. It is not a clinical score and should be interpreted alongside the auditor verdict and contradiction labels.
+
+| Evidence component | Points |
+|---|---|
+| DepMap dependency | 3 |
+| Specificity/common-essential context | -6 |
+| Patient alteration | 9 |
+| Patient expression | 10 |
+| Survival/prognosis | 10 |
+| Therapeutic relevance | 12 |
+| Contradiction penalty | -8 |
 
 ---
 

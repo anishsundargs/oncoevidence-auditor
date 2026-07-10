@@ -14,6 +14,7 @@ from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
 from src.therapeutic_relevance import get_therapeutic_relevance_summary
 from src.evidence_provenance import get_evidence_provenance_table
+from src.live_evidence_score import build_live_evidence_score
 
 
 def _safe(value, fallback="Not available"):
@@ -144,6 +145,24 @@ def build_markdown_report(
         ]
     ) or "- None"
 
+    live_score_result = build_live_evidence_score(
+        depmap_result=depmap_result,
+        common_result=common_result,
+        specificity_result=specificity_result,
+        cbio_result=cbio_result,
+        expression_result=expression_result,
+        survival_result=survival_result,
+        therapeutic_result=therapeutic_result,
+        contradiction_result=contradiction_result,
+    )
+
+    live_score_breakdown_lines = "\n".join(
+        [
+            f"| {_safe(component)} | {_safe(points)} |"
+            for component, points in live_score_result.get("breakdown", {}).items()
+        ]
+    ) or "| Not available | Not available |"
+
     available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
     missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"
 
@@ -252,6 +271,19 @@ def build_markdown_report(
 ## Recommended Next Validation
 
 {_safe(recommended_validation)}
+
+---
+
+## Live Evidence Score
+
+**Live evidence score:** {_safe(live_score_result.get("live_evidence_score"))}/100  
+**Live evidence tier:** {_safe(live_score_result.get("live_evidence_tier"))}  
+
+{_safe(live_score_result.get("interpretation_note"))}
+
+| Evidence component | Points |
+|---|---|
+{live_score_breakdown_lines}
 
 ---
 

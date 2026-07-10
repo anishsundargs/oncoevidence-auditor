@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 17:37  
+**Generated:** 2026-07-10 17:56  
 **Gene:** OIP5  
 **Cancer type:** GBM  
 
@@ -28,6 +28,25 @@ Do not claim that OIP5 is a clinically actionable or selectively targetable GBM 
 ## Recommended Next Validation
 
 Test whether OIP5 dependency reflects general proliferation or cell-cycle essentiality rather than GBM-specific biology. Useful next checks include comparing dependency against known pan-essential/cell-cycle genes, testing independent DepMap releases, and looking for protein-level or single-cell evidence in patient tumors. Because the gene role is proliferation/cell-cycle-linked, prioritize tests that distinguish general growth dependence from cancer-lineage-specific vulnerability. The survival comparison is underpowered, so a larger cohort or different subgroup threshold is needed before making any prognostic claim. Role-based caution note: The gene role is linked to proliferation or cell-cycle biology and the gene also has high common-essential caution. Dependency evidence may reflect broad growth essentiality rather than selective cancer vulnerability.
+
+---
+
+## Live Evidence Score
+
+**Live evidence score:** 0/100  
+**Live evidence tier:** Weak live evidence support  
+
+This score summarizes the current live/local evidence layers. It is not a clinical score and should be interpreted alongside the auditor verdict and contradiction labels.
+
+| Evidence component | Points |
+|---|---|
+| DepMap dependency | 20 |
+| Specificity/common-essential context | -15 |
+| Patient alteration | 2 |
+| Patient expression | 2 |
+| Survival/prognosis | 2 |
+| Therapeutic relevance | 2 |
+| Contradiction penalty | -15 |
 
 ---
 
