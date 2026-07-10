@@ -13,6 +13,7 @@ from src.contradiction_labels import build_contradiction_labels
 from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
 from src.therapeutic_relevance import get_therapeutic_relevance_summary
+from src.evidence_provenance import get_evidence_provenance_table
 
 
 def _safe(value, fallback="Not available"):
@@ -145,6 +146,34 @@ def build_markdown_report(
 
     available_layers_text = ", ".join(coverage_result.get("available_layers", [])) or "None"
     missing_layers_text = ", ".join(coverage_result.get("missing_layers", [])) or "None"
+
+    def _md_cell(value):
+        value = _safe(value)
+        return str(value).replace("|", "/").replace("\n", " ")
+
+    try:
+        provenance_df = get_evidence_provenance_table()
+        provenance_rows = [
+            "| Evidence layer | Source | Data type | Main limitation |",
+            "|---|---|---|---|",
+        ]
+
+        for _, provenance_row in provenance_df.iterrows():
+            provenance_rows.append(
+                "| "
+                + _md_cell(provenance_row.get("evidence_layer"))
+                + " | "
+                + _md_cell(provenance_row.get("source"))
+                + " | "
+                + _md_cell(provenance_row.get("data_type"))
+                + " | "
+                + _md_cell(provenance_row.get("main_limitation"))
+                + " |"
+            )
+
+        provenance_table = "\n".join(provenance_rows)
+    except Exception:
+        provenance_table = "Evidence provenance table unavailable for this report."
 
     depmap_note = depmap_result.get("note") or depmap_result.get("dependency_note") or ""
     oncotree_codes = depmap_result.get("oncotree_codes")
@@ -461,6 +490,14 @@ PubMed count is used as a literature saturation and novelty signal. A high count
 **Survival signal:** {_safe(survival_result.get("survival_signal"))}  
 
 **Note:** {_safe(survival_result.get("note"))}
+
+---
+
+## Evidence Source / Provenance
+
+{provenance_table}
+
+**Provenance interpretation note:** Each layer answers a different biological question. Dependency, alteration, expression, survival, role, pathway, and therapeutic context should not be collapsed into a single claim without careful interpretation.
 
 ---
 

@@ -1,6 +1,6 @@
 # OncoEvidence Auditor Report
 
-**Generated:** 2026-07-10 17:28  
+**Generated:** 2026-07-10 17:30  
 **Gene:** OIP5  
 **Cancer type:** GBM  
 
@@ -273,6 +273,25 @@ PubMed count is used as a literature saturation and novelty signal. A high count
 **Survival signal:** Insufficient high-expression subgroup for survival comparison  
 
 **Note:** Survival comparison is based on high-expression tumors (z >= 2.0) versus other tumors. This is a descriptive screening summary, not a Kaplan-Meier/log-rank survival analysis.
+
+---
+
+## Evidence Source / Provenance
+
+| Evidence layer | Source | Data type | Main limitation |
+|---|---|---|---|
+| PubMed literature saturation | NCBI PubMed / ESearch | Literature count | High publication count does not prove biological importance; low count may reflect under-study rather than novelty. |
+| DepMap dependency | DepMap CRISPRGeneEffect subset | Cancer cell-line gene dependency | Cell-line dependency does not prove patient-tumor relevance, clinical actionability, or immune/antigen relevance. |
+| Common-essential caution | DepMap pan-cancer dependency summary | Pan-cancer dependency background | Broad dependency can indicate general viability/proliferation effects rather than selective cancer targeting. |
+| Lineage specificity | Selected-cancer DepMap dependency compared with pan-cancer background | Relative dependency enrichment | Specificity depends on available cell-line representation and OncoTree mapping. |
+| Patient alteration evidence | cBioPortal TCGA / PanCancer Atlas studies | Mutation, amplification, deletion frequencies | Alteration frequency does not prove functional dependency or therapeutic actionability. |
+| Patient expression evidence | cBioPortal mRNA expression z-score profiles | Patient tumor expression distribution | mRNA expression does not prove protein expression, surface localization, or functional dependency. |
+| Survival/prognosis evidence | cBioPortal clinical survival records matched to expression groups | Descriptive survival comparison | Current analysis is descriptive and not a full Kaplan-Meier/log-rank/Cox clinical model. |
+| Gene role classification | Local curated annotation table | Biological role category | Curated role labels simplify context-dependent biology and require manual review. |
+| Pathway/function annotation | Local curated annotation table | Pathway and functional context | Pathway membership does not prove causality or selective targetability. |
+| Therapeutic relevance annotation | Local curated therapeutic/context table | Biomarker or therapeutic-context annotation | This is not a clinical recommendation and must not be interpreted as treatment guidance. |
+
+**Provenance interpretation note:** Each layer answers a different biological question. Dependency, alteration, expression, survival, role, pathway, and therapeutic context should not be collapsed into a single claim without careful interpretation.
 
 ---
 
