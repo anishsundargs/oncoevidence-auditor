@@ -3,6 +3,7 @@ import plotly.express as px
 from src.survival_figures import plot_km_survival, plot_median_os_bar, plot_event_rate_bar
 from src.evidence_figures import plot_evidence_coverage_gauge, plot_evidence_layer_bar
 import streamlit as st
+from src.catalog_summary import get_catalog_summary
 
 from src.evidence_coverage import calculate_evidence_coverage
 
@@ -31,6 +32,36 @@ st.set_page_config(
 )
 
 st.title("OncoEvidence Auditor")
+
+catalog_summary = get_catalog_summary()
+
+if catalog_summary.get("available"):
+    st.markdown("### Pan-cancer catalog scale")
+
+    cat_col1, cat_col2, cat_col3, cat_col4 = st.columns(4)
+
+    with cat_col1:
+        st.metric("Cancer types", catalog_summary["supported_cancer_types"])
+
+    with cat_col2:
+        st.metric("Unique genes", catalog_summary["unique_genes"])
+
+    with cat_col3:
+        st.metric("Gene-cancer hypotheses", catalog_summary["gene_cancer_pairs"])
+
+    with cat_col4:
+        st.metric("Median genes/cancer", catalog_summary["median_genes_per_cancer"])
+
+    st.caption(catalog_summary["note"])
+
+    with st.expander("Show catalog size by cancer type"):
+        st.dataframe(
+            catalog_summary["genes_per_cancer"],
+            use_container_width=True,
+            hide_index=True,
+        )
+
+    st.divider()
 st.caption("Contradiction-aware cancer gene hypothesis triage using public-data evidence layers.")
 
 st.warning(
