@@ -122,7 +122,8 @@ except Exception:
 col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
-    st.metric("Evidence score", f"{score}/100")
+    st.metric("Static catalog score", f"{score}/100")
+    st.caption("Curated local prior; not the final auditor verdict.")
 
 with col2:
     st.metric("Evidence tier", tier)
