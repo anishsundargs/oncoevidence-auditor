@@ -4,6 +4,8 @@ import streamlit as st
 
 from src.cancer_registry import list_supported_cancers
 from src.batch_audit import build_batch_audit
+from src.ui_style import apply_global_style, render_theme_selector
+from src.plotly_theme import apply_plotly_theme
 
 
 st.set_page_config(
@@ -11,6 +13,9 @@ st.set_page_config(
     page_icon="📊",
     layout="wide",
 )
+_theme_mode = render_theme_selector()
+apply_global_style(_theme_mode)
+
 
 st.title("Batch Audit Mode")
 st.caption(
@@ -328,28 +333,28 @@ chart_col1, chart_col2 = st.columns(2)
 with chart_col1:
     fig = count_chart(filtered_df, "primary_contradiction_severity", "Contradiction severity distribution")
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 local_cov_fig = count_chart(filtered_df, "local_curated_coverage_label", "Local curated coverage distribution")
 if local_cov_fig is not None:
-    st.plotly_chart(local_cov_fig, use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(local_cov_fig), use_container_width=True)
 
 with chart_col2:
     fig = count_chart(filtered_df, "therapeutic_relevance", "Therapeutic relevance distribution")
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 chart_col3, chart_col4 = st.columns(2)
 
 with chart_col3:
     fig = count_chart(filtered_df, "gene_role_category", "Gene role distribution")
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 with chart_col4:
     fig = count_chart(filtered_df, "pathway_category", "Pathway category distribution")
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 st.markdown("### Dependency versus specificity map")
 
@@ -387,7 +392,7 @@ if "percent_dependent" in scatter_df.columns and "specificity_delta" in scatter_
             height=460,
             margin=dict(l=20, r=20, t=60, b=20),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
     else:
         st.info("Dependency-specificity map unavailable because numeric values are missing.")
 else:

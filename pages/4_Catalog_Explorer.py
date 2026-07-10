@@ -1,6 +1,8 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from src.ui_style import apply_global_style, render_theme_selector
+from src.plotly_theme import apply_plotly_theme
 
 
 MOCK_PATH = "data/mock_gene_evidence.csv"
@@ -14,6 +16,9 @@ st.set_page_config(
     page_icon="🧭",
     layout="wide",
 )
+_theme_mode = render_theme_selector()
+apply_global_style(_theme_mode)
+
 
 st.title("Pan-Cancer Catalog Explorer")
 
@@ -282,24 +287,24 @@ chart1, chart2 = st.columns(2)
 with chart1:
     fig = count_chart(filtered, "cancer_type", "Gene-cancer rows by cancer type", height_base=420)
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 with chart2:
     fig = count_chart(filtered, "role_category", "Gene role distribution", height_base=420)
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 chart3, chart4 = st.columns(2)
 
 with chart3:
     fig = count_chart(filtered, "pathway_category", "Pathway category distribution", height_base=420)
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 with chart4:
     fig = count_chart(filtered, "therapeutic_relevance", "Therapeutic relevance distribution", height_base=420)
     if fig is not None:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 st.divider()
 

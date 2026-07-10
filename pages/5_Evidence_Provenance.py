@@ -3,6 +3,8 @@ import plotly.express as px
 import streamlit as st
 
 from src.evidence_provenance import get_evidence_provenance_table
+from src.ui_style import apply_global_style, render_theme_selector
+from src.plotly_theme import apply_plotly_theme
 
 
 st.set_page_config(
@@ -10,6 +12,9 @@ st.set_page_config(
     page_icon="🧾",
     layout="wide",
 )
+_theme_mode = render_theme_selector()
+apply_global_style(_theme_mode)
+
 
 st.title("Evidence Source / Provenance")
 
@@ -56,7 +61,7 @@ with col1:
         title="Live vs local evidence layers",
     )
     fig.update_layout(height=340, margin=dict(l=20, r=20, t=60, b=20))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 with col2:
     data_type_counts = (
@@ -78,7 +83,7 @@ with col2:
         margin=dict(l=20, r=20, t=60, b=20),
         yaxis=dict(autorange="reversed"),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 st.divider()
 

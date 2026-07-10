@@ -33,6 +33,74 @@ from src.gene_role import get_gene_role_summary
 from src.pathway_function import get_pathway_function_summary
 from src.therapeutic_relevance import get_therapeutic_relevance_summary
 from src.live_evidence_score import build_live_evidence_score
+from src.ui_style import apply_global_style, render_hero, render_disclaimer, render_theme_selector, render_feature_strip
+
+
+
+def render_score_breakdown_chart(breakdown):
+    """Render score breakdown using a clean themed Plotly chart."""
+    try:
+        import plotly.graph_objects as go
+        from src.plotly_theme import apply_plotly_theme
+
+        if hasattr(breakdown, "to_dict"):
+            try:
+                breakdown = breakdown.to_dict()
+            except Exception:
+                pass
+
+        if isinstance(breakdown, list):
+            cleaned = []
+            for item in breakdown:
+                if isinstance(item, dict):
+                    component = (
+                        item.get("component")
+                        or item.get("Component")
+                        or item.get("Evidence component")
+                        or item.get("index")
+                    )
+                    points = item.get("points") or item.get("Points") or item.get("score") or item.get("Score")
+                    if component is not None and points is not None:
+                        cleaned.append((str(component), float(points)))
+        elif isinstance(breakdown, dict):
+            cleaned = [(str(k), float(v)) for k, v in breakdown.items()]
+        else:
+            cleaned = []
+
+        cleaned = [(k, v) for k, v in cleaned if k.lower() not in {"undefined", "none", "nan"}]
+
+        if not cleaned:
+            st.info("Score breakdown unavailable for this selected row.")
+            return
+
+        components = [k for k, _ in cleaned]
+        points = [v for _, v in cleaned]
+
+        fig = go.Figure(
+            data=[
+                go.Bar(
+                    x=points,
+                    y=components,
+                    orientation="h",
+                    marker=dict(color="#6366F1"),
+                    hovertemplate="%{y}: %{x}<extra></extra>",
+                )
+            ]
+        )
+
+        fig.update_layout(
+            title="Score breakdown",
+            xaxis_title="Points",
+            yaxis_title="Component",
+            height=max(380, 52 * len(components)),
+            showlegend=False,
+        )
+
+        st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
+    except Exception as exc:
+        st.warning(f"Could not render score breakdown chart: {exc}")
+
+from src.plotly_theme import apply_plotly_theme
 
 
 st.set_page_config(
@@ -40,8 +108,12 @@ st.set_page_config(
     page_icon="🧬",
     layout="wide"
 )
+_theme_mode = render_theme_selector()
+apply_global_style(_theme_mode)
 
-st.title("OncoEvidence Auditor")
+
+render_hero()
+render_feature_strip()
 
 catalog_summary = get_catalog_summary()
 
@@ -99,8 +171,8 @@ with st.sidebar:
     gene = st.selectbox("Gene", genes)
 
     st.divider()
-    st.subheader("MVP Status")
-    st.write("Main evidence card still uses curated mock values.")
+    st.subheader("Score interpretation")
+    st.write("Static catalog score is a curated local prior; live evidence score and auditor verdict reflect current evidence layers.")
     st.write("PubMed literature saturation is now a live data layer using NCBI ESearch.")
 
 row = df[(df["gene"] == gene) & (df["cancer_type"] == cancer_type)].iloc[0].to_dict()
@@ -167,7 +239,7 @@ with right:
     )
     fig = px.bar(plot_df, x="Points", y="Component", orientation="h", range_x=[0, 20])
     fig.update_layout(height=420, margin=dict(l=10, r=10, t=20, b=10))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(fig), use_container_width=True)
 
 st.divider()
 
@@ -234,12 +306,12 @@ dep_fig_col1, dep_fig_col2 = st.columns(2)
 with dep_fig_col1:
     dependency_context_fig = plot_dependency_context_bar(depmap_result, common_result)
     if dependency_context_fig is not None:
-        st.plotly_chart(dependency_context_fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(dependency_context_fig), use_container_width=True)
 
 with dep_fig_col2:
     dependency_score_fig = plot_dependency_score_context_bar(depmap_result, common_result)
     if dependency_score_fig is not None:
-        st.plotly_chart(dependency_score_fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(dependency_score_fig), use_container_width=True)
 
 _figure_specificity_result = locals().get("specificity_result")
 
@@ -251,7 +323,7 @@ if _figure_specificity_result is None:
 
 specificity_indicator_fig = plot_specificity_delta_indicator(_figure_specificity_result)
 if specificity_indicator_fig is not None:
-    st.plotly_chart(specificity_indicator_fig, use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(specificity_indicator_fig), use_container_width=True)
 
 st.caption(
     "Dependency context figures compare the selected cancer against the pan-cancer background. "
@@ -346,7 +418,7 @@ st.markdown("### Patient alteration visualization")
 
 alteration_fig = plot_patient_alteration_bar(cbio_result if "cbio_result" in locals() else {})
 if alteration_fig is not None:
-    st.plotly_chart(alteration_fig, use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(alteration_fig), use_container_width=True)
 else:
     st.info("Patient alteration figure unavailable for this run.")
 
@@ -416,12 +488,12 @@ expr_fig_col1, expr_fig_col2 = st.columns(2)
 with expr_fig_col1:
     expression_bar_fig = plot_patient_expression_bar(expr_result if "expr_result" in locals() else {})
     if expression_bar_fig is not None:
-        st.plotly_chart(expression_bar_fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(expression_bar_fig), use_container_width=True)
 
 with expr_fig_col2:
     expression_summary_fig = plot_expression_summary_bar(expr_result if "expr_result" in locals() else {})
     if expression_summary_fig is not None:
-        st.plotly_chart(expression_summary_fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(expression_summary_fig), use_container_width=True)
 
 if not (expr_result if "expr_result" in locals() else {}).get("available"):
     st.info("Patient expression figures unavailable for this run.")
@@ -641,19 +713,19 @@ try:
 
             km_fig = plot_km_survival(survival_result)
             if km_fig is not None:
-                st.plotly_chart(km_fig, use_container_width=True)
+                st.plotly_chart(apply_plotly_theme(km_fig), use_container_width=True)
 
             fig_col1, fig_col2 = st.columns(2)
 
             with fig_col1:
                 median_fig = plot_median_os_bar(survival_result)
                 if median_fig is not None:
-                    st.plotly_chart(median_fig, use_container_width=True)
+                    st.plotly_chart(apply_plotly_theme(median_fig), use_container_width=True)
 
             with fig_col2:
                 event_fig = plot_event_rate_bar(survival_result)
                 if event_fig is not None:
-                    st.plotly_chart(event_fig, use_container_width=True)
+                    st.plotly_chart(apply_plotly_theme(event_fig), use_container_width=True)
 
             st.caption("These figures are descriptive visualizations from cBioPortal patient records and do not replace formal prognostic modeling.")
         else:
@@ -904,12 +976,12 @@ fig_col1, fig_col2 = st.columns([1, 1.4])
 with fig_col1:
     coverage_gauge_fig = plot_evidence_coverage_gauge(coverage_result)
     if coverage_gauge_fig is not None:
-        st.plotly_chart(coverage_gauge_fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(coverage_gauge_fig), use_container_width=True)
 
 with fig_col2:
     coverage_bar_fig = plot_evidence_layer_bar(coverage_result)
     if coverage_bar_fig is not None:
-        st.plotly_chart(coverage_bar_fig, use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(coverage_bar_fig), use_container_width=True)
 
 with st.expander("Coverage details"):
     st.write("Available layers:")

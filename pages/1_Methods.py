@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 
 from src.cancer_registry import load_cancer_registry
+from src.ui_style import apply_global_style, render_theme_selector
 
 
 st.set_page_config(
@@ -9,6 +10,9 @@ st.set_page_config(
     page_icon="🧬",
     layout="wide",
 )
+_theme_mode = render_theme_selector()
+apply_global_style(_theme_mode)
+
 
 st.title("Methods")
 st.caption(
