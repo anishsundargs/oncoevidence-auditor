@@ -18,6 +18,7 @@ from src.cbioportal_alterations import get_cbioportal_alteration_summary
 from src.cbioportal_expression import get_cbioportal_expression_summary
 from src.cbioportal_survival import get_cbioportal_survival_summary
 from src.gene_role import get_gene_role_summary
+from src.pathway_function import get_pathway_function_summary
 
 
 st.set_page_config(
@@ -531,6 +532,40 @@ if _role_gene:
         st.write(gene_role_result.get("role_risk_note", "Not available"))
 else:
     st.info("Gene role classification is unavailable because no gene was selected.")
+st.subheader("Pathway / Function Annotation")
+
+_pathway_gene = locals().get("gene") or locals().get("selected_gene") or locals().get("gene_input")
+_pathway_common_result = locals().get("common_result")
+
+if _pathway_gene:
+    pathway_result = get_pathway_function_summary(_pathway_gene, _pathway_common_result)
+
+    pathway_col1, pathway_col2 = st.columns(2)
+
+    with pathway_col1:
+        st.markdown("**Pathway category**")
+        st.write(pathway_result.get("pathway_category", "Not available"))
+
+        st.markdown("**Function group**")
+        st.write(pathway_result.get("function_group", "Not available"))
+
+        st.markdown("**Pathway process**")
+        st.write(pathway_result.get("pathway_process", "Not available"))
+
+    with pathway_col2:
+        st.markdown("**Pathway caution**")
+        st.write(pathway_result.get("pathway_caution_label", "Not available"))
+
+        st.markdown("**Pathway caution severity**")
+        st.write(pathway_result.get("pathway_caution_severity", "Not available"))
+
+    with st.expander("Pathway/function interpretation note"):
+        st.write(pathway_result.get("interpretive_use", "Not available"))
+        st.write(pathway_result.get("pathway_caution_note", "Not available"))
+        st.markdown("**Suggested validation**")
+        st.write(pathway_result.get("validation_suggestions", "Not available"))
+else:
+    st.info("Pathway/function annotation is unavailable because no gene was selected.")
 st.subheader("Evidence Coverage")
 
 coverage_result = calculate_evidence_coverage(

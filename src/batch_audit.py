@@ -28,6 +28,7 @@ from src.evidence_coverage import calculate_evidence_coverage
 from src.pubmed_saturation import get_pubmed_count, classify_literature_saturation
 from src.contradiction_labels import build_contradiction_labels
 from src.gene_role import get_gene_role_summary
+from src.pathway_function import get_pathway_function_summary
 
 
 EVIDENCE_PATH = Path("data/mock_gene_evidence.csv")
@@ -227,6 +228,7 @@ def build_batch_audit(
         )
 
         gene_role_result = get_gene_role_summary(gene, common_result)
+        pathway_result = get_pathway_function_summary(gene, common_result)
 
         contradiction_result = build_contradiction_labels(
             gene=gene,
@@ -283,6 +285,10 @@ def build_batch_audit(
                 "target_class": gene_role_result.get("target_class"),
                 "role_risk_label": gene_role_result.get("role_risk_label"),
                 "role_risk_severity": gene_role_result.get("role_risk_severity"),
+                "pathway_category": pathway_result.get("pathway_category"),
+                "function_group": pathway_result.get("function_group"),
+                "pathway_caution_label": pathway_result.get("pathway_caution_label"),
+                "pathway_caution_severity": pathway_result.get("pathway_caution_severity"),
                 "pubmed_count": pubmed_count,
                 "literature_saturation": saturation_label,
                 "inferred_novelty": novelty_label,

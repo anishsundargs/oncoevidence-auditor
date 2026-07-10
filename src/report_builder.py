@@ -11,6 +11,7 @@ from src.auditor_verdict import build_auditor_verdict
 from src.final_interpretation import build_final_interpretation
 from src.contradiction_labels import build_contradiction_labels
 from src.gene_role import get_gene_role_summary
+from src.pathway_function import get_pathway_function_summary
 
 
 def _safe(value, fallback="Not available"):
@@ -95,6 +96,7 @@ def build_markdown_report(
     claim_style = verdict.get("claim_style") or verdict.get("claim_type") or verdict.get("verdict_tier")
 
     gene_role_result = get_gene_role_summary(gene, common_result)
+    pathway_result = get_pathway_function_summary(gene, common_result)
 
     final_interpretation_result = build_final_interpretation(
         gene=gene,
@@ -204,6 +206,26 @@ def build_markdown_report(
 
 ---
 
+## Pathway / Function Annotation
+
+**Pathway category:** {_safe(pathway_result.get("pathway_category"))}  
+**Function group:** {_safe(pathway_result.get("function_group"))}  
+**Pathway process:** {_safe(pathway_result.get("pathway_process"))}  
+
+**Interpretive use:**  
+{_safe(pathway_result.get("interpretive_use"))}
+
+**Pathway caution:** {_safe(pathway_result.get("pathway_caution_label"))}  
+**Pathway caution severity:** {_safe(pathway_result.get("pathway_caution_severity"))}  
+
+**Pathway caution note:**  
+{_safe(pathway_result.get("pathway_caution_note"))}
+
+**Suggested validation:**  
+{_safe(pathway_result.get("validation_suggestions"))}
+
+---
+
 ## Evidence Coverage
 
 **Coverage label:** {_safe(coverage_result.get("evidence_coverage_label"))}  
@@ -224,6 +246,8 @@ def build_markdown_report(
 | Evidence coverage percent | {_safe(coverage_result.get("evidence_coverage_percent"))}% |
 | Gene role category | {_safe(gene_role_result.get("role_category"))} |
 | Role-based caution | {_safe(gene_role_result.get("role_risk_label"))} |
+| Pathway category | {_safe(pathway_result.get("pathway_category"))} |
+| Pathway caution | {_safe(pathway_result.get("pathway_caution_label"))} |
 | PubMed count | {_safe(pubmed_count)} |
 | Literature saturation | {_safe(saturation_label)} |
 | Novelty label | {_safe(novelty_label)} |
