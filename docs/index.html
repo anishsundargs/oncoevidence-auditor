@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;OncoEvidence Auditor | Cancer Gene Evidence Triage App&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="description" content="OncoEvidence Auditor is a public-data cancer genomics app that audits gene-cancer hypotheses using PubMed, DepMap, cBioPortal, expression, survival, specificity, and therapeutic-relevance evidence layers."&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="keywords" content="OncoEvidence Auditor, cancer genomics, computational biology, bioinformatics, DepMap, cBioPortal, Streamlit, cancer gene hypothesis, precision oncology"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="author" content="Anish Sundar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script type="application/ld+json"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"@context": "https://schema.org",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"@type": "SoftwareApplication",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"name": "OncoEvidence Auditor",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"applicationCategory": "ScientificApplication",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"operatingSystem": "Web",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"author": {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"@type": "Person",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"name": "Anish Sundar"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"description": "A contradiction-aware cancer gene hypothesis triage app using public-data evidence layers.",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"url": "https://oncoevidence-auditor.streamlit.app",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>"codeRepository": "https://github.com/anishsundargs/oncoevidence-auditor"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 900px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 48px auto;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.6;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #111827;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f8fafc;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>h1 {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 2.3rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.subtitle {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.15rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #475569;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>a.button {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-block;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px 10px 10px 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #2563eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>a.secondary {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #0f172a;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>code {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #eef2ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 2px 5px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;main class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;OncoEvidence Auditor&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="subtitle"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>A contradiction-aware cancer gene hypothesis triage app using public-data evidence layers.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>OncoEvidence Auditor is a computational biology and cancer genomics web app</p>
+<p class="p1"><span class="Apple-converted-space">      </span>designed to evaluate gene-cancer hypotheses using multiple public evidence layers.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>The app integrates literature saturation, DepMap dependency, common-essential risk,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>lineage specificity, cBioPortal patient alteration data, expression evidence,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>survival/prognosis analysis, gene role annotation, pathway/function annotation,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>and therapeutic relevance.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>The goal is not to claim that a gene is automatically a valid therapeutic target.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Instead, the app highlights contradictions between cell-line dependency, patient-level</p>
+<p class="p1"><span class="Apple-converted-space">      </span>genomic evidence, specificity, biological role, and translational relevance.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Recommended demo cases include &lt;code&gt;OIP5 / GBM&lt;/code&gt; as a broad-essentiality</p>
+<p class="p1"><span class="Apple-converted-space">      </span>contradiction case and &lt;code&gt;ERBB2 / Gastric cancer&lt;/code&gt; as a patient-supported</p>
+<p class="p1"><span class="Apple-converted-space">      </span>biomarker/subgroup case.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="button" href="https://oncoevidence-auditor.streamlit.app"&gt;Launch Live App&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="button secondary" href="https://github.com/anishsundargs/oncoevidence-auditor"&gt;View GitHub Repository&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Evidence layers&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;PubMed literature saturation&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;DepMap CRISPR dependency&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;Common-essential caution&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;Lineage specificity&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;cBioPortal patient alteration evidence&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;Expression and survival/prognosis evidence&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;li&gt;Gene role, pathway, and therapeutic relevance annotation&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/ul&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Research-use disclaimer&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>This app is for research and educational use only. It is not a clinical decision-making tool.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
