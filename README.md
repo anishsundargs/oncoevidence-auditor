@@ -1,8 +1,27 @@
 # OncoEvidence Auditor
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://oncoevidence-auditor.streamlit.app)
+
+**Live demo:** https://oncoevidence-auditor.streamlit.app
+
+> The hosted Streamlit demo may take 30–90 seconds to wake if it has been inactive.
+
 **OncoEvidence Auditor** is an early-stage Streamlit app for contradiction-aware cancer gene hypothesis triage.
 
 Instead of only showing isolated expression or survival plots, the tool is designed to generate an **evidence card** for a gene/cancer pair and flag whether the public-data evidence is strong, weak, or internally contradictory.
+
+
+## Recommended Demo Cases
+
+Use these gene-cancer pairs to test the core app behavior:
+
+| Gene | Cancer type | Why it is useful |
+|---|---|---|
+| OIP5 | GBM | Flagship contradiction case: strong dependency but broad-essential/patient-support risk |
+| ERBB2 | Gastric cancer | Patient-supported biomarker/subgroup case |
+| ERBB2 | Breast cancer | Therapeutic biomarker context in a different cancer setting |
+| KRAS | Pancreatic cancer | Canonical oncogenic driver example |
+| EGFR | Lung adenocarcinoma | Common precision-oncology target context |
 
 ## MVP Goal
 
