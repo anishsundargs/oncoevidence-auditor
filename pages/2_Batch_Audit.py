@@ -88,7 +88,8 @@ if batch_df is None:
     st.stop()
 
 if batch_df.empty:
-    st.info(f"No curated genes found for {st.session_state.get("batch_audit_cancer") or cancer_type}.")
+    selected_cancer_for_message = st.session_state.get("batch_audit_cancer_type", "the selected cancer")
+    st.info(f"No curated genes found for {selected_cancer_for_message}.")
     st.stop()
 
 active_cancer = st.session_state.get("batch_audit_cancer") or cancer_type
