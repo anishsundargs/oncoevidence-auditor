@@ -1,4 +1,6 @@
-<!doctype html>
+from pathlib import Path
+
+html = """<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -120,3 +122,8 @@
   </main>
 </body>
 </html>
+"""
+
+Path("docs").mkdir(exist_ok=True)
+Path("docs/index.html").write_text(html, encoding="utf-8")
+print("Rewrote docs/index.html as plain HTML.")
